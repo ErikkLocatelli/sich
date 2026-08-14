@@ -2,10 +2,10 @@ import { useState, useCallback } from 'react'
 
 const useFetch = () => {
   const [data, setData] = useState([])
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-  const request = useCallback(async (url, options) => {
+  const request = useCallback(async (url: string, options?: RequestInit) => {
     setLoading(true)
     setError(null)
 
@@ -22,7 +22,8 @@ const useFetch = () => {
       setData(json ?? [])
       return json
     } catch (err) {
-      setError(err.message)
+      const message = err instanceof Error ? err.message : 'Erro desconhecido'
+      setError(message)
       setData([])
       return null
     } finally {

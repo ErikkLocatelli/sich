@@ -1,17 +1,23 @@
 import './App.css'
 
-import { Button } from './components/ui/button'
-import { Rocket, Sparkles } from "lucide-react"
+import { BrowserRouter } from "react-router-dom"
+import Routes from './services/routes'
+
+// import { Button } from './components/ui/button'
+// import { Rocket, Sparkles } from "lucide-react"
 
 function App() {
 
   return (
-    <div>
-      <h1>Teste</h1>
-      <Button>Teste</Button>
-      <Sparkles/>
-      <Button><Rocket /></Button>
-    </div>
+    <BrowserRouter>
+      <div className="flex flex-col min-h-screen bg-(--bg-principal)">
+        <header></header>
+         <main className="flex flex-col flex-1">
+            <Routes />
+          </main>
+        <footer></footer>
+      </div>
+    </BrowserRouter>
   )
 }
 

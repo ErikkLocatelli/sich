@@ -5,6 +5,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --font-sans: "Poppins", sans-serif;
+}
+
 @theme inline {
     --font-heading: var(--font-sans);
     --font-sans: 'Geist Variable', sans-serif;
@@ -49,15 +53,15 @@
 }
 
 :root {
-    --background: oklch(1 0 0);
+    --background: #ffffff;
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.61 0.21 340);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: 291 60% 30%;
+    --primary: oklch(0.67 0.22 0);
+    --primary-foreground: oklch(0.67 0.22 0);
+    --secondary: oklch(0.53 0.20 345);
     --secondary-foreground: oklch(0.35 0.15 315);
     --muted: oklch(0.97 0 0);
     --muted-foreground: oklch(0.556 0 0);
@@ -66,7 +70,7 @@
     --destructive: oklch(0.577 0.245 27.325);
     --border: oklch(0.922 0 0);
     --input: oklch(0.922 0 0);
-    --ring: oklch(0.61 0.21 340);
+    --ring: oklch(0.67 0.22 0);
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);
     --chart-3: oklch(0.439 0 0);
@@ -81,6 +85,8 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+    --label-text: #7A7591;
+    --bg-principal: #F7F7FB;
 }
 
 .dark {
@@ -127,4 +133,8 @@
   html {
     @apply font-sans;
     }
+}
+
+@utility bg-sich-gradient {
+  @apply bg-linear-to-br from-primary to-secondary;
 }
