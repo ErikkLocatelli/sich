@@ -2,6 +2,8 @@ import { useRoutes } from "react-router-dom"
 
 import Home from '../pages/Home'
 import Login from '../pages/Login/Login'
+import Register from "@/pages/Login/Register"
+import NotFound from "../components/commons/NotFound"
 
 const Routes = () => {
 
@@ -15,8 +17,12 @@ const Routes = () => {
             element: <Login />
         }, 
         {
+            path: '/register',
+            element: <Register />
+        },
+        {
             path: '*',
-            element: <div>404 - Página não encontrada</div> //substitua pelo componente de página 404, quando tiver
+            element: <NotFound />
         }
     ])
     

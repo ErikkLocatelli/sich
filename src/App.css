@@ -138,3 +138,48 @@
 @utility bg-sich-gradient {
   @apply bg-linear-to-br from-primary to-secondary;
 }
+
+.animateDown {
+  animation: animateDown 0.25s ease-out forwards;
+}
+
+.animateLeft {
+  animation: animateLeft .25s ease-out forwards;
+}
+
+.animateRight {
+  animation: animateRight .25s ease-out forwards;
+}
+
+@keyframes animateDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+  @keyframes animateLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(8px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes animateRight {
+    0% {
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }

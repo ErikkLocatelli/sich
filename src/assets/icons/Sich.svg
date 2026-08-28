@@ -1,0 +1,47 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Ícone SICH</title>
+  <desc>Ícone de app da marca SICH: monograma em forma de S estilizado como flor, branco sobre fundo em gradiente rosa e magenta, com sparkles decorativos</desc>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&amp;display=swap');
+    </style>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color: var(--primary, #F45C8C)"/>
+      <stop offset="100%" style="stop-color: var(--secondary, #B8236E)"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color: color-mix(in oklch, var(--primary, #F45C8C) 35%, white)"/>
+      <stop offset="100%" style="stop-color: color-mix(in oklch, var(--primary, #FF9CBE) 70%, white)"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="512" height="512" rx="132" fill="url(#g1)"/>
+
+  <!-- soft background texture: faint petal echoes -->
+  <circle cx="256" cy="256" r="196" fill="none" stroke="#FFFFFF" stroke-opacity="0.10" stroke-width="10"/>
+  <circle cx="256" cy="256" r="228" fill="none" stroke="#FFFFFF" stroke-opacity="0.06" stroke-width="6"/>
+
+  <!-- four petals forming a flower, negative space in the middle traces an S curve -->
+  <g transform="translate(256,256)">
+    <path d="M0,-150 C58,-92 58,-28 0,0 C-58,-28 -58,-92 0,-150 Z" fill="#FFFFFF"/>
+    <path d="M0,150 C58,92 58,28 0,0 C-58,28 -58,92 0,150 Z" fill="#FFFFFF"/>
+    <path d="M-150,0 C-92,-58 -28,-58 0,0 C-28,58 -92,58 -150,0 Z" fill="#FFFFFF"/>
+    <path d="M150,0 C92,-58 28,-58 0,0 C28,58 92,58 150,0 Z" fill="#FFFFFF"/>
+
+    <!-- the S: a bold flowing stroke laid over the petals, in the brand pink -->
+    
+
+    
+  </g>
+
+  <!-- decorative sparkles -->
+  <g transform="translate(388,124) scale(1.4)">
+    <path d="M0,-20 L6,-6 L20,0 L6,6 L0,20 L-6,6 L-20,0 L-6,-6 Z" fill="#FFFFFF"/>
+  </g>
+  <g transform="translate(120,392) scale(0.9)">
+    <path d="M0,-20 L6,-6 L20,0 L6,6 L0,20 L-6,6 L-20,0 L-6,-6 Z" fill="#FFFFFF" opacity="0.85"/>
+  </g>
+  <g transform="translate(96,120) scale(0.6)">
+    <path d="M0,-20 L6,-6 L20,0 L6,6 L0,20 L-6,6 L-20,0 L-6,-6 Z" fill="#FFFFFF" opacity="0.7"/>
+  </g>
+</svg>

@@ -1,10 +1,8 @@
 import './App.css'
 
 import { BrowserRouter } from "react-router-dom"
-import Routes from './services/routes'
+import Routes from './routes/routes'
 
-// import { Button } from './components/ui/button'
-// import { Rocket, Sparkles } from "lucide-react"
 
 function App() {
 
@@ -12,9 +10,9 @@ function App() {
     <BrowserRouter>
       <div className="flex flex-col min-h-screen bg-(--bg-principal)">
         <header></header>
-         <main className="flex flex-col flex-1">
-            <Routes />
-          </main>
+        <main className="flex flex-col flex-1">
+          <Routes />
+        </main>
         <footer></footer>
       </div>
     </BrowserRouter>
