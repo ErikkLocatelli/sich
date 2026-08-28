@@ -39,7 +39,7 @@ const Login = () => {
             <InputPassword field={password} link={true}/>
           </div>
           
-          <Button className="mt-6 bg-sich-gradient py-5 rounded-[16px]" type="submit">
+          <Button className="mt-6 bg-sich-gradient py-5.5 rounded-[16px]" type="submit">
             <Link className="text-white" to="/">Entrar</Link>
           </Button>
        </form>

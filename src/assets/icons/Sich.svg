@@ -1,6 +1,6 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img">
   <title>Ícone SICH</title>
-  <desc>Ícone de app da marca SICH: monograma em forma de S estilizado como flor, branco sobre fundo em gradiente rosa e magenta, com sparkles decorativos</desc>
+  <desc>Ícone da marca SICH: monograma em forma de flor, branco e transparente, com sparkles decorativos</desc>
   <defs>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&amp;display=swap');
@@ -14,8 +14,6 @@
       <stop offset="100%" style="stop-color: color-mix(in oklch, var(--primary, #FF9CBE) 70%, white)"/>
     </linearGradient>
   </defs>
-
-  <rect x="0" y="0" width="512" height="512" rx="132" fill="url(#g1)"/>
 
   <!-- soft background texture: faint petal echoes -->
   <circle cx="256" cy="256" r="196" fill="none" stroke="#FFFFFF" stroke-opacity="0.10" stroke-width="10"/>

@@ -91,7 +91,7 @@ const Register = () => {
             </FieldGroup>
           </Field>
 
-          <Button className="mt-6 bg-sich-gradient py-5 rounded-[16px] w-full" type="submit">
+          <Button className="mt-6 bg-sich-gradient py-6 rounded-[16px] w-full" type="submit">
             <Link className="text-white" to="/">Criar conta</Link>
           </Button>
         </form>
