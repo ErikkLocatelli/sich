@@ -12,20 +12,19 @@ const useFetch = () => {
     try {
       const response = await fetch(url, options)
 
-      if (!response.ok) {
-        const errorBody = await response.json().catch(() => null)
-        throw new Error(errorBody?.message || `Erro: ${response.status}`)
-      }
-
       const json = response.status === 204 ? null : await response.json().catch(() => null)
 
       setData(json ?? [])
-      return json
+      if (!response.ok) {
+        throw new Error(json?.message || `Erro: ${response.status}`)
+      }
+
+      return { response, json }
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Erro desconhecido'
       setError(message)
       setData([])
-      return null
+      return { response: null, json: null }
     } finally {
       setLoading(false)
     }

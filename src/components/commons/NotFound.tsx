@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom'
 
-// import NotFoundSvg from '../../assets/svgs/notFound.svg?react'
-// import Ballon from '../../assets/svgs/ballon.svg?react'
 import Door from '../../assets/svgs/door.svg?react'
 
 import {Button} from "@/components/ui/button"

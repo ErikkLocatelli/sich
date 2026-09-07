@@ -8,10 +8,10 @@ const ArrowBack = () => {
     <button
       type="button"
       onClick={() => navigate(-1)}
-      className="size-10 rounded-full bg-[#F0F0F5] flex items-center justify-center cursor-pointer"
+      className="flex size-10 cursor-pointer items-center justify-center rounded-full bg-[#f0f0f5]"
       aria-label="Voltar"
     >
-      <MoveLeft className="size-4" />
+      <MoveLeft className="size-4.5 text-black" />
     </button>
   )
 }

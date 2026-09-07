@@ -6,7 +6,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "../../components/u
 
 import Error from "../commons/Error"
 
-interface InputProps {
+export interface InputProps {
   label?: string;
   id?: string;
   placeholder?: string;
@@ -23,10 +23,10 @@ const Input = ({label, id, placeholder, value, onChange, onBlur, error, icon: Ic
   return (
     <Field className="flex flex-col gap-1">
       <FieldLabel className="text-[11px]" htmlFor={id}>{label}</FieldLabel>
-      <InputGroup className="py-5 px-2 bg-background" data-invalid={!!error}>
-      <InputGroupInput className="placeholder:text-[11px] text-[11px]" placeholder={placeholder} value={value} onChange={onChange} onBlur={onBlur} aria-invalid={!!error} type={type || "text"}/>
+        <InputGroup className="h-[51px] rounded-[16px] border-sich-border bg-white px-2" data-invalid={!!error}>
+        <InputGroupInput className="h-full rounded-none border-0 bg-transparent px-2.5 py-0 text-[11px] placeholder:text-[11px] autofill-fix" placeholder={placeholder} value={value} onChange={onChange} onBlur={onBlur} aria-invalid={!!error} type={type || "text"}/>
       <InputGroupAddon>
-          {Icon && <Icon />}
+          {Icon && <Icon className="size-4" />}
       </InputGroupAddon>
       </InputGroup>
       {error && <Error message={error} className='animateDown' />}

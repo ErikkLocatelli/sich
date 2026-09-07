@@ -13,7 +13,7 @@ const types = {
         message: "A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um número e um caractere especial"
     }, 
     phone: {
-        regex: /^\(?\d{2}\)?[\s-]?[\s9]?\d{4}-?\d{4}$/,
+        regex: /^\(\d{2}\) 9\d{4}-\d{4}$/,
         message: "Preencha um número de telefone válido"
     }
 }

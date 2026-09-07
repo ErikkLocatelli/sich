@@ -2,10 +2,10 @@ import Sich from '../../assets/icons/sich.svg?react'
 
 const SichBadge = () => {
   return (
-    <div className="bg-sich-gradient w-full h-65 rounded-b-[36px] flex items-center justify-center flex-col gap-1.5 shadow-2xl">
+    <div className="relative flex h-[260px] w-full shrink-0 flex-col items-center justify-center gap-1.5 overflow-hidden rounded-b-[32px] bg-sich-gradient shadow-[0_10px_15px_rgba(214,51,132,0.15)]">
         <Sich className="size-16 rounded-[20px] flex items-center justify-center" />
-        <h1 className='text-white text-2xl font-bold'>SICH</h1>
-        <span className='text-white text-[11px]'>Beleza a domicílio sob medida</span>
+      <h1 className='text-[26px] font-bold text-white'>SICH</h1>
+      <span className='text-[11px] text-white/90'>Beleza a domicilio sob medida</span>
     </div>
   )
 }
