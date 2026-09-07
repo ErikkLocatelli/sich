@@ -106,6 +106,12 @@
     --sich-gradient-end: #c8307a;
 }
 
+  @media (min-width: 64rem) {
+    :root {
+      --sich-surface: #eef0f5;
+    }
+  }
+
 .dark {
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
