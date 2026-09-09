@@ -9,8 +9,8 @@ const types = {
         message: "Utilize apenas números"
     }, 
     password: {
-        regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        message: "A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um número e um caractere especial"
+        regex: /^.{8,}$/,
+        message: "Use pelo menos 8 caracteres. Recomendamos uma frase longa e fácil de lembrar"
     }, 
     phone: {
         regex: /^\(\d{2}\) 9\d{4}-\d{4}$/,

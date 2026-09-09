@@ -97,7 +97,7 @@
     --sidebar-ring: oklch(0.708 0 0);
     --label-text: #7A7591;
     --bg-principal: #F7F7FB;
-    --sich-surface: #f7f7fb;
+    --sich-surface: #f6f6f6;
     --sich-border: #ececf2;
     --sich-heading: #1c1830;
     --sich-label: #7a7591;
@@ -105,12 +105,6 @@
     --sich-gradient-start: #ff5a8a;
     --sich-gradient-end: #c8307a;
 }
-
-  @media (min-width: 64rem) {
-    :root {
-      --sich-surface: #eef0f5;
-    }
-  }
 
 .dark {
     --background: oklch(0.145 0 0);

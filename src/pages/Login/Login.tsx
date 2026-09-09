@@ -55,9 +55,9 @@ const Login = () => {
     ${previousRoute === '/register' ? 'animateRight' : ''}`}>
       <div className="flex flex-col">
         <SichBadge/>
-        <div className="flex flex-col mt-8 px-6 lg:text-center">
+        <div className="flex flex-col mt-8 px-6">
           <Title text="Bem-vinda de volta" />
-          <span className="text-sich-label text-[11px] lg:text-[14px]">Entre para acessar seus agendamentos e benefícios.</span>
+          <span className="text-sich-label text-[11px] lg:text-[14px] lg:text-center">Entre para acessar seus agendamentos e benefícios.</span>
           
           <form className="flex flex-col lg:w-110" onSubmit={onSubmit}>
             <div className="flex-col flex gap-2.5 lg:gap-6 mt-6 lg:mt-10">
