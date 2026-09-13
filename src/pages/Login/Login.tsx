@@ -6,7 +6,7 @@ import useHead from '../../hooks/useHead'
 import useFetch from '../../hooks/useFetch'
 import { validateFields } from '../../services/validateFields'
 
-import {LOGIN_POST } from '../../api/user/user'
+import { LOGIN_POST } from '../../api/user/user'
 
 import { Button } from '../../components/ui/button'
 
@@ -21,11 +21,10 @@ import SvgLogin from '../../assets/svgs/SvgLogin.svg?react'
 import { Mail } from 'lucide-react'
 
 const Login = () => {
-
   const email = useForm({ type: 'email', required: true })
   const password = useForm({ type: 'password', required: true })
 
-  const { data, error, loading, request } = useFetch() 
+  const { error, loading, request } = useFetch() 
 
   const previousRoute = usePreviousRoute();
   const navigate = useNavigate();
@@ -45,9 +44,14 @@ const Login = () => {
     if(isValid) {
        const { url, options } = LOGIN_POST({ email: email.value, password: password.value })
        const { response, json } = await request(url, options)
-       console.log(response, json, data)
+       
+       if(response?.ok) {
+        window.localStorage.setItem("token", json.token)
+        
+        navigate("/")
     }
   }
+}
 
   return (
     <div className={`flex w-full min-h-dvh flex-col lg:justify-center lg:items-center lg:flex-row lg:gap-25 overflow-hidden bg-sich-surface shadow-sich-card

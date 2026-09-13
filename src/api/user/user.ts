@@ -9,9 +9,21 @@ export type RegisterBody = {
   name: string
   email: string
   phone: string
+  city: string
   cnpjCpf?: string
   password: string
   userType: "CUSTOMER" | "PROVIDER"
+}
+
+export const GET_USER = (token: string) => {
+    return {
+        url: API_URL + "/auth/me",
+        options: {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+    }
 }
 
 export const LOGIN_POST = (body: LoginBody) => {
