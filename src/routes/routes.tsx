@@ -1,5 +1,7 @@
 import { useRoutes } from "react-router-dom"
 
+import ProtectedRoute from "./ProtectedRoute"
+
 import Home from '../pages/Home'
 import Login from '../pages/Login/Login'
 import Register from "@/pages/Login/Register"
@@ -9,9 +11,14 @@ const Routes = () => {
 
     const outlet = useRoutes([
         {
-            path: '/',
-            element: <Home />
-        },
+            element: <ProtectedRoute />,
+            children: [
+                {
+                    path: '/',
+                    element: <Home />
+                }
+            ]
+        }, 
         {
             path: '/login',
             element: <Login />
