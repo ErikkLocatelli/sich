@@ -21,6 +21,8 @@ interface SelectProps<T> {
   error?: string | null
   icon?: LucideIcon
   defaultValue?: string
+  value?: string
+  onValueChange?: (value: string) => void
   disabled?: boolean
   getKey: (item: T) => string
   getValue: (item: T) => string
@@ -35,6 +37,8 @@ function Select<T>({
   insideLabel,
   icon: Icon,
   defaultValue,
+  value,
+  onValueChange,
   disabled,
   getKey,
   getValue,
@@ -45,7 +49,12 @@ function Select<T>({
       <FieldLabel className="text-[11px]" htmlFor={id}>
         {label}
       </FieldLabel>
-      <SelectComponent defaultValue={defaultValue} disabled={disabled}>
+      <SelectComponent
+        defaultValue={defaultValue}
+        value={value}
+        onValueChange={(nextValue) => onValueChange?.(nextValue ?? "")}
+        disabled={disabled}
+      >
         <SelectTrigger
           id={id}
           className="w-full h-300 rounded-[16px] border-sich-border bg-white px-2 py-6 text-[11px] cursor-pointer" 

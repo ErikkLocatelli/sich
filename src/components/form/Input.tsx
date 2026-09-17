@@ -10,9 +10,9 @@ export interface InputProps {
   label?: string;
   id?: string;
   placeholder?: string;
-  value: string;
+  value?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
-  onBlur: FocusEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
   error?: string | null;
   icon?:  LucideIcon;
   type?: string;

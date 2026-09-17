@@ -25,6 +25,8 @@ import { Mail, User, Phone, Building2, Lock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 
+import SvgCreate from "../../assets/svgs/Create.svg?react"
+
 const Register = () => {
 
   usePreviousRoute()
@@ -34,6 +36,7 @@ const Register = () => {
   const name = useForm({ required: true })
   const phone = useForm({ type: 'phone', required: true })
   const password = useForm({ type: 'password', required: true })
+  const city = useForm({ required: true })
   const passwordConfirm = useForm({required: true, validator: (value) => value === password.value || "As senhas não coincidem" })
   const terms = useForm({ isCheckbox: true, required: true })
 
@@ -43,6 +46,7 @@ const Register = () => {
     !!name.value &&
     !!email.value &&
     !!phone.value &&
+    !!city.value &&
     !!password.value &&
     !!passwordConfirm.value &&
     password.value === passwordConfirm.value &&
@@ -50,16 +54,19 @@ const Register = () => {
     !name.error &&
     !email.error &&
     !phone.error &&
+    !city.error &&
     !password.error &&
     !passwordConfirm.error
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    const isValid = await validateFields({ email, name, phone, password, passwordConfirm, terms })
+    const isValid = await validateFields({ email, name, phone, city, password, passwordConfirm, terms })
+
+    console.log(isValid, name.value, email.value, phone.value, city.value, password.value, passwordConfirm.value, terms.value)
 
     if (isValid) {
-      const { url, options } = REGISTER_POST({ name: name.value, email: email.value, phone: phone.value, password: password.value, userType: "CUSTOMER" })
+      const { url, options } = REGISTER_POST({ name: name.value, email: email.value, phone: phone.value.replace(/\D/g, ''), city: city.value, password: password.value, userType: "CUSTOMER" })
       const { response, json } = await request(url, options)
       
       if(response?.ok) {
@@ -69,31 +76,40 @@ const Register = () => {
   }
   
   return (
-    <div className="w-full min-w-0 min-h-dvh max-w-full rounded-[36px] bg-[#f7f7fb] shadow-sich-card animateLeft">
-      <div className="flex h-25 w-full items-center gap-3 bg-white px-5">
+    <div className="relative flex w-full min-h-dvh min-w-0 max-w-full flex-col overflow-hidden bg-sich-surface shadow-sich-card lg:flex-row lg:items-center lg:justify-center lg:gap-25 animateLeft">
+      <div className="hidden lg:block lg:absolute lg:left-10 lg:top-10">
         <ArrowBack />
-        <Title text="Criar conta" />
       </div>
 
-      <div className="flex flex-col px-6">
-        <p className="mt-5.5 text-[11px] text-(--label-text)">Junte-se à SICH e ganhe <LabelLink label="R$ 10" className="font-bold" /> no primeiro agendamento.</p>
+      <div className="flex flex-col lg:w-110">
+        <div className="flex h-25 w-full items-center gap-3 bg-white px-5 lg:hidden">
+        <ArrowBack />
+        <Title text="Criar conta" />
+        </div>
+
+      <div className="flex flex-col px-6 lg:px-0">
+        <h1 className="hidden text-center text-[32px] font-semibold text-sich-heading lg:block">
+          Crie sua conta. <span className="text-sich-magenta">É grátis!</span>
+        </h1>
+        <p className="mt-5.5 text-[11px] text-(--label-text) lg:mt-1 lg:text-center lg:text-[14px]">Junte-se à SICH e ganhe <LabelLink label="R$ 10" className="font-bold" /> no primeiro agendamento.</p>
+        
         <form onSubmit={handleSubmit}>
           <Field className="mt-3.5 flex flex-col gap-2.5">
             <Input label="Nome Completo" placeholder="Nome Sobrenome" value={name.value} onChange={name.onChange} onBlur={name.onBlur} error={name.error} icon={User} />
             
             <Input label="Email" placeholder="email@exemplo.com" value={email.value} onChange={email.onChange} onBlur={email.onBlur} error={email.error} icon={Mail} />
             
-            <div className="flex flex-row gap-2.5">
+            <div className="flex flex-row gap-2.5 lg:gap-4">
               <PhoneInput label="Telefone" placeholder="(99) 99999-9999" type="tel" value={phone.value} onChange={phone.setValue} onBlur={phone.onBlur} error={phone.error} icon={Phone} />
               
-              <Select label="Cidade" id="city" data={cities} placeholder="Selecione uma cidade" insideLabel="Cidades" icon={Building2} getKey={(item) => item.name} getValue={(item) => item.name} getLabel={(item) => item.name} />
+              <Select label="Cidade" id="city" data={cities} placeholder="Selecione uma cidade" insideLabel="Cidades" icon={Building2} value={city.value} onValueChange={city.setValue} error={city.error} getKey={(item) => item.name} getValue={(item) => item.name} getLabel={(item) => item.name} />
             </div>
             
             <Input label={"Senha"} type="password" placeholder="Crie uma senha" value={password.value} onChange={password.onChange} onBlur={password.onBlur} error={password.error} icon={Lock} />
 
             <InputPassword field={passwordConfirm} placeholder="Confirme sua senha" label="Confirmar Senha" />
 
-            <FieldGroup className="flex flex-row gap-2 mt-4">
+            <FieldGroup className="mt-2 flex flex-row gap-2">
               <Checkbox id="terms" checked={terms.value === 'true'} onCheckedChange={(checked) => terms.setValue(String(checked === true))} />
               <label className="text-[11px] text-(--label-text)" htmlFor='terms'>
                 Concordo com os <LabelLink label="Termos" className="font-bold" /> e a <LabelLink label="Política de privacidade" className="font-bold"/>.
@@ -108,7 +124,12 @@ const Register = () => {
           {error && <Error message={error} className="mt-4 animateDown" />}
         </form>
 
-        <p className="m-auto mt-4 text-[12px] text-(--label-text)">Já tem conta? <LabelLink label="Entrar" href="/login" className="text-[12px] font-semibold" /></p>
+        <p className="m-auto mt-4 text-[12px] text-(--label-text) ">Já tem conta? <LabelLink label="Entrar" href="/login" className="text-[12px] font-semibold" /></p>
+      </div>
+      </div>
+
+      <div className="hidden lg:block lg:h-126.5 lg:w-132.75">
+        <SvgCreate className="size-full" />
       </div>
     </div>
   )

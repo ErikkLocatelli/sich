@@ -18,6 +18,7 @@ import Title from '../../components/commons/Title'
 import Error from '../../components/commons/Error'
 
 import SvgLogin from '../../assets/svgs/SvgLogin.svg?react'
+import Sich from '../../assets/icons/sich.svg?react'
 import { Mail } from 'lucide-react'
 
 const Login = () => {
@@ -58,7 +59,11 @@ const Login = () => {
     
     ${previousRoute === '/register' ? 'animateRight' : ''}`}>
       <div className="flex flex-col">
-        <SichBadge/>
+        <SichBadge className="items-center justify-center gap-1.5">
+          <Sich className="size-16 rounded-[20px] flex items-center justify-center" />
+          <h1 className='text-[26px] font-bold text-white'>SICH</h1>
+          <span className='text-[11px] text-white/90'>Beleza a domicilio sob medida</span>
+        </SichBadge>
         <div className="flex flex-col mt-8 px-6">
           <Title text="Bem-vinda de volta" />
           <span className="text-sich-label text-[11px] lg:text-[14px] lg:text-center">Entre para acessar seus agendamentos e benefícios.</span>
