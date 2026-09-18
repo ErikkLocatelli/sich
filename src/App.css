@@ -21,6 +21,7 @@
   --color-sich-gradient-start: var(--sich-gradient-start);
   --color-sich-gradient-end: var(--sich-gradient-end);
   --shadow-sich-card: 0 30px 60px rgba(20, 20, 60, 0.18);
+  --shadow-sich-small-card: 0 4px 7px rgba(20, 20, 60, 0.06);
   --shadow-sich-button: 0 10px 15px rgba(214, 51, 132, 0.15);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
