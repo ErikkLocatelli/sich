@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 .env
+
+# Sprint reports
+resumos-sprints/
