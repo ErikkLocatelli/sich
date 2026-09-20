@@ -19,28 +19,33 @@ export const UserStorage = ({ children }: { children: ReactNode }) => {
         setData(null)
         setLogin(false)
         window.localStorage.removeItem("token")
-        navigate("/login")
+        navigate("/login", { replace: true })
     }, [navigate])
 
     useEffect(() => {
+        if (login) return
+
         const autoLogin = async () => {
             const token = window.localStorage.getItem("token")
-            if (token) {
-                const { url, options } = GET_USER(token)
-                const { json, response } = await request(url, options)
-                if (response?.ok) {
-                    setData(json)
-                    setLogin(true)
+            if (!token) return
 
-                    navigate("/")
-                } else {
-                    userLogout()
+            const { url, options } = GET_USER(token)
+            const { json, response } = await request(url, options)
+
+            if (response?.ok) {
+                setData(json)
+                setLogin(true)
+
+                if (window.location.pathname === "/login" || window.location.pathname === "/register") {
+                    navigate("/", { replace: true })
                 }
+            } else {
+                userLogout()
             }
         }
 
         autoLogin()
-    }, [request, userLogout, navigate])
+    }, [login, request, userLogout, navigate])
     
     return (
         <userContext.Provider value={{login, data, userLogout}}>
