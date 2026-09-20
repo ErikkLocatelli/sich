@@ -16,6 +16,22 @@ const Routes = () => {
                 {
                     path: '/',
                     element: <Home />
+                }, 
+                {
+                    path: '/search',
+                    element: <div>Search</div>
+                }, 
+                {
+                    path: '/schedule',
+                    element: <div>Schedule</div>
+                }, 
+                {
+                    path: '/profile',
+                    element: <div>Profile</div>
+                }, 
+                {
+                    path: '/benefits',
+                    element: <div>Benefits</div>
                 }
             ]
         }, 
