@@ -11,6 +11,7 @@ const ProtectedRoute = () => {
 
     return ( 
         <>
+        // This pb is to prevent the mobile nav from overlapping the content
         <div className="pb-18">
             <Outlet />
         </div>
