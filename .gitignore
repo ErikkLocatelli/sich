@@ -27,3 +27,4 @@ dist-ssr
 
 # Sprint reports
 resumos-sprints/
+package-lock.json
