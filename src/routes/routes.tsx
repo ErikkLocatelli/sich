@@ -3,8 +3,12 @@ import { useRoutes } from "react-router-dom"
 import ProtectedRoute from "./ProtectedRoute"
 
 import Home from '../pages/Home'
+import Benefits from '../pages/Benefits'
+import Search from '../pages/Search'
+
 import Login from '../pages/Login/Login'
-import Register from "@/pages/Login/Register"
+import Register from "../pages/Login/Register"
+
 import NotFound from "../components/commons/NotFound"
 
 const Routes = () => {
@@ -19,7 +23,7 @@ const Routes = () => {
                 }, 
                 {
                     path: '/search',
-                    element: <div>Search</div>
+                    element: <Search />
                 }, 
                 {
                     path: '/schedule',
@@ -31,7 +35,7 @@ const Routes = () => {
                 }, 
                 {
                     path: '/benefits',
-                    element: <div>Benefits</div>
+                    element: <Benefits />
                 }
             ]
         }, 
