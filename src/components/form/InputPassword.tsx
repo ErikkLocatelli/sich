@@ -22,7 +22,7 @@ const InputPassword = ({ field, placeholder, link, label }: InputPasswordProps) 
   return (
     <Field className="flex flex-col gap-1">
       <FieldLabel className="text-[11px]" htmlFor="password">{label || "Senha"}</FieldLabel>
-      <InputGroup className="h-[51px] rounded-[16px] border-sich-border bg-white px-2" data-invalid={!!field.error}>
+      <InputGroup className="h-10 rounded-[16px] border-sich-border bg-white px-2" data-invalid={!!field.error}>
         <InputGroupAddon>
           <Lock className="size-4" />
         </InputGroupAddon>

@@ -57,7 +57,7 @@ function Select<T>({
       >
         <SelectTrigger
           id={id}
-          className="w-full h-300 rounded-[16px] border-sich-border bg-white px-2 py-6 text-[11px] cursor-pointer" 
+          className="w-full rounded-[16px] border-sich-border bg-white px-2 py-4.75 text-[11px] cursor-pointer" 
         >
           {Icon && <Icon className="size-4" />}
           <SelectValue placeholder={placeholder} className="text-[11px]" />
