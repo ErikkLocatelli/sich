@@ -5,15 +5,29 @@ export type LoginBody = {
   password: string
 }
 
-export type RegisterBody = {
+type BaseRegisterBody = {
   name: string
   email: string
   phone: string
   city: string
-  cnpjCpf?: string
   password: string
-  userType: "CUSTOMER" | "PROVIDER"
 }
+
+export type CustomerRegisterBody = BaseRegisterBody & {
+  userType: "CUSTOMER"
+}
+
+export type ProfessionalRegisterBody = BaseRegisterBody & {
+  cep: string
+  state: string
+  street: string
+  numberAdress: string
+  cnpjCpf: string
+  userType: "PROVIDER"
+}
+
+export type RegisterBody =  CustomerRegisterBody | ProfessionalRegisterBody
+
 
 export const GET_USER = (token: string) => {
     return {
