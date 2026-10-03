@@ -3,13 +3,17 @@ import { useState } from "react"
 import { Toggle } from "@/components/ui/toggle"
 import { cn } from "@/lib/utils"
 
-type SlideToggleIndex = 0 | 1
-
 interface SlideToggleOption {
   children?: React.ReactNode
   "aria-label"?: string
   disabled?: boolean
 }
+
+type SlideToggleOptions = readonly [
+  SlideToggleOption,
+  SlideToggleOption,
+  ...SlideToggleOption[],
+]
 
 interface SlideToggleProps
   extends Omit<
@@ -21,15 +25,15 @@ interface SlideToggleProps
     | "onPressedChange"
     | "disabled"
   > {
-  options?: readonly [SlideToggleOption, SlideToggleOption]
-  selectedIndex?: SlideToggleIndex
-  defaultSelectedIndex?: SlideToggleIndex
-  onSelectedIndexChange?: (index: SlideToggleIndex) => void
+  options?: SlideToggleOptions
+  selectedIndex?: number
+  defaultSelectedIndex?: number
+  onSelectedIndexChange?: (index: number) => void
   disabled?: boolean
   className?: string
 }
 
-const defaultOptions: readonly [SlideToggleOption, SlideToggleOption] = [{}, {}]
+const defaultOptions: SlideToggleOptions = [{}, {}]
 
 function SlideToggle({
   className,
@@ -40,12 +44,12 @@ function SlideToggle({
   disabled = false,
   ...props
 }: SlideToggleProps) {
-  const [internalSelectedIndex, setInternalSelectedIndex] = useState<SlideToggleIndex>(
+  const [internalSelectedIndex, setInternalSelectedIndex] = useState(
     defaultSelectedIndex
   )
   const activeIndex = selectedIndex ?? internalSelectedIndex
 
-  const selectIndex = (index: SlideToggleIndex) => {
+  const selectIndex = (index: number) => {
     if (index === activeIndex || disabled || options[index].disabled) {
       return
     }
@@ -65,28 +69,36 @@ function SlideToggle({
       pressed={activeIndex === 1}
       disabled={disabled}
       onPressedChange={(pressed) => selectIndex(pressed ? 1 : 0)}
+      style={
+        {
+          "--slide-option-count": options.length,
+          "--slide-active-index": activeIndex,
+        } as React.CSSProperties
+      }
       className={cn(
-        "relative flex h-9 w-full items-center gap-1 overflow-hidden rounded-xl bg-[#e4e6ea] p-1 text-sm font-medium text-[#6b7280] hover:bg-[#e4e6ea] hover:text-[#6b7280] aria-pressed:bg-[#e4e6ea] aria-pressed:text-[#6b7280] aria-pressed:hover:bg-[#e4e6ea] data-pressed:bg-[#e4e6ea] data-pressed:text-[#6b7280] hover:cursor-pointer",
+        "relative flex h-9 w-full items-center gap-1 overflow-hidden rounded-lg bg-[#e4e6ea] p-1 text-[12px] font-medium text-[#6b7280] hover:text-[#6b7280] aria-pressed:bg-[#e4e6ea] aria-pressed:text-[#6b7280] data-pressed:bg-[#e4e6ea] data-pressed:text-[#6b7280] hover:cursor-pointer",
         className
       )}
     >
       <span
         aria-hidden="true"
         className={cn(
-          "pointer-events-none absolute inset-y-1 left-1 w-[calc(50%_-_0.375rem)] rounded-lg bg-gradient-to-r from-[#ff5a8a] to-[#c8307a] shadow-[0_1px_1.5px_rgba(0,0,0,0.06)] transition-transform duration-200 ease-out",
-          activeIndex === 1 && "translate-x-[calc(100%+0.25rem)]"
+          "pointer-events-none absolute inset-y-1 left-1 w-[calc((100%_-_0.5rem_-_(var(--slide-option-count)_-_1)_*_0.25rem)_/_var(--slide-option-count))] rounded-lg bg-gradient-to-r from-[#ff5a8a] to-[#c8307a] shadow-[0_1px_1.5px_rgba(0,0,0,0.06)] transition-transform duration-200 ease-out translate-x-[calc(var(--slide-active-index)_*_(100%_+_0.25rem))]"
         )}
       />
       {options.map((option, index) => {
-        const optionIndex = index as SlideToggleIndex
-
         return (
           <span
-            key={optionIndex}
+            key={index}
             aria-hidden="true"
+            onClick={(event) => {
+              event.stopPropagation()
+              selectIndex(index)
+            }}
             className={cn(
               "relative z-10 flex h-full min-w-0 flex-1 items-center justify-center px-2.5 text-center transition-colors duration-200",
-              activeIndex === optionIndex && "text-white"
+              activeIndex === index && "text-white",
+              option.disabled && "cursor-not-allowed opacity-50"
             )}
           >
             {option.children}
