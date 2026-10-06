@@ -1,8 +1,9 @@
 import { NavLink } from 'react-router-dom'
-import type { LucideIcon } from 'lucide-react'
 import { Button } from '../ui/button'
 
-const MobileNavItem = ({ to, icon: Icon, label }: { to: string; icon: LucideIcon; label: string }) => {
+type NavIcon = React.ElementType<{ className?: string }>
+
+const MobileNavItem = ({ to, icon: Icon, label }: { to: string; icon: NavIcon; label: string }) => {
   return (
     <NavLink
         to={to}

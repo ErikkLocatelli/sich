@@ -1,30 +1,22 @@
-import { useContext } from 'react'
+import type { UserData } from '@/models/userData'
 
-import { userContext } from '../services/userContext'
-import useHead from '../hooks/useHead'
+import SichBadge from '../../components/commons/SichBadge'
+import Title from '../../components/commons/Title'
+import UserInfoCard from '../../components/commons/UserInfoCard'
+import NotificationBell from '../../components/commons/NotificationBell'
+import MobileLink from '../../components/commons/MobileLink'
+import ServiceInfoCard from '../../components/commons/ServiceInfoCard'
+import PromoCard from '../../components/commons/PromoCard'
+import ProfessionalInfoCard from '../../components/commons/ProfessionalInfoCard'
+import Input from '../../components/form/Input'
 
-import SichBadge from '../components/commons/SichBadge'
-import Title from '../components/commons/Title'
-import UserInfoCard from '../components/commons/UserInfoCard'
-import NotificationBell from '../components/commons/NotificationBell'
-import MobileLink from '../components/commons/MobileLink'
-import ServiceInfoCard from '../components/commons/ServiceInfoCard'
-import PromoCard from '../components/commons/PromoCard'
-import ProfessionalInfoCard from '../components/commons/ProfessionalInfoCard'
-import Input from '../components/form/Input'
+import { UserRoundSearch, Handshake, HandCoins } from 'lucide-react';
 
-import { UserRoundSearch } from 'lucide-react';
-import { HandCoins } from 'lucide-react';
-import { Handshake } from 'lucide-react';
-
-const Home = () => {
-  useHead("Página Inicial", "Acesse seus agendamentos e benefícios na SICH")
-
-  const { data } = useContext(userContext)
+const HomeCustomer = ({data}: {data: UserData}) => {
 
   return (
     <div className="w-full min-h-dvh">
-      <SichBadge className="px-6 flex flex-col gap-4 py-4">
+      <SichBadge className="px-6 flex flex-col gap-4 py-8">
         <div className="flex items-center justify-between gap-2">
           <div>
             <span className="text-[11px] text-white/80">{data?.city} · {data?.state}</span>
@@ -73,4 +65,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default HomeCustomer

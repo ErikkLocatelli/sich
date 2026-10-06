@@ -1,4 +1,4 @@
-import type { UseFormReturn } from "../hooks/useForm"
+import type { UseFormReturn } from "../../hooks/useForm"
 
 type FieldsMap = Record<string, UseFormReturn>
 

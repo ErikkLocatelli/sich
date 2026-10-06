@@ -4,7 +4,7 @@ import useForm from '../../hooks/useForm'
 import usePreviousRoute from '../../hooks/usePreviousRoute'
 import useHead from '../../hooks/useHead'
 import useFetch from '../../hooks/useFetch'
-import { validateFields } from '../../services/validateFields'
+import { validateFields } from '../../services/validators/validateFields'
 
 import { LOGIN_POST } from '../../api/user/user'
 
@@ -45,7 +45,7 @@ const Login = () => {
     if(isValid) {
        const { url, options } = LOGIN_POST({ email: email.value, password: password.value })
        const { response, json } = await request(url, options)
-       
+
        if(response?.ok) {
         window.localStorage.setItem("token", json.token)
         
@@ -59,7 +59,7 @@ const Login = () => {
     
     ${previousRoute === '/register' ? 'animateRight' : ''}`}>
       <div className="flex flex-col">
-        <SichBadge className="items-center justify-center gap-1.5">
+        <SichBadge className="items-center justify-center gap-2 py-8">
           <Sich className="size-16 rounded-[20px] flex items-center justify-center" />
           <h1 className='text-[26px] font-bold text-white'>SICH</h1>
           <span className='text-[11px] text-white/90'>Beleza a domicilio sob medida</span>
@@ -70,7 +70,7 @@ const Login = () => {
           
           <form className="flex flex-col lg:w-110" onSubmit={onSubmit}>
             <div className="flex-col flex gap-2.5 lg:gap-6 mt-6 lg:mt-10">
-              <Input label="Email" placeholder="email@exemplo.com" value={email.value} onChange={email.onChange} onBlur={email.onBlur} error={email.error} icon={Mail} />
+              <Input label="Email" placeholder="email@email.com" value={email.value} onChange={email.onChange} onBlur={email.onBlur} error={email.error} icon={Mail} />
         
               <InputPassword field={password} link={true}/>
             </div>

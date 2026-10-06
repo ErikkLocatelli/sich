@@ -11,6 +11,7 @@ import { userContext } from "../services/userContext"
 export const UserStorage = ({ children }: { children: ReactNode }) => {
     
     const [login, setLogin] = useState(false)
+    const [authReady, setAuthReady] = useState(() => !window.localStorage.getItem("token"))
     const [data, setData] = useState<UserData | null>(null)
     const { request } = useFetch()
     const navigate = useNavigate()
@@ -23,24 +24,28 @@ export const UserStorage = ({ children }: { children: ReactNode }) => {
     }, [navigate])
 
     useEffect(() => {
-        if (login) return
-
         const autoLogin = async () => {
             const token = window.localStorage.getItem("token")
-            if (!token) return
+            if (!token) {
+                return
+            }
 
-            const { url, options } = GET_USER(token)
-            const { json, response } = await request(url, options)
+            try {
+                const { url, options } = GET_USER(token)
+                const { json, response } = await request(url, options)
 
-            if (response?.ok) {
-                setData(json)
-                setLogin(true)
+                if (response?.ok) {
+                    setData(json)
+                    setLogin(true)
 
-                if (window.location.pathname === "/login" || window.location.pathname === "/register") {
-                    navigate("/", { replace: true })
+                    if (window.location.pathname === "/login" || window.location.pathname === "/register") {
+                        navigate("/", { replace: true })
+                    }
+                } else {
+                    userLogout()
                 }
-            } else {
-                userLogout()
+            } finally {
+                setAuthReady(true)
             }
         }
 
@@ -48,7 +53,7 @@ export const UserStorage = ({ children }: { children: ReactNode }) => {
     }, [login, request, userLogout, navigate])
     
     return (
-        <userContext.Provider value={{login, data, userLogout}}>
+        <userContext.Provider value={{login, authReady, data, userLogout}}>
             {children}
         </userContext.Provider>
     )

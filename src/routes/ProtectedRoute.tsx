@@ -5,8 +5,9 @@ import { userContext } from "../services/userContext";
 import MobileNav from "../components/commons/MobileNav";
 
 const ProtectedRoute = () => {
-    const { login } = useContext(userContext);
+    const { login, authReady } = useContext(userContext);
 
+    if (!authReady) return null;
     if (!login) return <Navigate to="/login" replace />;
 
     return ( 
