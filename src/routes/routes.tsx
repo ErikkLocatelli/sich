@@ -5,6 +5,7 @@ import ProtectedRoute from "./ProtectedRoute"
 import Home from '../pages/Home'
 import Benefits from '../pages/Benefits'
 import Search from '../pages/Search'
+import Profile from '../pages/profile/Profile'
 
 import Login from '../pages/Login/Login'
 import Register from "../pages/Login/Register"
@@ -31,7 +32,7 @@ const Routes = () => {
                 }, 
                 {
                     path: '/profile',
-                    element: <div>Profile</div>
+                    element: <Profile />
                 }, 
                 {
                     path: '/benefits',
