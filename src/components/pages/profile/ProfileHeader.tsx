@@ -1,4 +1,5 @@
 import { Star } from "lucide-react";
+import Avatar from "../../commons/Avatar";
 import { profileDemoData } from "./profileDemoData";
 
 type ProfileHeaderProps = {
@@ -9,26 +10,16 @@ type ProfileHeaderProps = {
 const ProfileHeader = ({ name, email }: ProfileHeaderProps) => {
   const displayName = name?.trim() || "Valor não encontrado";
   const displayEmail = email?.trim() || "Valor não encontrado";
-  const initials = name?.trim()
-    ? name
-        .trim()
-        .split(/\s+/)
-        .slice(0, 2)
-        .map((part) => Array.from(part)[0])
-        .join("")
-        .toLocaleUpperCase("pt-BR")
-    : "?";
+  const avatarName = name?.trim().replace(/\s+/g, " ") || "?";
 
   return (
     <header className="bg-sich-gradient px-5 pt-27 pb-20.5 text-white">
       <div className="flex min-h-16 items-center gap-3.5">
-        <div
-          aria-hidden="true"
-          className="flex size-16 shrink-0 items-center justify-center rounded-[18px] bg-white shadow-sich-button"
-        >
-          <span className="text-[18px] font-bold text-sich-magenta">
-            {initials}
-          </span>
+        <div aria-hidden="true" className="shrink-0">
+          <Avatar
+            name={avatarName}
+            className="size-16 rounded-[18px] bg-white shadow-sich-button [&>span]:text-[18px] [&>span]:font-bold [&>span]:text-sich-magenta"
+          />
         </div>
 
         <div className="min-w-0 flex-1 wrap:anywhere">
