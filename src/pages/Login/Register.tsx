@@ -56,11 +56,11 @@ const Register = () => {
       </div>
 
       <div className="flex flex-col lg:w-110">
-          <div className="flex h-25 w-full items-center gap-3 bg-white px-5 lg:hidden">
-            <ArrowBack />
-            <Title text="Criar conta" />
+        <div className="flex h-25 w-full items-center gap-3 bg-white px-5 lg:hidden">
+          <ArrowBack />
+          <Title text="Criar conta" />
         </div>
-
+    
       <div className="flex flex-col px-6 lg:px-0">
         <h1 className="hidden text-center text-[28px] font-semibold text-sich-heading lg:block">
           Crie sua conta. <span className="text-sich-magenta">É grátis!</span>

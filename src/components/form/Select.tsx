@@ -19,6 +19,7 @@ interface SelectProps<T> {
   data: T[]
   placeholder?: string
   error?: string | null
+  description?: string  
   icon?: LucideIcon
   defaultValue?: string
   value?: string

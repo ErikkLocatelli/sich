@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom"
+
 import { Button } from "@/components/ui/button"
 import Badge from "@/components/commons/Badge";
 
-const ServiceInfoCard = ({ name, price, duration, status }:{ name: string; price: number; duration: string; status: "professional" | "active" | "paused" }) => {
+const ServiceInfoCard = ({ id, name, price, duration, status }:{ id: number; name: string; price: number; duration: string; status: "professional" | "active" |  "paused" }) => {
   return (
     <div className={`flex flex-row items-center justify-between`}>
         <div className="flex items-start flex-col">
@@ -10,7 +12,7 @@ const ServiceInfoCard = ({ name, price, duration, status }:{ name: string; price
         </div>
         <div className="flex flex-row items-center gap-4">
             <Badge text={status} status={status} />
-            <Button variant='outline' className={"text-[11px]"}>Editar</Button>
+            <Button variant='outline' className={"text-[11px]"}><Link to={`/services/edit/${id}`}>Editar</Link></Button>
         </div>
     </div>
   )
