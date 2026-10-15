@@ -1,4 +1,4 @@
-const Badge = ({text, status}:{text: string, status: "professional" | "active" | "paused"}) => {
+const Badge = ({text, status}:{text: string, status: "professional" | "active" | "paused" }) => {
   const colorStats = {
     "professional": "bg-[#FFD1E1]/80 text-sich-magenta",
     "active": "bg-[#EAFAF0] text-[#15803D]", 

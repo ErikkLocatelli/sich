@@ -9,7 +9,7 @@ function App() {
   return (
     <BrowserRouter>
       <UserStorage>
-        <div className="flex flex-col min-h-screen bg-(--bg-principal) overflow-x-hidden">
+        <div className="flex flex-col min-h-screen bg-(--bg-principal) overflow-hidden">
           <main className="flex flex-col flex-1">
             <Routes />
           </main>
