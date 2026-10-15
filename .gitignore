@@ -27,3 +27,6 @@ dist-ssr
 
 # Sprint reports
 resumos-sprints/
+package-lock.json
+docs/superpowers/plans/2026-10-14-customer-profile.md
+docs/superpowers/specs/2026-10-14-customer-profile-design.md
