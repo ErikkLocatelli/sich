@@ -1,28 +1,24 @@
 import { useState } from "react"
-import { Navigate, Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 import useHead from "../../hooks/useHead"
 import usePreviousRoute from "../../hooks/usePreviousRoute"
 
 import SichText from "../../components/commons/SichText"
 import Title from "../../components/commons/Title"
+import SubTitle from "../../components/commons/SubTitle"
 import Card from "../../components/commons/Card"
 import { SlideToggle } from "../../components/form/SlideToggle"
 import ServiceInfoCard from "../../components/pages/services/ServiceInfoCard"
 
 import { Button } from "../../components/ui/button"
 
+import { services } from "../../models/services"
+
 const Services = () => {
   useHead("Serviços", "Gerencie seus serviços na SICH")
   const previousRoute = usePreviousRoute()
   const [catalogFilter, setCatalogFilter] = useState(0)
-
-  const services = [
-    { id: 1, name: "Esmaltação", price: 50, duration: "1h", status: "active" },
-    { id: 2, name: "Manicure", price: 30, duration: "45", status: "paused" },
-    { id: 3, name: "Pedicure", price: 40, duration: "1h", status: "active" },
-    { id: 4, name: "Alongamento", price: 80, duration: "1h30", status: "paused" },
-  ] as const
 
   const filteredServices = services.filter((service) => {
     if (catalogFilter === 1) return service.status === "active"
@@ -31,12 +27,12 @@ const Services = () => {
   })
 
   return (
-    <div className={`w-full min-h-dvh px-6 ${previousRoute === '/' || previousRoute === '/schedule' ? 'animateRight' : 'animateLeft'}`}>
+    <div className={`w-full px-6 ${previousRoute === '/' || previousRoute === '/schedule' ? 'animateRight' : 'animateLeft'}`}>
       <div className="mt-6">
         <Title text="Serviços e preços"/>
       </div>
       <Card className="mt-4 p-4">
-        <span className="text-[15px] font-semibold">Desempenho</span>
+        <SubTitle text="Desempenho" />
 
         <div className="mt-4 flex flex-row items-center">
           <div className="flex flex-1 flex-col items-center">
@@ -68,7 +64,7 @@ const Services = () => {
 
       <Card className="mt-6 p-4">
         <div className="flex flex-row items-center gap-2">
-          <span className="text-[15px] font-semibold">Catálogo ativo</span>
+          <SubTitle text="Catálogo ativo" />
           <SlideToggle
             className="rounded-lg flex-1 bg-sich-surface"
             selectedIndex={catalogFilter}
@@ -88,6 +84,7 @@ const Services = () => {
           {filteredServices.map((service) => (
             <ServiceInfoCard
               key={service.id}
+              id={service.id}
               name={service.name}
               price={service.price}
               duration={service.duration}
