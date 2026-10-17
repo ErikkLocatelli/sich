@@ -9,27 +9,27 @@ import Title from "../../components/commons/Title"
 import SubTitle from "../../components/commons/SubTitle"
 import Card from "../../components/commons/Card"
 import { SlideToggle } from "../../components/form/SlideToggle"
-import ServiceInfoCard from "../../components/pages/services/ServiceInfoCard"
+import ProductInfoCard from "../../components/pages/products/ProductInfoCard"
 
 import { Button } from "../../components/ui/button"
 
-import { services } from "../../models/services"
+import { products } from "../../models/products"
 
-const Services = () => {
-  useHead("Serviços", "Gerencie seus serviços na SICH")
+const Products = () => {
+  useHead("Produtos", "Gerencie seus produtos na SICH")
   const previousRoute = usePreviousRoute()
   const [catalogFilter, setCatalogFilter] = useState(0)
 
-  const filteredServices = services.filter((service) => {
-    if (catalogFilter === 1) return service.status === "active"
-    if (catalogFilter === 2) return service.status === "paused"
+  const filteredProducts = products.filter((product) => {
+    if (catalogFilter === 1) return product.status === "active"
+    if (catalogFilter === 2) return product.status === "paused"
     return true
   })
 
   return (
     <div className={`w-full px-6 ${previousRoute === '/' || previousRoute === '/schedule' ? 'animateRight' : 'animateLeft'}`}>
       <div className="mt-6">
-        <Title text="Serviços e preços"/>
+        <Title text="Produtos e preços"/>
       </div>
       <Card className="mt-4 p-4">
         <SubTitle text="Desempenho" />
@@ -37,7 +37,7 @@ const Services = () => {
         <div className="mt-4 flex flex-row items-center">
           <div className="flex flex-1 flex-col items-center">
             <SichText text="6" />
-            <span className="text-[9px] text-(--label-text)">Serviços</span>
+            <span className="text-[9px] text-(--label-text)">Produtos</span>
           </div>
 
           <div className="h-10 w-px bg-gray-300" />
@@ -58,7 +58,7 @@ const Services = () => {
 
       <div className="flex justify-center mt-6">
         <Button className="text-[12px] font-semibold py-5 px-8 shadow-sich-button">
-          <Link to="/services/new">+ Novo serviço</Link>
+          <Link to="/products/new">+ Novo produto</Link>
         </Button>
       </div>
 
@@ -78,17 +78,17 @@ const Services = () => {
           />
         </div>
 
-        <p className="text-[11px] text-(--label-text) font-bold mt-3">SERVIÇOS</p>
+        <p className="text-[11px] text-(--label-text) font-bold mt-3">PRODUTOS</p>
         
         <div className="mt-4 flex flex-col gap-4">
-          {filteredServices.map((service) => (
-            <ServiceInfoCard
-              key={service.id}
-              id={service.id}
-              name={service.name}
-              price={service.price}
-              duration={service.duration}
-              status={service.status}
+          {filteredProducts.map((product) => (
+            <ProductInfoCard
+              key={product.id}
+              id={product.id}
+              name={product.name}
+              price={product.price}
+              duration={product.duration}
+              status={product.status}
             />
           ))}
         </div>
@@ -97,4 +97,4 @@ const Services = () => {
   )
 }
 
-export default Services
+export default Products

@@ -1,9 +1,14 @@
-import type { UseFormReturn } from '@/hooks/useForm'
+import { useEffect, useState } from 'react'
 
-import useServiceImages from '@/hooks/useServiceImages'
+import type { UseFormReturn } from '@/hooks/useForm'
+import useProductImages from '@/hooks/useProductImages'
+import useFetch from '@/hooks/useFetch'
+
+import { CATEGORIES_GET, type CategoryResponse } from '@/api/product/product'
 
 import Card from '../../components/commons/Card'
 import Input from '../../components/form/Input'
+import InputTime from '../../components/form/InputTime'
 import Select from '../../components/form/Select'
 import Error from '../../components/commons/Error'
 import MoneyInput from '@/components/form/MoneyInput'
@@ -15,8 +20,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 
 import { Clock, Banknote,  BriefcaseBusiness, ListSortDescending, ImageUp, Trash} from 'lucide-react';
 
-
-type ServiceFormProps = {
+type ProductFormProps = {
   form: {
     fields: {
       name: UseFormReturn
@@ -26,11 +30,29 @@ type ServiceFormProps = {
       description: UseFormReturn
     }
   }
-  images: ReturnType<typeof useServiceImages>
+  images: ReturnType<typeof useProductImages>
 }
 
-const ServiceForm = ({form, images}: ServiceFormProps ) => {
+const ProductForm = ({form, images}: ProductFormProps ) => {
   const { fields } = form;
+  const { request } = useFetch()
+  const [categories, setCategories] = useState<CategoryResponse[]>([])
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      const token = window.localStorage.getItem("token")
+      if (!token) return
+
+      const { url, options } = CATEGORIES_GET(token)
+      const { json, response } = await request(url, options)
+
+      if (response?.ok) {
+        setCategories(json)
+      }
+    }
+
+    loadCategories()
+  }, [request, categories])
 
   const allImages = [
     ...images.existingImages.map(image => ({
@@ -47,27 +69,27 @@ const ServiceForm = ({form, images}: ServiceFormProps ) => {
   
   return (
      <Field className="mt-3.5 mb-3.5 flex flex-col gap-5 px-5">
-        <Input label="Nome do serviço" placeholder="Digite o nome do serviço" icon={BriefcaseBusiness} value={fields.name.value} error={fields.name.error} onBlur={fields.name.onBlur} onChange={fields.name.onChange}/>
+        <Input label="Nome do produto" placeholder="Digite o nome do produto" icon={BriefcaseBusiness} value={fields.name.value} error={fields.name.error} onBlur={fields.name.onBlur} onChange={fields.name.onChange}/>
 
-        <Select label="Categoria" id="category" placeholder="Selecione a categoria" icon={ListSortDescending} insideLabel="Serviços" data={[{ name: 'Manicure' }, { name: 'Pedicure' }, { name: 'Massagem' }]} getKey={(item) => item.name} getValue={(item) => item.name} getLabel={(item) => item.name} value={fields.category.value} error={fields.category.error} onValueChange={fields.category.setValue}/>
+        <Select label="Categoria" id="category" placeholder="Selecione a categoria" icon={ListSortDescending} insideLabel="Produtos" data={categories} getKey={(item) => item.name} getValue={(item) => item.name} getLabel={(item) => item.name} value={fields.category.value} error={fields.category.error} onValueChange={fields.category.setValue}/>
 
         <FieldGroup className="flex flex-row gap-2.5">
-                <Input label="Duração" placeholder="1h00" icon={Clock} value={fields.duration.value} error={fields.duration.error} onBlur={fields.duration.onBlur} onChange={fields.duration.onChange}/>
+            <InputTime label="Duração" icon={Clock} min="00:15" max="02:00" step={900} value={fields.duration.value} error={fields.duration.error} onBlur={fields.duration.onBlur} onChange={fields.duration.onChange}/>
 
-                <MoneyInput label="Preço" placeholder="R$ 100,00" icon={Banknote} value={fields.price.value} error={fields.price.error} onBlur={fields.price.onBlur} onChange={fields.price.setValue}/>
+            <MoneyInput label="Preço" placeholder="R$ 100,00" icon={Banknote} value={fields.price.value} error={fields.price.error} onBlur={fields.price.onBlur} onChange={fields.price.setValue}/>
         </FieldGroup>
 
         <Field>
             <FieldLabel className="text-[11px]" htmlFor="textarea">Descrição</FieldLabel>
 
-            <Textarea placeholder="Digite uma descrição para o serviço" className="resize-none rounded-[16px] border-sich-border bg-white text-[11px]" id="textarea" value={fields.description.value} onBlur={fields.description.onBlur} onChange={fields.description.onChange}/>
+            <Textarea placeholder="Digite uma descrição para o produto" className="resize-none rounded-[16px] border-sich-border bg-white text-[11px]" id="textarea" value={fields.description.value} onBlur={fields.description.onBlur} onChange={fields.description.onChange}/>
 
             {fields.description.error && <Error message={fields.description.error} className='animateDown' />}
         </Field>
 
         <Input
             label="Imagens"
-            placeholder="Selecione imagens para o serviço"
+            placeholder="Selecione imagens para o produto"
             type="file"
             icon={ImageUp}
             accept="image/*"
@@ -78,6 +100,7 @@ const ServiceForm = ({form, images}: ServiceFormProps ) => {
                 event.target.value = ''
                 }
             }}
+            tip={"Cadastre até 5 imagens para o produto. Formatos aceitos: JPG, PNG"}
             />
 
         {allImages.length > 0 && (
@@ -88,7 +111,7 @@ const ServiceForm = ({form, images}: ServiceFormProps ) => {
                         <Card className="relative overflow-hidden group">
                             <img
                             src={image.url}
-                            alt="Imagem do serviço"
+                            alt="Imagem do produto"
                             className="block aspect-square w-full object-cover transition duration-300 group-hover:brightness-50 group-hover:blur-[2px]"
                             />
                             <Button
@@ -112,4 +135,4 @@ const ServiceForm = ({form, images}: ServiceFormProps ) => {
   )
 }
 
-export default ServiceForm
+export default ProductForm

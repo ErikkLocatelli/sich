@@ -1,13 +1,13 @@
 import { useParams } from 'react-router-dom'
 
 import useHead from '../../hooks/useHead'
-import { useEditService } from '../../hooks/service/useEditService'
-import useServiceImages from '../../hooks/useServiceImages'
+import { useEditProduct } from '../../hooks/product/useEditProduct'
+import useProductImages from '../../hooks/useProductImages'
 
-import { services } from '../../models/services'
-import type { Service } from '../../models/services'
+import { products } from '../../models/products'
+import type { Product } from '../../models/products'
 
-import ServiceForm from './ServiceForm'
+import ProductForm from './ProductForm'
 import ArrowBack from '../../components/commons/ArrowBack'
 import SichText from '@/components/commons/SichText'
 
@@ -15,15 +15,15 @@ import { Button } from '../../components/ui/button'
 import { Field  } from '../../components/ui/field'
 import { toast, Toaster } from '../../components/ui/toast'
 
-const EditService = () => {
-  // This works only for tests, when the API is ready, just fetch the service by ID from the API
+const EditProduct = () => {
+  // This works only for tests, when the API is ready, just fetch the product by ID from the API
   const { id } = useParams()
 
-  const service = services.find((service: Service) => service.id === Number(id))!
-  useHead(`Editar serviço ${id}`, "Edite seu serviço na SICH")
+  const product = products.find((product: Product) => product.id === Number(id))!
+  useHead(`Editar produto ${id}`, "Edite seu produto na SICH")
 
-  const { fields, isFormValid } = useEditService(service)
-  const images = useServiceImages(service.images)
+  const { fields, isFormValid } = useEditProduct(product)
+  const images = useProductImages(product.images)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -38,11 +38,11 @@ const EditService = () => {
     <div className="w-full animateRight">
         <div className="flex items-center gap-3 bg-white p-5">
           <ArrowBack />
-          <SichText text="Editar serviço" />
+          <SichText text="Editar produto" />
         </div>
 
         <form className="mt-3.5 mb-3.5 flex flex-col gap-5" onSubmit={handleSubmit}>
-            <ServiceForm form={{ fields }} images={images} />
+            <ProductForm form={{ fields }} images={images} />
 
             <Field className="flex flex-row items-center gap-4 *:flex-1 px-5">
                 <Button className="text-[12px] font-semibold py-5 px-8 text-sich-magenta shadow-sich-small bg-white hover:bg-white">Cancelar</Button>
@@ -55,4 +55,4 @@ const EditService = () => {
   )
 }
 
-export default EditService
+export default EditProduct

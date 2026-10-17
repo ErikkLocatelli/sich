@@ -1,27 +1,27 @@
 import useHead from '../../hooks/useHead'
-import { useNewService } from '../../hooks/service/useNewSercvice'
-import useServiceImages from '../../hooks/useServiceImages'
+import { useNewProduct } from '../../hooks/product/useNewProduct'
+import useProductImages from '../../hooks/useProductImages'
 
 import ArrowBack from '../../components/commons/ArrowBack'
 import SichText from '@/components/commons/SichText'
-import ServiceForm from './ServiceForm'
+import ProductForm from './ProductForm'
 
 import { Button } from '../../components/ui/button'
 import { Field  } from '../../components/ui/field'
 import { toast, Toaster } from '../../components/ui/toast'
 
-const NewService = () => {
-  useHead("Cadastrar serviço", "Cadastre seu serviço na SICH")
+const NewProduct = () => {
+  useHead("Cadastrar produto", "Cadastre seu produto na SICH")
 
-  const { fields, isFormValid } = useNewService()
-  const images = useServiceImages([])
+  const { fields, isFormValid } = useNewProduct()
+  const images = useProductImages([])
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     toast.add({
       type: "success",
-      description: "O serviço foi cadastrado com sucesso."
+      description: "O produto foi cadastrado com sucesso."
     })
   }
   
@@ -29,15 +29,15 @@ const NewService = () => {
     <div className="w-full animateRight">
       <div className="flex items-center gap-3 bg-white p-5">
           <ArrowBack />
-          <SichText text="Cadastrar serviço" />
+          <SichText text="Cadastrar produto" />
       </div>
       
       <form className="mt-3.5 mb-3.5 flex flex-col gap-5" onSubmit={handleSubmit}>
-          <ServiceForm form={{ fields }} images={images} />
+          <ProductForm form={{ fields }} images={images} />
 
           <Field className="flex flex-row items-center gap-4 *:flex-1 px-5">
               <Button className="text-[12px] font-semibold py-5 px-8 text-sich-magenta shadow-sich-small bg-white hover:bg-white">Cancelar</Button>
-              <Button className="text-[12px] font-semibold py-5 px-8 shadow-sich-button" type="submit" disabled={!isFormValid}>Cadastrar serviço</Button>
+              <Button className="text-[12px] font-semibold py-5 px-8 shadow-sich-button" type="submit" disabled={!isFormValid}>Cadastrar produto</Button>
           </Field>
       </form>
       
@@ -46,4 +46,4 @@ const NewService = () => {
   )
 }
 
-export default NewService
+export default NewProduct

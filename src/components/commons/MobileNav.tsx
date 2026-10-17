@@ -26,7 +26,7 @@ const MobileNav = () => {
         <>
           <MobileNavItem to="/" icon={ChartColumn} label="Painel" />
           <MobileNavItem to="/schedule" icon={Calendar1} label="Agenda" />
-          <MobileNavItem to="/services" icon={Nails} label="Serviços" />
+          <MobileNavItem to="/products" icon={Nails} label="Produtos" />
           <MobileNavItem to="/financial" icon={DollarSign} label="Financeiro" />
           <MobileNavItem to="/profile" icon={User} label="Perfil" />
         </>

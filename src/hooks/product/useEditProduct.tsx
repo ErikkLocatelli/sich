@@ -1,12 +1,13 @@
 import useForm from "../../hooks/useForm"
 import { validateFields } from "../../services/validators/validateFields"
+import type { Product } from "../../models/products"
 
-export const useNewService = () => {
-    const name = useForm({ required: true })
-    const description = useForm({ required: true })
-    const price = useForm({ required: true })
-    const category = useForm({ required: true})
-    const duration = useForm({ required: true })
+export const useEditProduct = (product: Product) => {
+    const name = useForm({ required: true, initialValue: product.name })
+    const description = useForm({ required: true, initialValue: product.description })
+    const price = useForm({ required: true, initialValue: (product.price).toString() })
+    const category = useForm({ required: true, initialValue: product.category })
+    const duration = useForm({ required: true, initialValue: product.duration })
     const status = useForm({ required: true })
     const images = useForm({ required: true })
   

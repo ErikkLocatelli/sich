@@ -5,7 +5,7 @@ import Title from '../../components/commons/Title'
 import UserInfoCard from '../../components/commons/UserInfoCard'
 import NotificationBell from '../../components/commons/NotificationBell'
 import MobileLink from '../../components/commons/MobileLink'
-import ServiceInfoCard from '../../components/commons/ServiceInfoCard'
+import ProductInfoCard from '../../components/commons/ProductInfoCard'
 import PromoCard from '../../components/commons/PromoCard'
 import ProfessionalInfoCard from '../../components/commons/ProfessionalInfoCard'
 import Input from '../../components/form/Input'
@@ -25,7 +25,7 @@ const HomeCustomer = ({data}: {data: UserData}) => {
           <NotificationBell />
         </div>
 
-        <Input type="text" placeholder="Buscar serviços ou profissional" icon={UserRoundSearch} />
+        <Input type="text" placeholder="Buscar produtos ou profissional" icon={UserRoundSearch} />
 
         <div className="flex flex-row items-center gap-3">
           <UserInfoCard label="Saldo cashback" value={"R$ 100,00"} icon={HandCoins} />
@@ -33,19 +33,19 @@ const HomeCustomer = ({data}: {data: UserData}) => {
         </div>
       </SichBadge>
 
-      <MobileLink title="Serviços" link="Ver todos >"/>
+      <MobileLink title="Produtos" link="Ver todos >"/>
 
       <div className="px-6 mt-5 flex flex-col gap-3">
         <div className="flex flex-row gap-3">
-          <ServiceInfoCard service='Esmaltaçao' desc='a partir R$95' />
-          <ServiceInfoCard service='Esmaltaçao' desc='a partir R$95' />
-          <ServiceInfoCard service='Esmaltaçao' desc='a partir R$95' />
+          <ProductInfoCard product='Esmaltaçao' desc='a partir R$95' />
+          <ProductInfoCard product='Esmaltaçao' desc='a partir R$95' />
+          <ProductInfoCard product='Esmaltaçao' desc='a partir R$95' />
         </div>
 
         <div className="flex flex-row gap-3">
-          <ServiceInfoCard service='Esmaltaçao' desc='a partir R$95' />
-          <ServiceInfoCard service='Esmaltaçao' desc='a partir R$95' />
-          <ServiceInfoCard service='Esmaltaçao' desc='a partir R$95' />
+          <ProductInfoCard product='Esmaltaçao' desc='a partir R$95' />
+          <ProductInfoCard product='Esmaltaçao' desc='a partir R$95' />
+          <ProductInfoCard product='Esmaltaçao' desc='a partir R$95' />
         </div>
       </div>
 

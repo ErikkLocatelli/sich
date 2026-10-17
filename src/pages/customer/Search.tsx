@@ -11,14 +11,14 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { Cog, Diamond } from 'lucide-react';
 
 const Search = () => {
-  useHead("Buscar", "Busque serviços ou profissionais na SICH")
+  useHead("Buscar", "Busque produtos ou profissionais na SICH")
 
   return (
     <div className="w-full min-h-dvh">
       <div className="px-6 py-4 flex flex-col bg-white gap-3">
         <Title text="Buscar" color="text-black" />
         <Field orientation="horizontal">
-            <Input type="text" placeholder="Buscar serviços ou profissional" className="bg-sich-surface" />
+            <Input type="text" placeholder="Buscar produtos ou profissional" className="bg-sich-surface" />
             <Button size="icon-lg">
                 <Cog className="size-4" />
             </Button>

@@ -7,9 +7,9 @@ import Home from '../pages/home/Home'
 import Benefits from '../pages/customer/Benefits'
 import Search from '../pages/customer/Search'
 import Schedule from '../pages/schedule/Schedule'
-import Services from '../pages/services/Services'
-import EditService from '../pages/services/EditService'
-import NewService from '../pages/services/NewService'
+import Products from '../pages/products/Products'
+import EditProduct from '../pages/products/EditProduct'
+import NewProduct from '../pages/products/NewProduct'
 import Financial from '../pages/financial/Financial'
 import Profile from '../pages/profile/Profile'
 
@@ -46,20 +46,20 @@ const Routes = () => {
                     element: <Benefits />
                 }, 
                 {
-                    path: '/services',
+                    path: '/products',
                     element: <Outlet />,
                     children: [
                         {
                             index: true,
-                            element: <Services />
+                            element: <Products />
                         }, 
                         {
                             path: 'new',
-                            element: <NewService />
+                            element: <NewProduct />
                         }, 
                         {
                             path: 'edit/:id', 
-                            element: <EditService />
+                            element: <EditProduct />
                         }
                     ]
                 },

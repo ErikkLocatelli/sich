@@ -17,7 +17,7 @@ const Benefits = () => {
           <Title text="Sua Carteira" color="text-white" />
         </div>
 
-        <UserInfoCard label="Saldo cashback" value={"R$ 100,00"} icon={User} detail="uso em até 20% por serviço" />
+        <UserInfoCard label="Saldo cashback" value={"R$ 100,00"} icon={User} detail="uso em até 20% por produto" />
       </SichBadge>
     </>
   )

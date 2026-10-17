@@ -4,7 +4,7 @@ import type { Image, NewImage } from '../models/image'
 
 const MAX_IMAGES = 5
 
-const useServiceImages = (initialImages: Image[] = []) => {
+const useProductImages = (initialImages: Image[] = []) => {
   const [existingImages, setExistingImages] = useState(initialImages)
   const [newImages, setNewImages] = useState<NewImage[]>([])
   const objectUrls = useRef(new Set<string>())
@@ -59,4 +59,4 @@ const useServiceImages = (initialImages: Image[] = []) => {
   }
 }
 
-export default useServiceImages
+export default useProductImages
