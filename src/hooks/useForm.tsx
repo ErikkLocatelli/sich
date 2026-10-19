@@ -100,9 +100,11 @@ const useForm = (options: UseFormOptions = {}): UseFormReturn => {
   const setValue = useCallback(
     (val: string) => {
       setValueState(val)
-      if (error) setError(validateFormat(val).error)
+      setError(currentError =>
+        currentError ? validateFormat(val).error : currentError
+      )
     },
-    [error, validateFormat]
+    [validateFormat]
   )
 
   const onChange = useCallback(
@@ -110,9 +112,11 @@ const useForm = (options: UseFormOptions = {}): UseFormReturn => {
       const newValue = event.target.value
 
       setValueState(newValue)
-      if (error) setError(validateFormat(newValue).error)
+      setError(currentError =>
+        currentError ? validateFormat(newValue).error : currentError
+      )
     },
-    [error, validateFormat]
+    [validateFormat]
   )
 
   const onBlur = useCallback(() => validateFull(value), [validateFull, value])

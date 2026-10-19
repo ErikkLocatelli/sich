@@ -1,12 +1,35 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Image, NewImage } from '../models/image'
 
 
-const MAX_IMAGES = 5
+const MAX_IMAGES = 3
+
+const fileToDataUrl = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+
+    reader.onload = () => {
+      if (typeof reader.result !== "string") {
+        reject(new Error("Não foi possível ler a imagem."))
+        return
+      }
+
+      resolve(reader.result)
+    }
+
+    reader.onerror = () => {
+      reject(new Error("Não foi possível converter a imagem."))
+    }
+
+    reader.readAsDataURL(file)
+  })
+}
+
 
 const useProductImages = (initialImages: Image[] = []) => {
   const [existingImages, setExistingImages] = useState(initialImages)
   const [newImages, setNewImages] = useState<NewImage[]>([])
+  const [removedImages, setRemovedImages] = useState<number[]>([])
   const objectUrls = useRef(new Set<string>())
 
     useEffect(() => {
@@ -38,7 +61,15 @@ const useProductImages = (initialImages: Image[] = []) => {
     setExistingImages(current =>
       current.filter(image => image.id !== id)
     )
+    setRemovedImages(current =>
+      current.includes(id) ? current : [...current, id]
+    )
   }
+
+  const setInitialImages = useCallback((images: Image[]) => {
+    setExistingImages(images)
+    setRemovedImages([])
+  }, [])
 
   const removeNewImage = (url: string) => {
     URL.revokeObjectURL(url)
@@ -52,9 +83,12 @@ const useProductImages = (initialImages: Image[] = []) => {
   return {
     existingImages,
     newImages,
+    removedImages,
     addImages,
     removeExistingImage,
+    setInitialImages,
     removeNewImage,
+    fileToDataUrl,
     canAddImages: existingImages.length + newImages.length < MAX_IMAGES,
   }
 }

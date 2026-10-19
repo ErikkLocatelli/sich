@@ -1,18 +1,42 @@
+import { useEffect } from "react"
+
 import useForm from "../../hooks/useForm"
 import { validateFields } from "../../services/validators/validateFields"
-import type { Product } from "../../models/products"
+import type { ProductRequest, ProductResponse } from "../../api/product/product"
 
-export const useEditProduct = (product: Product) => {
-    const name = useForm({ required: true, initialValue: product.name })
-    const description = useForm({ required: true, initialValue: product.description })
-    const price = useForm({ required: true, initialValue: (product.price).toString() })
-    const category = useForm({ required: true, initialValue: product.category })
-    const duration = useForm({ required: true, initialValue: product.duration })
+export const useEditProduct = (product: ProductResponse | null) => {
+    const name = useForm({ required: true })
+    const description = useForm({ required: false })
+    const price = useForm({ required: true })
+    const category = useForm({ required: true })
+    const duration = useForm({ required: true })
     const status = useForm({ required: true })
     const images = useForm({ required: true })
+    const { setValue: setName } = name
+    const { setValue: setDescription } = description
+    const { setValue: setPrice } = price
+    const { setValue: setCategory } = category
+    const { setValue: setDuration } = duration
+
+    useEffect(() => {
+       if (!product) return
+
+       setName(product.name)
+       setDescription(product.description ?? "")
+       setPrice(product.price.toString())
+       setCategory(product.categoryId.toString())
+       setDuration(product.duration)
+    }, [
+       product,
+       setName,
+       setDescription,
+       setPrice,
+       setCategory,
+       setDuration
+    ])
   
-     const validateForm = async () => {
-       return await validateFields({ name, description, price, category, duration, status, images })
+    const validateForm = async () => {
+      return await validateFields({ name, description, price, category, duration })
     }
 
     const isFormValid =
@@ -31,6 +55,19 @@ export const useEditProduct = (product: Product) => {
         // !status.error &&
         // !images.error
 
+    const getPayload = (): ProductRequest => ({
+        name: name.value.trim(),
+        description: description.value.trim() || null,
+        price: Number(
+            price.value
+            .replace("R$ ", "")
+            .replace(/\./g, "")
+            .replace(",", ".")
+        ),
+        categoryId: Number(category.value),
+        duration: duration.value
+        })
+
     return {
         fields: {
             name,
@@ -42,6 +79,7 @@ export const useEditProduct = (product: Product) => {
             images
         }, 
         validateForm,
-        isFormValid
+        isFormValid,
+        getPayload
     }
 }

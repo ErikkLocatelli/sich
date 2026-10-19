@@ -1,10 +1,6 @@
-import { useEffect, useState } from 'react'
-
 import type { UseFormReturn } from '@/hooks/useForm'
 import useProductImages from '@/hooks/useProductImages'
-import useFetch from '@/hooks/useFetch'
-
-import { CATEGORIES_GET, type CategoryResponse } from '@/api/product/product'
+import { useCategories } from '@/hooks/product/useCategories'
 
 import Card from '../../components/commons/Card'
 import Input from '../../components/form/Input'
@@ -35,24 +31,7 @@ type ProductFormProps = {
 
 const ProductForm = ({form, images}: ProductFormProps ) => {
   const { fields } = form;
-  const { request } = useFetch()
-  const [categories, setCategories] = useState<CategoryResponse[]>([])
-
-  useEffect(() => {
-    const loadCategories = async () => {
-      const token = window.localStorage.getItem("token")
-      if (!token) return
-
-      const { url, options } = CATEGORIES_GET(token)
-      const { json, response } = await request(url, options)
-
-      if (response?.ok) {
-        setCategories(json)
-      }
-    }
-
-    loadCategories()
-  }, [request, categories])
+  const { categories } = useCategories()
 
   const allImages = [
     ...images.existingImages.map(image => ({
@@ -71,7 +50,7 @@ const ProductForm = ({form, images}: ProductFormProps ) => {
      <Field className="mt-3.5 mb-3.5 flex flex-col gap-5 px-5">
         <Input label="Nome do produto" placeholder="Digite o nome do produto" icon={BriefcaseBusiness} value={fields.name.value} error={fields.name.error} onBlur={fields.name.onBlur} onChange={fields.name.onChange}/>
 
-        <Select label="Categoria" id="category" placeholder="Selecione a categoria" icon={ListSortDescending} insideLabel="Produtos" data={categories} getKey={(item) => item.name} getValue={(item) => item.name} getLabel={(item) => item.name} value={fields.category.value} error={fields.category.error} onValueChange={fields.category.setValue}/>
+        <Select label="Categoria" id="category" placeholder="Selecione a categoria" icon={ListSortDescending} insideLabel="Produtos" data={categories} getKey={(item) => item.name} getValue={(item) => (item.id).toString()} getLabel={(item) => item.name} value={fields.category.value} error={fields.category.error} onValueChange={fields.category.setValue}/>
 
         <FieldGroup className="flex flex-row gap-2.5">
             <InputTime label="Duração" icon={Clock} min="00:15" max="02:00" step={900} value={fields.duration.value} error={fields.duration.error} onBlur={fields.duration.onBlur} onChange={fields.duration.onChange}/>
@@ -86,13 +65,13 @@ const ProductForm = ({form, images}: ProductFormProps ) => {
 
             {fields.description.error && <Error message={fields.description.error} className='animateDown' />}
         </Field>
-
+   
         <Input
             label="Imagens"
             placeholder="Selecione imagens para o produto"
             type="file"
             icon={ImageUp}
-            accept="image/*"
+            accept="image/png,image/jpeg,image/webp"
             disabled={!images.canAddImages}
             onChange={(event) => {
                 if (event.target.files) {
@@ -100,7 +79,8 @@ const ProductForm = ({form, images}: ProductFormProps ) => {
                 event.target.value = ''
                 }
             }}
-            tip={"Cadastre até 5 imagens para o produto. Formatos aceitos: JPG, PNG"}
+            tip={"Cadastre até 5 imagens para o produto. Formatos aceitos: JPG, PNG ou WEBP"}
+            required
             />
 
         {allImages.length > 0 && (
