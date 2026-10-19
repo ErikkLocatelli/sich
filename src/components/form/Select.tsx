@@ -25,7 +25,7 @@ interface SelectProps<T> {
   value?: string
   onValueChange?: (value: string) => void
   disabled?: boolean
-  getKey: (item: T) => string
+  getKey: (item: T) => string 
   getValue: (item: T) => string
   getLabel: (item: T) => React.ReactNode
 }
@@ -45,6 +45,10 @@ function Select<T>({
   getValue,
   getLabel,
 }: SelectProps<T>) {
+  const selectedItem = data.find(
+    (item) => String(getValue(item)) === value
+  )
+
   return (
     <FieldGroup className="flex flex-col gap-1">
       <FieldLabel className="text-[11px]" htmlFor={id}>
@@ -61,7 +65,9 @@ function Select<T>({
           className="w-full rounded-[16px] border-sich-border bg-white px-2 py-4.75 text-[11px] cursor-pointer" 
         >
           {Icon && <Icon className="size-4" />}
-          <SelectValue placeholder={placeholder} className="text-[11px]" />
+          <SelectValue placeholder={placeholder} className="text-[11px]">
+            {selectedItem ? getLabel(selectedItem) : undefined}
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
