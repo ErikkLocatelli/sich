@@ -13,7 +13,7 @@ const ProfileHeader = ({ name, email }: ProfileHeaderProps) => {
   const avatarName = name?.trim().replace(/\s+/g, " ") || "?";
 
   return (
-    <header className="bg-sich-gradient px-5 pt-27 pb-20.5 text-white">
+    <header className="bg-sich-gradient px-5 pt-20 pb-20 text-white">
       <div className="flex min-h-16 items-center gap-3.5">
         <div aria-hidden="true" className="shrink-0">
           <Avatar
