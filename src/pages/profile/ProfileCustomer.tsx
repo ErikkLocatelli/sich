@@ -1,13 +1,62 @@
+import type { UserData } from "../../models/userData";
+import {
+  Bell,
+  CircleHelp,
+  CreditCard,
+  LogOut,
+  MapPin,
+  Settings,
+  ShieldCheck,
+} from "lucide-react";
+import ProfileHeader from "../../components/pages/profile/ProfileHeader";
+import ProfileStats from "../../components/pages/profile/ProfileStats";
+import ProfileMenuSection from "../../components/pages/profile/ProfileMenuSection";
+import { Button } from "../../components/ui/button";
 
-const ProfileCustomer = ({userLogout}:{userLogout: () => void}) => {
+type ProfileCustomerProps = {
+  data: Pick<UserData, "name" | "email">;
+  userLogout: () => void;
+};
+
+const accountItems = [
+  { label: "Endereços", icon: MapPin },
+  { label: "Pagamentos", icon: CreditCard },
+  { label: "Notificações", icon: Bell },
+];
+
+const moreItems = [
+  { label: "Privacidade e segurança", icon: ShieldCheck },
+  { label: "Configurações", icon: Settings },
+  { label: "Ajuda e suporte", icon: CircleHelp },
+];
+
+const ProfileCustomer = ({ data, userLogout }: ProfileCustomerProps) => {
   return (
-    <div>
-      Perfil do customer funciona
-      <button onClick={userLogout} className="bg-red-500 text-white py-2 px-4 rounded">
-        Logout
-      </button>
-    </div>
-  )
-}
+    <section
+      aria-label="Perfil do cliente"
+      className="min-h-dvh w-full bg-background"
+    >
+      <ProfileHeader name={data.name} email={data.email} />
+      <ProfileStats />
 
-export default ProfileCustomer
+      <div className="px-5 pt-4.5 pb-5">
+        <div className="flex flex-col gap-4.5">
+          <ProfileMenuSection title="Conta" items={accountItems} />
+          <ProfileMenuSection title="Mais" items={moreItems} />
+        </div>
+
+        <Button
+          type="button"
+          variant="outline"
+          onClick={userLogout}
+          className="mt-3.5 h-11.5 gap-1 rounded-[16px] border-red-500/30 bg-transparent px-3 text-[13px] font-semibold text-red-500 hover:bg-red-500/5 hover:text-red-500"
+        >
+          <LogOut aria-hidden="true" className="size-3.5" />
+          Sair da conta
+        </Button>
+      </div>
+    </section>
+  );
+};
+
+export default ProfileCustomer;

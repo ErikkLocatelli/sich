@@ -14,7 +14,7 @@ const Profile = () => {
     if(!data) return null
 
     if (userType === "CUSTOMER") {
-        return <ProfileCustomer userLogout={userLogout} />
+        return <ProfileCustomer data={data} userLogout={userLogout} />
     } else {
         return <ProfileProvider userLogout={userLogout} />
     }
