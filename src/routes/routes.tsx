@@ -13,8 +13,8 @@ import NewProduct from '../pages/products/NewProduct'
 import Financial from '../pages/financial/Financial'
 import Profile from '../pages/profile/Profile'
 
-import Login from '../pages/Login/Login'
-import Register from "../pages/Login/Register"
+import Login from '../pages/login/Login'
+import Register from "../pages/login/Register"
 
 import NotFound from "../components/commons/NotFound"
 
@@ -35,7 +35,17 @@ const Routes = () => {
                 }, 
                 {
                     path: '/schedule',
-                    element: <Schedule />
+                    element: <Outlet />,
+                    children: [
+                        {
+                            index: true,
+                            element: <Schedule />
+                        }, 
+                        {
+                            path: 'disponibility',
+                            element: <div>disponibilidade</div>
+                        }
+                    ]
                 }, 
                 {
                     path: '/profile',
