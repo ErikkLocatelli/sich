@@ -1,39 +1,18 @@
 import type { UserData } from '@/models/userData'
 
-import SichBadge from '../../components/commons/SichBadge'
-import Title from '../../components/commons/Title'
-import UserInfoCard from '../../components/commons/UserInfoCard'
-import NotificationBell from '../../components/commons/NotificationBell'
 import MobileLink from '../../components/commons/MobileLink'
 import ProductInfoCard from '../../components/commons/ProductInfoCard'
 import PromoCard from '../../components/commons/PromoCard'
 import ProfessionalInfoCard from '../../components/commons/ProfessionalInfoCard'
-import Input from '../../components/form/Input'
-
-import { UserRoundSearch, Handshake, HandCoins } from 'lucide-react';
+import HomeHeader from '../../components/pages/home/HomeHeader'
 
 const HomeCustomer = ({data}: {data: UserData}) => {
 
   return (
-    <div className="w-full min-h-dvh">
-      <SichBadge className="px-6 flex flex-col gap-4 py-8">
-        <div className="flex items-center justify-between gap-2">
-          <div>
-            <span className="text-[11px] text-white/80">{data?.city} · {data?.state}</span>
-            <Title text={"Olá, " + data?.name + "!"} color="text-white" />
-          </div>
-          <NotificationBell />
-        </div>
+    <div className="w-full min-h-dvh animateLeft">
+      <HomeHeader data={data} />
 
-        <Input type="text" placeholder="Buscar produtos ou profissional" icon={UserRoundSearch} />
-
-        <div className="flex flex-row items-center gap-3">
-          <UserInfoCard label="Saldo cashback" value={"R$ 100,00"} icon={HandCoins} />
-          <UserInfoCard label="Fidelidade" value={"3/5"} icon={Handshake} />
-        </div>
-      </SichBadge>
-
-      <MobileLink title="Produtos" link="Ver todos >"/>
+      <MobileLink title="Produtos" link="Ver todos >" className="mt-5 px-6"/>
 
       <div className="px-6 mt-5 flex flex-col gap-3">
         <div className="flex flex-row gap-3">
@@ -51,7 +30,7 @@ const HomeCustomer = ({data}: {data: UserData}) => {
 
       <PromoCard promo="Mani + Pedi com 15% off" cupom="SICH10" data="31/12/2024" className="mt-6 mx-6"/>
 
-      <MobileLink title="Profissionais em alta" link="Ver todos >"/>
+      <MobileLink title="Profissionais em alta" link="Ver todos >" className="mt-5 px-6"/>
 
       <div className="px-6 mt-5 flex flex-col gap-3 mb-5">
         <ProfessionalInfoCard name='Ana Beatriz' url=''/>

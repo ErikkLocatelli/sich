@@ -53,7 +53,8 @@ const ProductForm = ({form, images}: ProductFormProps ) => {
         <Select label="Categoria" id="category" placeholder="Selecione a categoria" icon={ListSortDescending} insideLabel="Produtos" data={categories} getKey={(item) => item.name} getValue={(item) => (item.id).toString()} getLabel={(item) => item.name} value={fields.category.value} error={fields.category.error} onValueChange={fields.category.setValue}/>
 
         <FieldGroup className="flex flex-row gap-2.5">
-            <InputTime label="Duração" icon={Clock} min="00:15" max="02:00" step={900} value={fields.duration.value} error={fields.duration.error} onBlur={fields.duration.onBlur} onChange={fields.duration.onChange}/>
+            <InputTime label="Duração" icon={Clock} min="00:15" max="02:00" step={900} value={fields.duration.value} error={fields.duration.error} onBlur={fields.duration.onBlur} onChange={fields.duration.onChange} 
+            tip={"Para atendimentos a domicílio, considere o tempo de locomoção média para atendimentos próximos a sua região no tempo de atendimento."}/>
 
             <MoneyInput label="Preço" placeholder="R$ 100,00" icon={Banknote} value={fields.price.value} error={fields.price.error} onBlur={fields.price.onBlur} onChange={fields.price.setValue}/>
         </FieldGroup>
@@ -80,7 +81,6 @@ const ProductForm = ({form, images}: ProductFormProps ) => {
                 }
             }}
             tip={"Cadastre até 5 imagens para o produto. Formatos aceitos: JPG, PNG ou WEBP"}
-            required
             />
 
         {allImages.length > 0 && (

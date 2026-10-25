@@ -4,7 +4,7 @@ import { userContext } from '../../services/userContext'
 import { useHideOnScroll } from '@/hooks/useHideOnScroll'
 
 import MobileNavItem from './MobileNavItem'
-import { House, Search, Calendar1, Gift, User, ChartColumn, DollarSign } from 'lucide-react'
+import { House, Search, Calendar1, Gift, User, ChartColumn, Banknote } from 'lucide-react'
 import Nails from '../../assets/icons/nails.svg?react'
 
 const MobileNav = () => {  
@@ -27,7 +27,7 @@ const MobileNav = () => {
           <MobileNavItem to="/" icon={ChartColumn} label="Painel" />
           <MobileNavItem to="/schedule" icon={Calendar1} label="Agenda" />
           <MobileNavItem to="/products" icon={Nails} label="Produtos" />
-          <MobileNavItem to="/financial" icon={DollarSign} label="Financeiro" />
+          <MobileNavItem to="/financial" icon={Banknote} label="Financeiro" />
           <MobileNavItem to="/profile" icon={User} label="Perfil" />
         </>
       }

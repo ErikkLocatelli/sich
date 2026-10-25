@@ -1,6 +1,6 @@
-const SubTitle = ({text}: {text: string}) => {
+const SubTitle = ({text, className}: {text: string; className?: string}) => {
   return (
-    <span className="text-[15px] font-semibold">{text}</span>
+    <h3 className={`text-[15px] font-semibold ${className}`}>{text}</h3>
   )
 }
 

@@ -1,4 +1,5 @@
 import useHead from "../../hooks/useHead"
+import usePreviousRoute from "../../hooks/usePreviousRoute"
 
 import Title from "../../components/commons/Title"
 import Input from "../../components/form/Input"
@@ -12,9 +13,10 @@ import { Cog, Diamond } from 'lucide-react';
 
 const Search = () => {
   useHead("Buscar", "Busque produtos ou profissionais na SICH")
+  const previousRoute = usePreviousRoute()
 
   return (
-    <div className="w-full min-h-dvh">
+    <div className={`w-full min-h-dvh ${previousRoute === "/" ? "animateRight" : "animateLeft"}`}>
       <div className="px-6 py-4 flex flex-col bg-white gap-3">
         <Title text="Buscar" color="text-black" />
         <Field orientation="horizontal">

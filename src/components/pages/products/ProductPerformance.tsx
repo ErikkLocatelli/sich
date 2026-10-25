@@ -1,7 +1,6 @@
-import SichText from "@/components/commons/SichText"
 import SubTitle from "@/components/commons/SubTitle"
 import Card from "@/components/commons/Card"
-
+import StatsSummary from "@/components/commons/StatsSummary"
 
 
 const ProductPerformance = ( {products }: { products: { durationMinutes: number; price: number }[] }) => {
@@ -22,26 +21,13 @@ const ProductPerformance = ( {products }: { products: { durationMinutes: number;
     <Card className="mt-4 p-4">
       <SubTitle text="Desempenho" />
 
-      <div className="mt-4 flex flex-row items-center">
-        <div className="flex flex-1 flex-col items-center">
-          <SichText text={products.length.toLocaleString()} />
-          <span className="text-[9px] text-(--label-text)">Serviços</span>
-        </div>
-
-        <div className="h-10 w-px bg-gray-300" />
-
-        <div className="flex flex-1 flex-col items-center">
-          <SichText text={averageTicket()} />
-          <span className="text-[9px] text-(--label-text)">Ticket Médio</span>
-        </div>
-
-        <div className="h-10 w-px bg-gray-300" />
-
-        <div className="flex flex-1 flex-col items-center">
-          <SichText text={avarageDuration()} />
-          <span className="text-[9px] text-(--label-text)">Duração Média</span>
-        </div>
-      </div>
+      <StatsSummary
+        items={[
+          { value: products.length.toLocaleString(), label: "Serviços" },
+          { value: averageTicket(), label: "Ticket Médio" },
+          { value: avarageDuration(), label: "Duração Média" },
+        ]}
+      />
     </Card>
   )
 }

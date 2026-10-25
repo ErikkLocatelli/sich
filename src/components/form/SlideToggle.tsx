@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { cva, type VariantProps } from "class-variance-authority"
 
 import { Toggle } from "@/components/ui/toggle"
 import { cn } from "@/lib/utils"
@@ -9,14 +10,45 @@ interface SlideToggleOption {
   disabled?: boolean
 }
 
+const slideToggleVariants = cva(
+  "relative flex h-9 w-full items-center gap-1 overflow-hidden rounded-lg p-1 text-[12px] font-medium transition-colors hover:cursor-pointer",
+  {
+    variants: {
+      variant: {
+        default:
+          "bg-[#e4e6ea] text-[#6b7280] hover:text-[#6b7280] aria-pressed:bg-[#e4e6ea] aria-pressed:text-[#6b7280] data-pressed:bg-[#e4e6ea] data-pressed:text-[#6b7280]",
+        outline:
+          "border border-sich-border bg-[#e4e6ea] text-sich-label hover:text-sich-label aria-pressed:bg-transparent aria-pressed:text-sich-label data-pressed:bg-transparent data-pressed:text-sich-label",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
+
+const slideToggleIndicatorVariants = cva(
+  "pointer-events-none absolute inset-y-1 left-1 w-[calc((100%_-_0.5rem_-_(var(--slide-option-count)_-_1)_*_0.25rem)_/_var(--slide-option-count))] rounded-lg shadow-[0_1px_1.5px_rgba(0,0,0,0.06)] transition-transform duration-200 ease-out translate-x-[calc(var(--slide-active-index)_*_(100%_+_0.25rem))]",
+  {
+    variants: {
+      variant: {
+        default: "bg-gradient-to-r from-[#ff5a8a] to-[#c8307a]",
+        outline: " bg-white",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
+
 type SlideToggleOptions = readonly [
   SlideToggleOption,
   SlideToggleOption,
   ...SlideToggleOption[],
 ]
 
-interface SlideToggleProps
-  extends Omit<
+type SlideToggleProps = Omit<
     React.ComponentProps<typeof Toggle>,
     | "children"
     | "className"
@@ -24,7 +56,8 @@ interface SlideToggleProps
     | "defaultPressed"
     | "onPressedChange"
     | "disabled"
-  > {
+  > &
+  VariantProps<typeof slideToggleVariants> & {
   options?: SlideToggleOptions
   selectedIndex?: number
   defaultSelectedIndex?: number
@@ -42,6 +75,7 @@ function SlideToggle({
   defaultSelectedIndex = 0,
   onSelectedIndexChange,
   disabled = false,
+  variant = "default",
   ...props
 }: SlideToggleProps) {
   const [internalSelectedIndex, setInternalSelectedIndex] = useState(
@@ -75,16 +109,12 @@ function SlideToggle({
           "--slide-active-index": activeIndex,
         } as React.CSSProperties
       }
-      className={cn(
-        "relative flex h-9 w-full items-center gap-1 overflow-hidden rounded-lg bg-[#e4e6ea] p-1 text-[12px] font-medium text-[#6b7280] hover:text-[#6b7280] aria-pressed:bg-[#e4e6ea] aria-pressed:text-[#6b7280] data-pressed:bg-[#e4e6ea] data-pressed:text-[#6b7280] hover:cursor-pointer",
-        className
-      )}
+      data-variant={variant}
+      className={slideToggleVariants({ variant, className })}
     >
       <span
         aria-hidden="true"
-        className={cn(
-          "pointer-events-none absolute inset-y-1 left-1 w-[calc((100%_-_0.5rem_-_(var(--slide-option-count)_-_1)_*_0.25rem)_/_var(--slide-option-count))] rounded-lg bg-gradient-to-r from-[#ff5a8a] to-[#c8307a] shadow-[0_1px_1.5px_rgba(0,0,0,0.06)] transition-transform duration-200 ease-out translate-x-[calc(var(--slide-active-index)_*_(100%_+_0.25rem))]"
-        )}
+        className={slideToggleIndicatorVariants({ variant })}
       />
       {options.map((option, index) => {
         return (
@@ -97,7 +127,8 @@ function SlideToggle({
             }}
             className={cn(
               "relative z-10 flex h-full min-w-0 flex-1 items-center justify-center px-2.5 text-center transition-colors duration-200",
-              activeIndex === index && "text-white",
+              activeIndex === index &&
+                (variant === "outline" ? "text-sich-magenta" : "text-white"),
               option.disabled && "cursor-not-allowed opacity-50"
             )}
           >

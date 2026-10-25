@@ -9,14 +9,13 @@ import HomeProvider from "./HomeProvider"
 const Home = () => {
   useHead("Página Inicial", "Acesse seus agendamentos e benefícios na SICH")
   const { data } = useContext(userContext)
-  const { userType } = data || {}
 
   if(!data) return null
 
-  if (userType === "CUSTOMER") {
+  if (data.userType === "CUSTOMER") {
     return <HomeCustomer data={data} />
   } else {
-    return <HomeProvider />
+    return <HomeProvider data={data} />
   }
 }
 
