@@ -1,10 +1,10 @@
 import { createContext } from "react"
-import type { UserData } from "../models/userData"
+import type { UserData, UserDataProvider } from "../models/userData"
 
 export type UserContextType = {
     login: boolean,
     authReady: boolean,
-    data: UserData | null,
+    data: UserData | UserDataProvider | null,
     userLogout: () => void
 }
 
