@@ -103,8 +103,10 @@
     --sich-heading: #1c1830;
     --sich-label: #7a7591;
     --sich-magenta: #d63384;
+    --sich-primary: #A01F6B;
     --sich-gradient-start: #ff5a8a;
     --sich-gradient-end: #c8307a;
+    --sich-green: #22C55E;
 }
 
 .dark {
