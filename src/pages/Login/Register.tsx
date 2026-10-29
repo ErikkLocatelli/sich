@@ -56,7 +56,7 @@ const Register = () => {
       </div>
 
       <div className="flex flex-col lg:w-110">
-        <div className="flex h-25 w-full items-center gap-3 bg-white px-5 lg:hidden">
+        <div className="flex w-full items-center gap-3 bg-white p-5 lg:hidden">
           <ArrowBack />
           <Title text="Criar conta" />
         </div>
