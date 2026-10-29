@@ -33,8 +33,7 @@ const ProfileHeader = ({ name, email }: ProfileHeaderProps) => {
               className="mt-0.5 size-2.5 shrink-0 fill-current"
             />
             <span>
-              Cliente desde {profileDemoData.customerSince} ·{" "}
-              {profileDemoData.appointments} atendimentos
+              Cliente desde {profileDemoData.customerSince}
             </span>
           </p>
         </div>

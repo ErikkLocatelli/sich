@@ -1,16 +1,15 @@
 import type { UserData } from "../../models/userData";
 import {
-  Bell,
   CircleHelp,
-  CreditCard,
+  KeyRound,
   LogOut,
   MapPin,
-  Settings,
-  ShieldCheck,
+  UserRound,
 } from "lucide-react";
 import ProfileHeader from "../../components/pages/profile/ProfileHeader";
 import ProfileStats from "../../components/pages/profile/ProfileStats";
 import ProfileMenuSection from "../../components/pages/profile/ProfileMenuSection";
+import ProfileFavorites from "../../components/pages/profile/ProfileFavorites";
 import { Button } from "../../components/ui/button";
 
 type ProfileCustomerProps = {
@@ -19,14 +18,9 @@ type ProfileCustomerProps = {
 };
 
 const accountItems = [
-  { label: "Endereços", icon: MapPin },
-  { label: "Pagamentos", icon: CreditCard },
-  { label: "Notificações", icon: Bell },
-];
-
-const moreItems = [
-  { label: "Privacidade e segurança", icon: ShieldCheck },
-  { label: "Configurações", icon: Settings },
+  { label: "Alterar endereço", icon: MapPin, to: "/profile/address" },
+  { label: "Redefinir senha", icon: KeyRound, to: "/profile/password" },
+  { label: "Meus dados", icon: UserRound },
   { label: "Ajuda e suporte", icon: CircleHelp },
 ];
 
@@ -40,16 +34,14 @@ const ProfileCustomer = ({ data, userLogout }: ProfileCustomerProps) => {
       <ProfileStats />
 
       <div className="px-5 pt-4.5 pb-5">
-        <div className="flex flex-col gap-4.5">
-          <ProfileMenuSection title="Conta" items={accountItems} />
-          <ProfileMenuSection title="Mais" items={moreItems} />
-        </div>
+        <ProfileMenuSection title="Conta" items={accountItems} />
+        <ProfileFavorites />
 
         <Button
           type="button"
           variant="outline"
           onClick={userLogout}
-          className="mt-3.5 h-11.5 gap-1 rounded-[16px] border-red-500/30 bg-transparent px-3 text-[13px] font-semibold text-red-500 hover:bg-red-500/5 hover:text-red-500"
+          className="mt-7 h-11.5 gap-1 rounded-[16px] border-red-500/30 bg-transparent px-3 text-[13px] font-semibold text-red-500 hover:bg-red-500/5 hover:text-red-500"
         >
           <LogOut aria-hidden="true" className="size-3.5" />
           Sair da conta

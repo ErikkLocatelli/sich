@@ -12,9 +12,11 @@ import EditProduct from '../pages/products/EditProduct'
 import NewProduct from '../pages/products/NewProduct'
 import Financial from '../pages/financial/Financial'
 import Profile from '../pages/profile/Profile'
+import ProfileAddress from '../pages/profile/ProfileAddress'
+import ProfilePassword from '../pages/profile/ProfilePassword'
 
-import Login from '../pages/login/Login'
-import Register from "../pages/login/Register"
+import Login from '../pages/Login/Login'
+import Register from "../pages/Login/Register"
 
 import NotFound from "../components/commons/NotFound"
 
@@ -49,7 +51,12 @@ const Routes = () => {
                 }, 
                 {
                     path: '/profile',
-                    element: <Profile />
+                    element: <Outlet />,
+                    children: [
+                        { index: true, element: <Profile /> },
+                        { path: 'address', element: <ProfileAddress /> },
+                        { path: 'password', element: <ProfilePassword /> }
+                    ]
                 }, 
                 {
                     path: '/benefits',
