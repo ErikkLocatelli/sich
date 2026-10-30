@@ -1,15 +1,16 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
+import { Building2, House, Map, MapPinHouse, Road } from "lucide-react";
 import { useProfileAddressForm } from "../../../hooks/profile/useProfileAddressForm";
 import Input from "../../form/Input";
 import { Button } from "../../ui/button";
 
 const addressFields = [
-  { name: "cep", label: "CEP", placeholder: "00000-000", type: "tel" },
-  { name: "city", label: "Cidade", placeholder: "Nome da cidade" },
-  { name: "street", label: "Rua", placeholder: "Nome da rua" },
-  { name: "number", label: "Número", placeholder: "Número da residência ou edifício" },
-  { name: "state", label: "Estado", placeholder: "Ex.: São Paulo" },
+  { name: "cep", label: "CEP", placeholder: "00000-000", type: "tel", icon: MapPinHouse },
+  { name: "city", label: "Cidade", placeholder: "Nome da cidade", icon: Building2 },
+  { name: "street", label: "Rua", placeholder: "Nome da rua", icon: Road },
+  { name: "number", label: "Número", placeholder: "Número da residência ou edifício", icon: House },
+  { name: "state", label: "Estado", placeholder: "Ex.: São Paulo", icon: Map },
 ] as const;
 
 const ProfileAddressForm = ({ initialAddress }: { initialAddress: { city?: string | null; street?: string | null; state?: string | null } }) => {
@@ -33,7 +34,7 @@ const ProfileAddressForm = ({ initialAddress }: { initialAddress: { city?: strin
 
   return (
     <form noValidate onSubmit={handleSubmit} onChange={() => setMessage("")} className="mx-auto max-w-lg px-8.5 pt-11 pb-8">
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2.5">
         {addressFields.map(({ name, ...props }) => (
           <div key={name}>
             <Input
@@ -48,7 +49,7 @@ const ProfileAddressForm = ({ initialAddress }: { initialAddress: { city?: strin
         ))}
       </div>
 
-      <div className="mt-12 flex gap-2">
+      <div className="mt-6 flex gap-2">
         <Button render={<Link to="/profile" />} nativeButton={false} variant="outline" className="h-11.5 min-w-0 flex-1 rounded-[16px] border-sich-border bg-white text-[12px] font-semibold text-sich-magenta">
           Cancelar
         </Button>

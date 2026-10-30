@@ -42,12 +42,12 @@ const ProfilePassword = () => {
         </p>
 
         <form noValidate onSubmit={handleSubmit} onChange={() => setMessage("")} className="mt-9">
-          <InputPassword field={fields.currentPassword} label="Senha atual" placeholder="Senha atual" />
-          <div className="mt-15 flex flex-col gap-3.5">
+          <div className="flex flex-col gap-2.5">
+            <InputPassword field={fields.currentPassword} label="Senha atual" placeholder="Senha atual" />
             <InputPassword field={fields.newPassword} label="Nova senha" placeholder="Nova senha" />
             <InputPassword field={fields.confirmation} label="Confirmar nova senha" placeholder="Confirmar nova senha" />
           </div>
-          <Button type="submit" disabled={validating} className="mt-11 h-12 w-full rounded-[16px] bg-sich-gradient text-[13px] font-semibold text-white shadow-sich-button">
+          <Button type="submit" disabled={validating} className="mt-6 h-12 w-full rounded-[16px] bg-sich-gradient text-[13px] font-semibold text-white shadow-sich-button">
             Confirmar
           </Button>
           <p role="status" aria-live="polite" className="mt-4 text-[12px] text-sich-label">{message}</p>
