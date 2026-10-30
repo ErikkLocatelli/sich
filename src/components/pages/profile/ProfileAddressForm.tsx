@@ -1,8 +1,16 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { useProfileAddressForm } from "../../../hooks/profile/useProfileAddressForm";
-import ProfileFormField from "./ProfileFormField";
+import Input from "../../form/Input";
 import { Button } from "../../ui/button";
+
+const addressFields = [
+  { name: "cep", label: "CEP", placeholder: "00000-000", type: "tel" },
+  { name: "city", label: "Cidade", placeholder: "Nome da cidade" },
+  { name: "street", label: "Rua", placeholder: "Nome da rua" },
+  { name: "number", label: "Número", placeholder: "Número da residência ou edifício" },
+  { name: "state", label: "Estado", placeholder: "Ex.: São Paulo" },
+] as const;
 
 const ProfileAddressForm = ({ initialAddress }: { initialAddress: { city?: string | null; street?: string | null; state?: string | null } }) => {
   const { fields, validateForm } = useProfileAddressForm(initialAddress);
@@ -26,11 +34,18 @@ const ProfileAddressForm = ({ initialAddress }: { initialAddress: { city?: strin
   return (
     <form noValidate onSubmit={handleSubmit} onChange={() => setMessage("")} className="mx-auto max-w-lg px-8.5 pt-11 pb-8">
       <div className="flex flex-col gap-6">
-        <ProfileFormField id="profile-address-cep" label="CEP" placeholder="00000-000" type="tel" field={fields.cep} autoComplete="postal-code" loadingMessage="Consultando CEP..." />
-        <ProfileFormField id="profile-address-city" label="Cidade" placeholder="Nome da cidade" field={fields.city} autoComplete="address-level2" />
-        <ProfileFormField id="profile-address-street" label="Rua" placeholder="Nome da rua" field={fields.street} autoComplete="address-line1" />
-        <ProfileFormField id="profile-address-number" label="Número" placeholder="Número da residência ou edifício" field={fields.number} />
-        <ProfileFormField id="profile-address-state" label="Estado" placeholder="Ex.: São Paulo" field={fields.state} autoComplete="address-level1" />
+        {addressFields.map(({ name, ...props }) => (
+          <div key={name}>
+            <Input
+              {...props}
+              value={fields[name].value}
+              onChange={fields[name].onChange}
+              onBlur={fields[name].onBlur}
+              error={fields[name].error}
+            />
+            {name === "cep" && fields.cep.isValidating && <p role="status" className="mt-1 text-[11px] text-sich-label">Consultando CEP...</p>}
+          </div>
+        ))}
       </div>
 
       <div className="mt-12 flex gap-2">

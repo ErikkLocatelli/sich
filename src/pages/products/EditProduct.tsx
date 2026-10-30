@@ -10,8 +10,7 @@ import { IMAGE_DELETE, IMAGE_POST, PRODUCT_GET, PRODUCT_PUT } from '@/api/produc
 import type { ProductResponse } from '@/api/product/product'
 
 import ProductForm from './ProductForm'
-import ArrowBack from '../../components/commons/ArrowBack'
-import SichText from '@/components/commons/SichText'
+import PageHeader from '../../components/commons/PageHeader'
 
 import { Button } from '../../components/ui/button'
 import { Field  } from '../../components/ui/field'
@@ -125,10 +124,7 @@ const EditProduct = () => {
 
   return (
     <div className="w-full animateRight">
-        <div className="flex items-center gap-3 bg-white p-5">
-          <ArrowBack />
-          <SichText text="Editar produto" />
-        </div>
+        <PageHeader text="Editar produto" />
 
         <form className="mt-3.5 mb-3.5 flex flex-col gap-5" onSubmit={handleSubmit}>
             <ProductForm form={{ fields }} images={images} />

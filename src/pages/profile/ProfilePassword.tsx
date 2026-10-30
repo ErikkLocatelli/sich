@@ -4,7 +4,7 @@ import { userContext } from "../../services/userContext";
 import useHead from "../../hooks/useHead";
 import { useProfilePasswordForm } from "../../hooks/profile/useProfilePasswordForm";
 import ProfilePageLayout from "../../components/pages/profile/ProfilePageLayout";
-import ProfileFormField from "../../components/pages/profile/ProfileFormField";
+import InputPassword from "../../components/form/InputPassword";
 import { Button } from "../../components/ui/button";
 import securityIllustration from "../../assets/svgs/ProfileSecurity.svg";
 
@@ -42,10 +42,10 @@ const ProfilePassword = () => {
         </p>
 
         <form noValidate onSubmit={handleSubmit} onChange={() => setMessage("")} className="mt-9">
-          <ProfileFormField id="profile-current-password" type="password" field={fields.currentPassword} label="Senha atual" placeholder="Senha atual" autoComplete="current-password" hideLabel />
+          <InputPassword field={fields.currentPassword} label="Senha atual" placeholder="Senha atual" />
           <div className="mt-15 flex flex-col gap-3.5">
-            <ProfileFormField id="profile-new-password" type="password" field={fields.newPassword} label="Nova senha" placeholder="Nova senha" autoComplete="new-password" hideLabel />
-            <ProfileFormField id="profile-confirm-password" type="password" field={fields.confirmation} label="Confirmar nova senha" placeholder="Confirmar nova senha" autoComplete="new-password" hideLabel />
+            <InputPassword field={fields.newPassword} label="Nova senha" placeholder="Nova senha" />
+            <InputPassword field={fields.confirmation} label="Confirmar nova senha" placeholder="Confirmar nova senha" />
           </div>
           <Button type="submit" disabled={validating} className="mt-11 h-12 w-full rounded-[16px] bg-sich-gradient text-[13px] font-semibold text-white shadow-sich-button">
             Confirmar

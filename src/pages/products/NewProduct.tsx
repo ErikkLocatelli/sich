@@ -5,8 +5,7 @@ import useFetch from '@/hooks/useFetch'
 
 import { PRODUCT_POST, IMAGE_POST } from '../../api/product/product'
 
-import ArrowBack from '../../components/commons/ArrowBack'
-import SichText from '@/components/commons/SichText'
+import PageHeader from '../../components/commons/PageHeader'
 import ProductForm from './ProductForm'
 
 import { Button } from '../../components/ui/button'
@@ -68,10 +67,7 @@ const NewProduct = () => {
   
   return (
     <div className="w-full animateRight">
-      <div className="flex items-center gap-3 bg-white p-5">
-          <ArrowBack />
-          <SichText text="Cadastrar produto" />
-      </div>
+      <PageHeader text="Cadastrar produto" />
       
       <form className="mt-3.5 mb-3.5 flex flex-col gap-5" onSubmit={handleSubmit}>
           <ProductForm form={{ fields }} images={images} />
