@@ -10,7 +10,7 @@ import { REGISTER_POST } from "../../api/user/user"
 
 import CustomerForm from "../../components/pages/register/CustomerForm"
 import ProfessionalForm from "../../components/pages/register/ProfessionalForm"
-import Title from "@/components/commons/Title"
+import PageHeader from "../../components/commons/PageHeader"
 import ArrowBack from "../../components/commons/ArrowBack"
 import LabelLink from "../../components/commons/LabelLink"
 import Error from "../../components/commons/Error"
@@ -56,10 +56,7 @@ const Register = () => {
       </div>
 
       <div className="flex flex-col lg:w-110">
-        <div className="flex w-full items-center gap-3 bg-white p-5 lg:hidden">
-          <ArrowBack />
-          <Title text="Criar conta" />
-        </div>
+        <PageHeader text="Criar conta" className="h-25 w-full lg:hidden" />
     
       <div className="flex flex-col px-6 lg:px-0">
         <h1 className="hidden text-center text-[28px] font-semibold text-sich-heading lg:block">
