@@ -2,8 +2,7 @@ import { CircleCheck, CircleX } from 'lucide-react';
 
 import type { AppointmentResponse } from '@/api/schedule/appointments';
 import { shortDateTime } from '@/services/schedule/agendaDates';
-
-const currency = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" })
+import { formatCurrency } from '@/services/schedule/formatters';
 
 const ScheduleHistory = ({ appointment }: { appointment: AppointmentResponse }) => {
   const canceled = appointment.status === "CANCELED"
@@ -23,7 +22,7 @@ const ScheduleHistory = ({ appointment }: { appointment: AppointmentResponse }) 
         </div>
       </div>
       <span className={`text-sm font-semibold whitespace-nowrap ${canceled ? "text-sich-label line-through" : "text-(--sich-green)"}`}>
-            {currency.format(appointment.totalPrice)}
+            {formatCurrency(appointment.totalPrice)}
       </span>
     </div>
   )
