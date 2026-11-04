@@ -2,30 +2,23 @@ import { Link } from "react-router-dom"
 import Card from "@/components/commons/Card"
 import SegmentedProgress from "@/components/commons/SegmentedProgress"
 import StatsSummary from "@/components/commons/StatsSummary"
+import type { AgendaSummaryResponse } from "@/api/schedule/appointments"
+import { formatDuration } from "@/services/schedule/formatters"
 
 import { Button } from "../../ui/button"
 
-type HomeWeeklyProps = {
-  totalSlots: number
-  reservedSlots: number
-  filledSlots: string
-  freeSlots: string
-  bloquedSlots: string
-  className?: string
-}
-
-const HomeWeekly = ({ totalSlots, reservedSlots, filledSlots, freeSlots, bloquedSlots, className }: HomeWeeklyProps) => {
+const HomeWeekly = ({ summary, className }: { summary: AgendaSummaryResponse | null; className?: string }) => {
   return (
-    <Card className={`px-4 py-6 ${className}`}>
-        <SegmentedProgress total={totalSlots} value={reservedSlots} />
+    <Card className={`px-4 py-6 ${className || ""}`}>
+        <SegmentedProgress total={summary?.workingMinutes ?? 0} value={summary?.bookedMinutes ?? 0} />
 
         <div className="h-px mt-4 w-full bg-gray-100" />
 
         <StatsSummary
           items={[
-            { value: filledSlots, label: "Atendimentos" },
-            { value: freeSlots, label: "Horários livres" },
-            { value: bloquedSlots, label: "Bloqueios" },
+            { value: String(summary?.scheduledCount ?? 0), label: "Atendimentos" },
+            { value: formatDuration(summary?.freeMinutes ?? 0), label: "Horas livres" },
+            { value: String(summary?.canceledCount ?? 0), label: "Cancelamentos" },
           ]}
         />
 

@@ -1,4 +1,4 @@
-import { HandCoins, Handshake, BriefcaseBusiness, Star } from "lucide-react"
+import { HandCoins, Handshake, BriefcaseBusiness, BanknoteArrowUp } from "lucide-react"
 
 import type { UserData, UserDataProvider } from "@/models/userData"
 
@@ -20,7 +20,7 @@ const HomeHeader = ({ data, value1, value2 }: { data: UserData | UserDataProvide
       
       <div className="flex flex-row items-center gap-3">
         <UserInfoCard label={data.userType === "CUSTOMER" ? "Saldo cashback" : "Atendimentos de hoje"} value={value1} icon={data.userType === "CUSTOMER" ? HandCoins : BriefcaseBusiness} />
-        <UserInfoCard label={data.userType === "CUSTOMER" ? "Fidelidade" : "Avaliação média"} value={value2} icon={data.userType === "CUSTOMER" ? Handshake : Star} />
+        <UserInfoCard label={data.userType === "CUSTOMER" ? "Fidelidade" : "Receita prevista hoje"} value={value2} icon={data.userType === "CUSTOMER" ? Handshake : BanknoteArrowUp} />
       </div>
     </SichBadge>
   )
