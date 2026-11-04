@@ -39,7 +39,7 @@ export type ProductResponse = {
 
 export const CATEGORIES_GET = (token: string) => {
   return {
-    url: API_URL + "categories",
+    url: API_URL + "/categories",
     options: {
       method: "GET",
       headers: {
@@ -51,7 +51,7 @@ export const CATEGORIES_GET = (token: string) => {
 
 export const PRODUCTS_GET = (token: string) => {
   return {
-    url: API_URL + "providers/me/products",
+    url: API_URL + "/providers/me/products",
     options: {
       method: "GET",
       headers: {
@@ -63,7 +63,7 @@ export const PRODUCTS_GET = (token: string) => {
 
 export const PRODUCT_GET = (token: string, productId: number) => {
   return {
-    url: API_URL + `providers/me/products/${productId}`,
+    url: API_URL + `/providers/me/products/${productId}`,
     options: {
       method: "GET",
       headers: {
@@ -75,7 +75,7 @@ export const PRODUCT_GET = (token: string, productId: number) => {
 
 export const PRODUCT_PUT = (token: string, productId: number, body: ProductRequest) => {
   return {
-    url: API_URL + `providers/me/products/${productId}`,
+    url: API_URL + `/providers/me/products/${productId}`,
     options: {
       method: "PUT",
       headers: {
@@ -88,7 +88,7 @@ export const PRODUCT_PUT = (token: string, productId: number, body: ProductReque
 }
 export const PRODUCT_POST = (token: string, body: ProductRequest) => {
   return {
-    url: API_URL + "providers/me/products",
+    url: API_URL + "/providers/me/products",
     options: {
       method: "POST",
       headers: {
@@ -102,7 +102,7 @@ export const PRODUCT_POST = (token: string, body: ProductRequest) => {
 
 export const PRODUCT_STATUS_PUT = (token: string, productId: number, active: boolean) => {
   return {
-    url: API_URL + `providers/me/products/${productId}/status`,
+    url: API_URL + `/providers/me/products/${productId}/status`,
     options: {
       method: "PATCH",
       headers: {
@@ -116,7 +116,7 @@ export const PRODUCT_STATUS_PUT = (token: string, productId: number, active: boo
 
 export const PRODUCT_DELETE = (token: string, productId: number) => {
   return {
-    url: API_URL + `providers/me/products/${productId}`,
+    url: API_URL + `/providers/me/products/${productId}`,
     options: {
       method: "DELETE",
       headers: {
@@ -128,7 +128,7 @@ export const PRODUCT_DELETE = (token: string, productId: number) => {
 
 export const IMAGE_POST = (token: string, productId: number, image: string) => {{
     return {
-      url: API_URL + `providers/me/products/${productId}/images`,
+      url: API_URL + `/providers/me/products/${productId}/images`,
       options: {
         method: "POST",
         headers: {
@@ -142,7 +142,7 @@ export const IMAGE_POST = (token: string, productId: number, image: string) => {
 
 export const IMAGE_DELETE = (token: string, productId: number, imageId: number) => {{
     return {
-      url: API_URL + `providers/me/products/${productId}/images/${imageId}`,
+      url: API_URL + `/providers/me/products/${productId}/images/${imageId}`,
       options: {
         method: "DELETE",
         headers: {

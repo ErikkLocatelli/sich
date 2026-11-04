@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import useHead from '../../hooks/useHead'
 import { useNewProduct } from '../../hooks/product/useNewProduct'
 import useProductImages from '../../hooks/useProductImages'
@@ -15,6 +16,7 @@ import { Spinner } from '@/components/ui/spinner'
 
 const NewProduct = () => {
   useHead("Cadastrar produto", "Cadastre seu produto na SICH")
+  const navigate = useNavigate()
 
   const { fields, isFormValid, validateForm, getPayload } = useNewProduct()
   const images = useProductImages([])
@@ -73,7 +75,7 @@ const NewProduct = () => {
           <ProductForm form={{ fields }} images={images} />
 
           <Field className="flex flex-row items-center gap-4 *:flex-1 px-5">
-              <Button className="text-[12px] font-semibold py-5 px-8 text-sich-magenta shadow-sich-small bg-white hover:bg-white">Cancelar</Button>
+              <Button type="button" onClick={() => navigate("/products")} className="text-[12px] font-semibold py-5 px-8 text-sich-magenta shadow-sich-small bg-white hover:bg-white">Cancelar</Button>
               <Button className="text-[12px] font-semibold py-5 px-8 shadow-sich-button" type="submit" disabled={!isFormValid || loading}>
                 {loading && <Spinner data-icon="inline-start"  /> }
                 Cadastrar produto

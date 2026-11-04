@@ -12,7 +12,7 @@ const HomeSchedule = ({className}: {className?: string}) => {
             <div className="size-14 text-[#A01F6B] bg-[#FDE7F0] flex items-center justify-center rounded-[14px] font-semibold">11:00</div>
             <div className="flex min-w-0 flex-1 flex-col gap-1">
                 <div className="flex w-full items-center gap-1">
-                    <span className="font-semibold text-sm">Esmaltação em gel</span>
+                    <span className="font-medium text-sm">Esmaltação em gel</span>
                     <RegularBadge text="Confirmado"/>
                 </div>
                 <div className="flex gap-1 *:text-[11px] *:text-sich-label">

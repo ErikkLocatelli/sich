@@ -4,36 +4,20 @@ import { userContext } from '../../services/userContext'
 import { useHideOnScroll } from '@/hooks/useHideOnScroll'
 
 import MobileNavItem from './MobileNavItem'
-import { House, Search, Calendar1, Gift, User, ChartColumn, Banknote } from 'lucide-react'
-import Nails from '../../assets/icons/nails.svg?react'
+import { getNavItems } from './navItems'
 
-const MobileNav = () => {  
+const MobileNav = () => {
   const visible = useHideOnScroll()
   const { data } = useContext(userContext)
-  const { userType } = data || {}
-  
+  const navItems = getNavItems(data?.userType)
+
   return (
     <div className={`flex justify-around *:py-2 bg-white border-t border-sich-border fixed bottom-0 left-0 right-0 z-50 transition-transform duration-250 ${visible ? 'translate-y-0' : 'translate-y-full'}`}>
-      {userType === 'CUSTOMER' ? (
-        <>
-          <MobileNavItem to="/" icon={House} label="Inicio" />
-          <MobileNavItem to="/search" icon={Search} label="Buscar" />
-          <MobileNavItem to="/schedule" icon={Calendar1} label="Agenda" />
-          <MobileNavItem to="/benefits" icon={Gift} label="Beneficios" />
-          <MobileNavItem to="/profile" icon={User} label="Perfil" />
-        </> 
-      ) : 
-        <>
-          <MobileNavItem to="/" icon={ChartColumn} label="Painel" />
-          <MobileNavItem to="/schedule" icon={Calendar1} label="Agenda" />
-          <MobileNavItem to="/products" icon={Nails} label="Produtos" />
-          <MobileNavItem to="/financial" icon={Banknote} label="Financeiro" />
-          <MobileNavItem to="/profile" icon={User} label="Perfil" />
-        </>
-      }
+      {navItems.map((item) => (
+        <MobileNavItem key={item.to} {...item} />
+      ))}
     </div>
   )
 }
 
 export default MobileNav
-    

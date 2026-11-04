@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import useHead from '../../hooks/useHead'
 import { useEditProduct } from '../../hooks/product/useEditProduct'
@@ -19,6 +19,7 @@ import { Spinner } from "@/components/ui/spinner"
 
 const EditProduct = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
   const [product, setProduct] = useState<ProductResponse | null>(null)
   const { fields, isFormValid, getPayload, validateForm } = useEditProduct(product)
   const images = useProductImages([])
@@ -130,7 +131,7 @@ const EditProduct = () => {
             <ProductForm form={{ fields }} images={images} />
 
             <Field className="flex flex-row items-center gap-4 *:flex-1 px-5">
-                <Button className="text-[12px] font-semibold py-5 px-8 text-sich-magenta shadow-sich-small bg-white hover:bg-white">Cancelar</Button>
+                <Button type="button" onClick={() => navigate("/products")} className="text-[12px] font-semibold py-5 px-8 text-sich-magenta shadow-sich-small bg-white hover:bg-white">Cancelar</Button>
                 <Button className="text-[12px] font-semibold py-5 px-8 shadow-sich-button" type="submit" disabled={!isFormValid || loading}>
                   {loading && <Spinner data-icon="inline-start"  /> }
                   Salvar alterações

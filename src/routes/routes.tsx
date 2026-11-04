@@ -7,6 +7,7 @@ import Home from '../pages/home/Home'
 import Benefits from '../pages/customer/Benefits'
 import Search from '../pages/customer/Search'
 import Schedule from '../pages/schedule/Schedule'
+import ScheduleDisponibilty from '../pages/schedule/ScheduleDisponibilty'
 import Products from '../pages/products/Products'
 import EditProduct from '../pages/products/EditProduct'
 import NewProduct from '../pages/products/NewProduct'
@@ -15,8 +16,8 @@ import Profile from '../pages/profile/Profile'
 import ProfileAddress from '../pages/profile/ProfileAddress'
 import ProfilePassword from '../pages/profile/ProfilePassword'
 
-import Login from '../pages/Login/Login'
-import Register from "../pages/Login/Register"
+import Login from '../pages/login/Login'
+import Register from "../pages/login/Register"
 
 import NotFound from "../components/commons/NotFound"
 
@@ -45,7 +46,7 @@ const Routes = () => {
                         }, 
                         {
                             path: 'disponibility',
-                            element: <div>disponibilidade</div>
+                            element: <ScheduleDisponibilty />
                         }
                     ]
                 }, 

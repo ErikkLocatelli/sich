@@ -1,18 +1,29 @@
+import { CircleCheck, CircleX } from 'lucide-react';
 
-import { CircleCheck } from 'lucide-react';
+import type { AppointmentResponse } from '@/api/schedule/appointments';
+import { shortDateTime } from '@/services/schedule/agendaDates';
 
-const ScheduleHistory = () => {
+const currency = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" })
+
+const ScheduleHistory = ({ appointment }: { appointment: AppointmentResponse }) => {
+  const canceled = appointment.status === "CANCELED"
+  const services = appointment.items.map((item) => item.name).join(" + ")
+
   return (
-    <div className="flex items-center justify-between py-3 mt-2">
+    <div className={`flex items-center justify-between py-3 mt-2 ${canceled ? "opacity-50" : ""}`}>
       <div className="flex items-center gap-2">
-        <CircleCheck className="size-7 text-(--sich-green)" />
+        {canceled
+          ? <CircleX className="size-5 shrink-0 text-sich-label" />
+          : <CircleCheck className="size-5 shrink-0 text-(--sich-green)" />}
         <div className="flex flex-col">
-            <span className="text-sm font-medium">Ana Beatriz · Manicure</span>
-            <span className="text-[11px] text-sich-label">Ter, 13 Mai · 11:00</span>
+            <span className="text-[13px] font-medium">{appointment.customerName} · {services}</span>
+            <span className="text-[11px] text-sich-label">
+              {shortDateTime(appointment.startAt)}{canceled && " · Cancelado"}
+            </span>
         </div>
       </div>
-      <span className="text-sm font-semibold text-(--sich-green)">
-            R$23,34
+      <span className={`text-sm font-semibold whitespace-nowrap ${canceled ? "text-sich-label line-through" : "text-(--sich-green)"}`}>
+            {currency.format(appointment.totalPrice)}
       </span>
     </div>
   )

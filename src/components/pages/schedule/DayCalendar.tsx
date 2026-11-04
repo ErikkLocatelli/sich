@@ -1,34 +1,20 @@
 import SubTitle from "@/components/commons/SubTitle"
 import ScheduleAppointment from "@/components/pages/schedule/ScheduleAppointment"
-import type { CalendarView } from "../../../pages/schedule/ScheduleProvider"
+import type { TimelineBlock } from "@/services/schedule/dayTimeline"
 
-const DayCalendar = ({ day, className }: { day: CalendarView; className?: string }) => {
+const DayCalendar = ({ title, blocks, className }: { title: string; blocks: TimelineBlock[]; className?: string }) => {
   return (
     <section className={`w-full ${className || ""}`}>
-      <SubTitle text={`${day.label} ${day.value}`} />
-      <div className="grid grid-cols-[1fr_max-content] gap-2 pr-10">
-        <ScheduleAppointment
-          time="09:00"
-          clientName="Marina R."
-          service="Mani + Pedi"
-        />
-         <ScheduleAppointment
-          time="11:00"
-          clientName="Marina C."
-          service="Mani + Alopecia"
-        />
-        <ScheduleAppointment variant="break" time="12:00" />
-        <ScheduleAppointment
-          time="13:00"
-          clientName="Marina R."
-          service="Mani + Pedi"
-        />
-         <ScheduleAppointment
-          time="15:00"
-          clientName="Marina C."
-          service="Mani + Alopecia"
-        />
-      </div>
+      <SubTitle text={title} />
+      {blocks.length === 0 ? (
+        <span className="text-[11px] text-black/20">Dia sem atendimento</span>
+      ) : (
+        <div className="grid w-full grid-cols-[max-content_1fr] gap-2">
+          {blocks.map((block) => (
+            <ScheduleAppointment key={`${block.type}-${block.start}`} block={block} />
+          ))}
+        </div>
+      )}
     </section>
   )
 }
