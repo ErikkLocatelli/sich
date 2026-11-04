@@ -12,6 +12,16 @@ export type AppointmentItemResponse = {
   durationMinutes: number
 }
 
+export type AddressResponse = {
+  street: string | null
+  numberAdress: string | null
+  complementAdress: string | null
+  neighborhood: string | null
+  city: string | null
+  state: string | null
+  cep: string | null
+}
+
 export type AppointmentResponse = {
   id: number
   startAt: string
@@ -24,9 +34,12 @@ export type AppointmentResponse = {
   notes: string | null
   providerId: number
   providerName: string
+  providerPhone: string
+  providerAddress: AddressResponse
   customerId: number | null
   customerName: string
   customerPhone: string | null
+  customerAddress: AddressResponse | null
   items: AppointmentItemResponse[]
   canceledAt: string | null
   canceledBy: AppointmentOrigin | null
