@@ -1,10 +1,15 @@
 import Card from "../../commons/Card"
 import SubTitle from "@/components/commons/SubTitle"
+import type { EmptyDayState } from "@/hooks/home/useProviderHome"
 
-const MESSAGES = {
+const MESSAGES: Record<EmptyDayState, { title: string; description: string }> = {
   rest: {
     title: "Hoje é seu dia de descanso",
     description: "Não há expediente cadastrado para hoje. Aproveite para recarregar as energias!"
+  },
+  ended: {
+    title: "O seu expediente de hoje acabou",
+    description: "Não há serviços agendados para o restante do dia. Tenha um ótimo descanso!"
   },
   empty: {
     title: "Nenhum atendimento por hoje",
@@ -13,8 +18,8 @@ const MESSAGES = {
 }
 
 /** Skeleton of the appointment card, shown when today has nothing left to attend. */
-const HomeScheduleEmpty = ({ isRestDay, className }: { isRestDay: boolean; className?: string }) => {
-  const message = isRestDay ? MESSAGES.rest : MESSAGES.empty
+const HomeScheduleEmpty = ({ state, className }: { state: EmptyDayState; className?: string }) => {
+  const message = MESSAGES[state]
 
   return (
     <Card className={`p-4 ${className || ""}`}>

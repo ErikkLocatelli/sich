@@ -13,7 +13,7 @@ import { useProviderHome } from '@/hooks/home/useProviderHome'
 import { formatCurrency } from '@/services/schedule/formatters'
 
 const HomeProvider = ({data}: {data: UserDataProvider}) => {
-  const { now, todaySummary, weekSummary, upcoming } = useProviderHome()
+  const { now, todaySummary, weekSummary, upcoming, emptyDay } = useProviderHome()
 
   const labelDateFormatted = now.toLocaleDateString("pt-BR", {
     weekday: "short",
@@ -33,10 +33,10 @@ const HomeProvider = ({data}: {data: UserDataProvider}) => {
       <MobileLink title={`Agenda de hoje · ${labelDateFormatted}`} link="Ver tudo >" href="/schedule" className="px-6 mt-10"/>
 
       <div className="px-6 mt-4 flex flex-col gap-4">
-        {/* Waits for today's summary so the empty state doesn't flash while loading */}
+        {/* Waits for the working hours so the empty state doesn't flash while loading */}
         {upcoming.length > 0
           ? upcoming.map((appointment) => <HomeSchedule key={appointment.id} appointment={appointment} />)
-          : todaySummary && <HomeScheduleEmpty isRestDay={todaySummary.workingMinutes === 0} />}
+          : emptyDay && <HomeScheduleEmpty state={emptyDay} />}
       </div>
 
       <SubTitle text="Ocupação da semana" className="px-6 mt-10"/>

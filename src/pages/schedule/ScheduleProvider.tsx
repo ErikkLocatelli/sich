@@ -79,7 +79,7 @@ const ScheduleProvider = () => {
       </Card>
 
       <Card className="px-3 py-4 mt-4 mb-3">
-        <MobileLink title="Histórico" link={"Ver tudo >"} />
+        <MobileLink title="Histórico" link={"Ver tudo >"} href="/schedule/history" />
 
         {history.length === 0 ? (
           <span className="block mt-3 text-[11px] text-black/20">Nenhum atendimento realizado</span>

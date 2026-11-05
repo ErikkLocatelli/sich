@@ -9,6 +9,7 @@ import Search from '../pages/customer/Search'
 import Schedule from '../pages/schedule/Schedule'
 import ScheduleDisponibilty from '../pages/schedule/ScheduleDisponibilty'
 import AppointmentDetails from '../pages/schedule/AppointmentDetails'
+import ScheduleHistoryAll from '../pages/schedule/ScheduleHistoryAll'
 import Products from '../pages/products/Products'
 import EditProduct from '../pages/products/EditProduct'
 import NewProduct from '../pages/products/NewProduct'
@@ -48,6 +49,10 @@ const Routes = () => {
                         {
                             path: 'disponibility',
                             element: <ScheduleDisponibilty />
+                        },
+                        {
+                            path: 'history',
+                            element: <ScheduleHistoryAll />
                         },
                         {
                             path: 'appointment/:id',

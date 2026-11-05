@@ -8,9 +8,24 @@ import {
   type AgendaSummaryResponse,
   type AppointmentResponse
 } from "../../api/schedule/appointments"
-import { periodFor, toIsoDate, toLocalDateTime } from "../../services/schedule/agendaDates"
+import { WORKING_HOURS_GET, type WorkingInterval } from "../../api/schedule/workingHours"
+import { isoWeekday, periodFor, toIsoDate, toLocalDateTime } from "../../services/schedule/agendaDates"
 
 const UPCOMING_LIMIT = 3
+
+export type EmptyDayState = "rest" | "ended" | "empty"
+
+/** Why today has nothing left to show; null while the working hours are loading. */
+const emptyDayState = (workingHours: WorkingInterval[] | null, now: Date): EmptyDayState | null => {
+  if (!workingHours) return null
+
+  const todayIntervals = workingHours.filter((interval) => interval.weekday === isoWeekday(now))
+  if (todayIntervals.length === 0) return "rest"
+
+  // "HH:mm" strings compare correctly as text
+  const lastEnd = todayIntervals.reduce((latest, interval) => (interval.end > latest ? interval.end : latest), "00:00")
+  return toLocalDateTime(now).slice(11) >= lastEnd ? "ended" : "empty"
+}
 
 const showError = (message: string | undefined, fallback: string) => {
   toast.add({ type: "error", description: message ?? fallback })
@@ -23,6 +38,7 @@ export const useProviderHome = () => {
   const [todaySummary, setTodaySummary] = useState<AgendaSummaryResponse | null>(null)
   const [weekSummary, setWeekSummary] = useState<AgendaSummaryResponse | null>(null)
   const [todayAppointments, setTodayAppointments] = useState<AppointmentResponse[]>([])
+  const [workingHours, setWorkingHours] = useState<WorkingInterval[] | null>(null)
 
   useEffect(() => {
     const token = window.localStorage.getItem("token")
@@ -55,9 +71,22 @@ export const useProviderHome = () => {
       setTodayAppointments(json as AppointmentResponse[])
     }
 
+    const loadWorkingHours = async () => {
+      const { url, options } = WORKING_HOURS_GET(token)
+      const { json, response } = await request(url, options)
+
+      if (!response?.ok) {
+        showError(json?.message, "Não foi possível carregar seu expediente.")
+        return
+      }
+
+      setWorkingHours(json as WorkingInterval[])
+    }
+
     loadSummary(today, today, setTodaySummary)
     loadSummary(week.from, week.to, setWeekSummary)
     loadTodayAppointments()
+    loadWorkingHours()
   }, [request, now])
 
   const nowLabel = toLocalDateTime(now)
@@ -65,5 +94,5 @@ export const useProviderHome = () => {
     .filter((appointment) => appointment.status === "SCHEDULED" && appointment.endAt > nowLabel)
     .slice(0, UPCOMING_LIMIT)
 
-  return { now, todaySummary, weekSummary, upcoming }
+  return { now, todaySummary, weekSummary, upcoming, emptyDay: emptyDayState(workingHours, now) }
 }

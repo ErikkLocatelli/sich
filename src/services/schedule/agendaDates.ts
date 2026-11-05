@@ -82,6 +82,16 @@ export const periodLabel = (view: AgendaView, date: Date) => {
   return `Mês de ${monthName.format(date)} de ${date.getFullYear()}`
 }
 
+/** "2026-11" -> "Novembro de 2026" */
+export const monthTitle = (yearMonth: string) => {
+  const [year, month] = yearMonth.split("-").map(Number)
+  return `${capitalize(monthName.format(new Date(year, month - 1, 1)))} de ${year}`
+}
+
+/** Same day `months` months back; JS rolls over invalid days (31/05 - 3 months = 03/03), which is fine for a cutoff. */
+export const subtractMonths = (date: Date, months: number) =>
+  new Date(date.getFullYear(), date.getMonth() - months, date.getDate())
+
 /** "Sábado 31" */
 export const dayTitle = (date: Date) => `${capitalize(weekdayName.format(date))} ${date.getDate()}`
 
