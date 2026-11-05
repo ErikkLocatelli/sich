@@ -24,7 +24,7 @@ const HomeProvider = ({data}: {data: UserDataProvider}) => {
   .replace(/(^| )([a-z])/g, (_, separador, letra) => separador + letra.toUpperCase())
 
   return (
-    <div className="w-full min-h-dvh animateLeft">
+    <div className="w-full animateLeft">
       <HomeHeader
         data={data}
         value1={String(todaySummary?.scheduledCount ?? 0)}

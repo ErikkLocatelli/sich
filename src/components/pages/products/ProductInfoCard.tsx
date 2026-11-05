@@ -10,7 +10,7 @@ const ProductInfoCard = ({ id, name, price, duration, status, onDelete, onStatus
   return (
     <div className={`flex flex-row items-center justify-between`}>
         <div className="flex items-start flex-col">
-            <p className="text-[13px] font-bold">{name}</p>
+            <p className="text-[13px] font-medium">{name}</p>
             <span className="text-[11px] text-(--label-text)">R${price} · {duration}</span>
         </div>
         <div className="flex flex-row items-center gap-2">

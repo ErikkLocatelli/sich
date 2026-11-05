@@ -24,7 +24,11 @@ const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1
 export const toIsoDate = (date: Date) =>
   `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
 
-export const parseIsoDate = (isoDate: string) => {
+/** Local "yyyy-MM-ddTHH:mm", comparable as a string with the API's LocalDateTime. */
+export const toLocalDateTime = (date: Date) =>
+  `${toIsoDate(date)}T${pad(date.getHours())}:${pad(date.getMinutes())}`
+
+export const parseIsoDate =(isoDate: string) => {
   const [year, month, day] = isoDate.split("-").map(Number)
   return new Date(year, month - 1, day)
 }

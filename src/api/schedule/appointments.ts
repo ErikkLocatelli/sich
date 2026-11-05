@@ -65,7 +65,31 @@ export type PageResponse<T> = {
   totalPages: number
 }
 
-export const APPOINTMENTS_HISTORY_GET = (token: string, page: number, size: number) => {
+export const APPOINTMENT_GET = (token: string, appointmentId: number) => {
+  return {
+    url: API_URL + `/providers/me/appointments/${appointmentId}`,
+    options: {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  }
+}
+
+export const APPOINTMENT_CANCEL_PATCH = (token: string, appointmentId: number) => {
+  return {
+    url: API_URL + `/providers/me/appointments/${appointmentId}/cancel`,
+    options: {
+      method: "PATCH",
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  }
+}
+
+export const APPOINTMENTS_HISTORY_GET =(token: string, page: number, size: number) => {
   return {
     url: API_URL + `/providers/me/appointments/history?page=${page}&size=${size}`,
     options: {

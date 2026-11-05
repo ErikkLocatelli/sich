@@ -28,7 +28,7 @@ const ProfileCustomer = ({ data, userLogout }: ProfileCustomerProps) => {
   return (
     <section
       aria-label="Perfil do cliente"
-      className="min-h-dvh w-full bg-background animateRight"
+      className="w-full bg-background animateRight"
     >
       <ProfileHeader name={data.name} email={data.email} />
       <ProfileStats />

@@ -1,9 +1,12 @@
+import { Link } from "react-router-dom"
+
 import Card from "../../commons/Card"
 import RegularBadge from "../../commons/RegularBadge"
 
 import { Button } from "@/components/ui/button"
 import type { AppointmentResponse } from "@/api/schedule/appointments"
 import { timeOf } from "@/services/schedule/dayTimeline"
+import { appointmentPath } from "@/services/schedule/appointmentDetails"
 import { formatCurrency, formatDuration } from "@/services/schedule/formatters"
 
 import { MapPin, BanknoteArrowUp } from 'lucide-react';
@@ -41,7 +44,7 @@ const HomeSchedule = ({ appointment, className }: { appointment: AppointmentResp
                 </div>
             </div>
         </div>
-        <Button className="w-full mt-4 rounded-[12px] p-4 bg-white" variant="outline">Ver detalhes</Button>
+        <Button className="w-full mt-4 rounded-[12px] p-4 bg-white" variant="outline" nativeButton={false} render={<Link to={appointmentPath(appointment.id)} />}>Ver detalhes</Button>
     </Card>
   )
 }

@@ -8,17 +8,13 @@ import {
   type AgendaSummaryResponse,
   type AppointmentResponse
 } from "../../api/schedule/appointments"
-import { periodFor, toIsoDate } from "../../services/schedule/agendaDates"
+import { periodFor, toIsoDate, toLocalDateTime } from "../../services/schedule/agendaDates"
 
 const UPCOMING_LIMIT = 3
 
 const showError = (message: string | undefined, fallback: string) => {
   toast.add({ type: "error", description: message ?? fallback })
 }
-
-/** Local "yyyy-MM-ddTHH:mm", comparable as a string with the API's LocalDateTime. */
-const localDateTime = (date: Date) =>
-  `${toIsoDate(date)}T${date.getHours().toString().padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`
 
 /** Provider home: today's and this week's summaries and the next appointments of today. */
 export const useProviderHome = () => {
@@ -64,7 +60,7 @@ export const useProviderHome = () => {
     loadTodayAppointments()
   }, [request, now])
 
-  const nowLabel = localDateTime(now)
+  const nowLabel = toLocalDateTime(now)
   const upcoming = todayAppointments
     .filter((appointment) => appointment.status === "SCHEDULED" && appointment.endAt > nowLabel)
     .slice(0, UPCOMING_LIMIT)

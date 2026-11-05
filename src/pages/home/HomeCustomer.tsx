@@ -9,7 +9,7 @@ import HomeHeader from '../../components/pages/home/HomeHeader'
 const HomeCustomer = ({data}: {data: UserData}) => {
 
   return (
-    <div className="w-full min-h-dvh animateLeft">
+    <div className="w-full animateLeft">
       <HomeHeader data={data} />
 
       <MobileLink title="Produtos" link="Ver todos >" className="mt-5 px-6"/>

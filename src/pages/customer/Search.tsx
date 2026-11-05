@@ -16,7 +16,7 @@ const Search = () => {
   const previousRoute = usePreviousRoute()
 
   return (
-    <div className={`w-full min-h-dvh ${previousRoute === "/" ? "animateRight" : "animateLeft"}`}>
+    <div className={`w-full ${previousRoute === "/" ? "animateRight" : "animateLeft"}`}>
       <div className="px-6 py-4 flex flex-col bg-white gap-3">
         <Title text="Buscar" color="text-black" />
         <Field orientation="horizontal">

@@ -58,7 +58,7 @@ const ScheduleDisponibilty = () => {
   }
 
   return (
-    <section className="w-full min-h-dvh animateLeft">
+    <section className="w-full animateLeft">
       <PageHeader text="Disponibilidade" backTo="/schedule" backLabel="Voltar para agendamentos" />
       <form className="mb-3.5 flex flex-col gap-5" onSubmit={handleSubmit}>
         <Card className="px-4 py-4 mt-4 mx-6">

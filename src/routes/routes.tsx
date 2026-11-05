@@ -8,6 +8,7 @@ import Benefits from '../pages/customer/Benefits'
 import Search from '../pages/customer/Search'
 import Schedule from '../pages/schedule/Schedule'
 import ScheduleDisponibilty from '../pages/schedule/ScheduleDisponibilty'
+import AppointmentDetails from '../pages/schedule/AppointmentDetails'
 import Products from '../pages/products/Products'
 import EditProduct from '../pages/products/EditProduct'
 import NewProduct from '../pages/products/NewProduct'
@@ -47,6 +48,10 @@ const Routes = () => {
                         {
                             path: 'disponibility',
                             element: <ScheduleDisponibilty />
+                        },
+                        {
+                            path: 'appointment/:id',
+                            element: <AppointmentDetails />
                         }
                     ]
                 }, 
