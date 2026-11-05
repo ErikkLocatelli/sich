@@ -8,6 +8,7 @@ import { APPOINTMENTS_HISTORY_GET, type AppointmentResponse, type PageResponse }
 export const useAppointmentHistory = (size: number) => {
   const { request, loading } = useFetch()
   const [appointments, setAppointments] = useState<AppointmentResponse[]>([])
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
     const loadHistory = async () => {
@@ -16,6 +17,7 @@ export const useAppointmentHistory = (size: number) => {
 
       const { url, options } = APPOINTMENTS_HISTORY_GET(token, 0, size)
       const { json, response } = await request(url, options)
+      setLoaded(true)
 
       if (!response?.ok) {
         toast.add({
@@ -31,5 +33,5 @@ export const useAppointmentHistory = (size: number) => {
     loadHistory()
   }, [request, size])
 
-  return { appointments, loading }
+  return { appointments, loading, loaded }
 }

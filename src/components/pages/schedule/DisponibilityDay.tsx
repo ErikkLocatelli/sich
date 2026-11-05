@@ -6,9 +6,9 @@ import InputTime from "@/components/form/InputTime"
 import Error from "@/components/commons/Error"
 import type { DaySchedule, IntervalError, TimeInterval } from "@/hooks/schedule/useWorkingHours"
 
-const INVALID_INPUT = "border-destructive ring-3 ring-destructive/20"
+export const INVALID_INPUT = "border-destructive ring-3 ring-destructive/20"
 
-type DisponibilityDayProps = {
+export type DisponibilityDayProps = {
     day: DaySchedule
     errors: IntervalError[]
     canAddInterval: boolean

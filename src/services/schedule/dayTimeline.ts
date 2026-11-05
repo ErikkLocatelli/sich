@@ -14,7 +14,7 @@ type Range = {
   end: number
 }
 
-const toMinutes = (time: string) => {
+export const toMinutes = (time: string) => {
   const [hours, minutes] = time.split(":").map(Number)
   return hours * 60 + minutes
 }
@@ -79,4 +79,15 @@ export const buildDayTimeline = (workIntervals: WorkInterval[], appointments: Ap
   return [...freeBlocks, ...breakBlocks, ...appointmentBlocks]
     .sort((a, b) => a.start - b.start)
     .map((block) => ({ ...block, start: toTime(block.start), end: toTime(block.end) }))
+}
+
+const plural = (count: number, singular: string, pluralForm: string) =>
+  `${count} ${count === 1 ? singular : pluralForm}`
+
+/** "6 atendimentos hoje · 3 horários livres" */
+export const daySummaryLabel = (blocks: TimelineBlock[], isToday: boolean) => {
+  const appointments = blocks.filter((block) => block.type === "appointment").length
+  const free = blocks.filter((block) => block.type === "free").length
+
+  return `${plural(appointments, "atendimento", "atendimentos")} ${isToday ? "hoje" : "no dia"} · ${plural(free, "horário livre", "horários livres")}`
 }

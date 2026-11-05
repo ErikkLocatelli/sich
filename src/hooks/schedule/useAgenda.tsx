@@ -9,27 +9,30 @@ import {
   type AppointmentResponse
 } from "../../api/schedule/appointments"
 import { WORKING_HOURS_GET, type WorkingInterval } from "../../api/schedule/workingHours"
-import { isoWeekday, parseIsoDate, periodFor, type AgendaView } from "../../services/schedule/agendaDates"
-import { buildDayTimeline } from "../../services/schedule/dayTimeline"
+import { isoWeekday, parseIsoDate, periodFor, weekDays, type AgendaView, type WeekDay } from "../../services/schedule/agendaDates"
+import { buildDayTimeline, type TimelineBlock } from "../../services/schedule/dayTimeline"
+
+export type DayBlocks = {
+  day: WeekDay
+  blocks: TimelineBlock[]
+}
 
 const showError = (message: string | undefined, fallback: string) => {
   toast.add({ type: "error", description: message ?? fallback })
 }
 
-/**
- * Provider agenda for the week of `selectedDate`: the week's appointments and the
- * working hours are loaded once, so switching days doesn't hit the API. The summary
- * follows the selected view (day, week or month).
- */
 export const useAgenda = (selectedDate: string, view: AgendaView) => {
   const { request, loading } = useFetch()
   const { request: requestSummary } = useFetch()
   const [appointments, setAppointments] = useState<AppointmentResponse[]>([])
   const [workingHours, setWorkingHours] = useState<WorkingInterval[]>([])
   const [summary, setSummary] = useState<AgendaSummaryResponse | null>(null)
+  const [workingHoursLoaded, setWorkingHoursLoaded] = useState(false)
+  // Week whose appointments are in state; a different week means it's still loading
+  const [loadedWeek, setLoadedWeek] = useState<string | null>(null)
 
   const date = parseIsoDate(selectedDate)
-  const week = periodFor("week", date)
+  const weekPeriod = periodFor("week", date)
   const period = periodFor(view, date)
 
   useEffect(() => {
@@ -39,6 +42,7 @@ export const useAgenda = (selectedDate: string, view: AgendaView) => {
 
       const { url, options } = WORKING_HOURS_GET(token)
       const { json, response } = await request(url, options)
+      setWorkingHoursLoaded(true)
 
       if (!response?.ok) {
         showError(json?.message, "Não foi possível carregar seu expediente.")
@@ -52,15 +56,22 @@ export const useAgenda = (selectedDate: string, view: AgendaView) => {
   }, [request])
 
   useEffect(() => {
+    // Ignores a response that arrives after the week changed
+    let active = true
+
     const loadAppointments = async () => {
       const token = window.localStorage.getItem("token")
       if (!token) return
 
-      const { url, options } = APPOINTMENTS_GET(token, week.from, week.to)
+      const { url, options } = APPOINTMENTS_GET(token, weekPeriod.from, weekPeriod.to)
       const { json, response } = await request(url, options)
+      if (!active) return
+
+      setLoadedWeek(weekPeriod.from)
 
       if (!response?.ok) {
         showError(json?.message, "Não foi possível carregar os agendamentos.")
+        setAppointments([])
         return
       }
 
@@ -68,7 +79,8 @@ export const useAgenda = (selectedDate: string, view: AgendaView) => {
     }
 
     loadAppointments()
-  }, [request, week.from, week.to])
+    return () => { active = false }
+  }, [request, weekPeriod.from, weekPeriod.to])
 
   useEffect(() => {
     const loadSummary = async () => {
@@ -89,13 +101,18 @@ export const useAgenda = (selectedDate: string, view: AgendaView) => {
     loadSummary()
   }, [requestSummary, period.from, period.to])
 
-  const weekday = isoWeekday(date)
+  const weekBlocks = useMemo<DayBlocks[]>(() =>
+    weekDays(parseIsoDate(weekPeriod.from)).map((day) => {
+      const weekday = isoWeekday(parseIsoDate(day.value))
+      const dayIntervals = workingHours.filter((interval) => interval.weekday === weekday)
+      const dayAppointments = appointments.filter((appointment) => appointment.startAt.startsWith(day.value))
+      return { day, blocks: buildDayTimeline(dayIntervals, dayAppointments) }
+    }),
+  [workingHours, appointments, weekPeriod.from])
 
-  const blocks = useMemo(() => {
-    const dayIntervals = workingHours.filter((interval) => interval.weekday === weekday)
-    const dayAppointments = appointments.filter((appointment) => appointment.startAt.startsWith(selectedDate))
-    return buildDayTimeline(dayIntervals, dayAppointments)
-  }, [workingHours, appointments, weekday, selectedDate])
+  const blocks = weekBlocks.find(({ day }) => day.value === selectedDate)?.blocks ?? []
 
-  return { blocks, summary, loading }
+  const loaded = workingHoursLoaded && loadedWeek === weekPeriod.from
+
+  return { blocks, week: weekBlocks, summary, loading, loaded }
 }

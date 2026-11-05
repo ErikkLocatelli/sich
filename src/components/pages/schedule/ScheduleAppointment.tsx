@@ -2,16 +2,11 @@ import { Link } from "react-router-dom"
 
 import type { TimelineBlock } from "@/services/schedule/dayTimeline"
 import { appointmentPath } from "@/services/schedule/appointmentDetails"
-
-const containerStyles: Record<TimelineBlock["type"], string> = {
-  appointment: "border-sich-magenta/30 bg-sich-magenta/5",
-  break: "border-sich-border bg-sich-surface",
-  free: "border-dashed border-sich-border bg-transparent",
-}
+import { timelineBlockLabels, timelineBlockStyles } from "./timelineBlockStyles"
 
 const ScheduleAppointment = ({ block }: { block: TimelineBlock }) => {
   const period = `${block.start}–${block.end}`
-  const containerClass = `flex flex-col gap-0.5 rounded-[12px] border p-3 ${containerStyles[block.type]}`
+  const containerClass = `flex flex-col gap-0.5 rounded-[12px] border p-3 ${timelineBlockStyles[block.type]}`
 
   return (
     <>
@@ -27,7 +22,7 @@ const ScheduleAppointment = ({ block }: { block: TimelineBlock }) => {
       ) : (
         <div className={containerClass}>
           <span className="text-[11px] text-sich-label">
-            <strong className="font-bold">{block.type === "free" ? "Livre" : "Pausa"}</strong> · {period}
+            <strong className="font-bold">{timelineBlockLabels[block.type]}</strong> · {period}
           </span>
         </div>
       )}

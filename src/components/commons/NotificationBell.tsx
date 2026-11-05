@@ -2,11 +2,13 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Button } from "@/components/ui/button"
 import { Bell } from 'lucide-react';
 
-const NotificationBell = () => {
+import { cn } from "@/lib/utils"
+
+const NotificationBell = ({ className }: { className?: string }) => {
   return (
    <Popover>
         <PopoverTrigger render={
-          <Button className="bg-white/18 rounded-full size-10">
+          <Button aria-label="Notificações" className={cn("bg-white/18 rounded-full size-10", className)}>
             <Bell className='size-5'/>
           </Button>
         }/>
@@ -20,4 +22,3 @@ const NotificationBell = () => {
 }
 
 export default NotificationBell
-
