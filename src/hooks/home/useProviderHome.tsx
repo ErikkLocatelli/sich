@@ -10,6 +10,7 @@ import {
 } from "../../api/schedule/appointments"
 import { WORKING_HOURS_GET, type WorkingInterval } from "../../api/schedule/workingHours"
 import { isoWeekday, periodFor, toIsoDate, toLocalDateTime } from "../../services/schedule/agendaDates"
+import { greetingFor, shortDateLabel, remainingCountLabel } from "../../services/home/providerHome"
 
 const UPCOMING_LIMIT = 3
 
@@ -37,7 +38,7 @@ export const useProviderHome = () => {
   const [now] = useState(() => new Date())
   const [todaySummary, setTodaySummary] = useState<AgendaSummaryResponse | null>(null)
   const [weekSummary, setWeekSummary] = useState<AgendaSummaryResponse | null>(null)
-  const [todayAppointments, setTodayAppointments] = useState<AppointmentResponse[]>([])
+  const [todayAppointments, setTodayAppointments] = useState<AppointmentResponse[] | null>(null)
   const [workingHours, setWorkingHours] = useState<WorkingInterval[] | null>(null)
 
   useEffect(() => {
@@ -90,9 +91,22 @@ export const useProviderHome = () => {
   }, [request, now])
 
   const nowLabel = toLocalDateTime(now)
-  const upcoming = todayAppointments
-    .filter((appointment) => appointment.status === "SCHEDULED" && appointment.endAt > nowLabel)
+  // Not finished yet: an appointment in progress still counts as remaining
+  const remaining = todayAppointments?.filter(
+    (appointment) => appointment.status === "SCHEDULED" && appointment.endAt > nowLabel
+  ) ?? null
+  const upcoming = (remaining ?? [])
     .slice(0, UPCOMING_LIMIT)
 
-  return { now, todaySummary, weekSummary, upcoming, emptyDay: emptyDayState(workingHours, now) }
+  return {
+    todaySummary,
+    weekSummary,
+    upcoming,
+    emptyDay: emptyDayState(workingHours, now),
+    greeting: greetingFor(now),
+    remainingCount: remainingCountLabel(remaining?.length),
+    todayLabel: shortDateLabel(now),
+  }
 }
+
+export type ProviderHomeState = ReturnType<typeof useProviderHome>
