@@ -1,78 +1,36 @@
-import type { UseFormReturn } from '@/hooks/useForm'
-import useProductImages from '@/hooks/useProductImages'
-import { useCategories } from '@/hooks/product/useCategories'
+import type { CategoryResponse } from '@/api/product/product'
+import type { ProductFormFields } from '@/hooks/product/productFormPage'
+import type useProductImages from '@/hooks/useProductImages'
+import { ACCEPTED_IMAGE_TYPES, PRODUCT_IMAGES_TIP } from '@/services/product/productForm'
 
 import Card from '../../components/commons/Card'
 import Input from '../../components/form/Input'
-import InputTime from '../../components/form/InputTime'
-import Select from '../../components/form/Select'
-import Error from '../../components/commons/Error'
-import MoneyInput from '@/components/form/MoneyInput'
+import ProductDetailsFields from '@/components/pages/products/ProductDetailsFields'
 
 import { Button } from '../../components/ui/button'
-import { Textarea } from '../../components/ui/textarea'
-import { Field, FieldGroup, FieldLabel  } from '../../components/ui/field'
+import { Field } from '../../components/ui/field'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 
-import { Clock, Banknote,  BriefcaseBusiness, ListSortDescending, ImageUp, Trash} from 'lucide-react';
+import { ImageUp, Trash } from 'lucide-react';
 
 type ProductFormProps = {
-  form: {
-    fields: {
-      name: UseFormReturn
-      category: UseFormReturn
-      duration: UseFormReturn
-      price: UseFormReturn
-      description: UseFormReturn
-    }
-  }
+  fields: ProductFormFields
+  categories: CategoryResponse[]
   images: ReturnType<typeof useProductImages>
 }
 
-const ProductForm = ({form, images}: ProductFormProps ) => {
-  const { fields } = form;
-  const { categories } = useCategories()
-
-  const allImages = [
-    ...images.existingImages.map(image => ({
-        key: `existing-${image.id}`,
-        url: image.url,
-        onRemove: () => images.removeExistingImage(image.id),
-    })),
-    ...images.newImages.map(image => ({
-        key: image.url,
-        url: image.url,
-        onRemove: () => images.removeNewImage(image.url),
-    })),
-   ]
-  
+/** Mobile form: stacked fields, file input and an image carousel. */
+const ProductForm = ({ fields, categories, images }: ProductFormProps) => {
   return (
      <Field className="mt-3.5 mb-3.5 flex flex-col gap-5 px-5">
-        <Input label="Nome do produto" placeholder="Digite o nome do produto" icon={BriefcaseBusiness} value={fields.name.value} error={fields.name.error} onBlur={fields.name.onBlur} onChange={fields.name.onChange}/>
+        <ProductDetailsFields fields={fields} categories={categories} />
 
-        <Select label="Categoria" id="category" placeholder="Selecione a categoria" icon={ListSortDescending} insideLabel="Produtos" data={categories} getKey={(item) => item.name} getValue={(item) => (item.id).toString()} getLabel={(item) => item.name} value={fields.category.value} error={fields.category.error} onValueChange={fields.category.setValue}/>
-
-        <FieldGroup className="flex flex-row gap-2.5">
-            <InputTime label="Duração" icon={Clock} min="00:15" max="02:00" step={900} value={fields.duration.value} error={fields.duration.error} onBlur={fields.duration.onBlur} onChange={fields.duration.onChange} 
-            tip={"Para atendimentos a domicílio, considere o tempo de locomoção média para atendimentos próximos a sua região no tempo de atendimento."}/>
-
-            <MoneyInput label="Preço" placeholder="R$ 100,00" icon={Banknote} value={fields.price.value} error={fields.price.error} onBlur={fields.price.onBlur} onChange={fields.price.setValue}/>
-        </FieldGroup>
-
-        <Field>
-            <FieldLabel className="text-[11px]" htmlFor="textarea">Descrição</FieldLabel>
-
-            <Textarea placeholder="Digite uma descrição para o produto" className="resize-none rounded-[16px] border-sich-border bg-white text-[11px]" id="textarea" value={fields.description.value} onBlur={fields.description.onBlur} onChange={fields.description.onChange}/>
-
-            {fields.description.error && <Error message={fields.description.error} className='animateDown' />}
-        </Field>
-   
         <Input
             label="Imagens"
             placeholder="Selecione imagens para o produto"
             type="file"
             icon={ImageUp}
-            accept="image/png,image/jpeg,image/webp"
+            accept={ACCEPTED_IMAGE_TYPES}
             disabled={!images.canAddImages}
             onChange={(event) => {
                 if (event.target.files) {
@@ -80,13 +38,13 @@ const ProductForm = ({form, images}: ProductFormProps ) => {
                 event.target.value = ''
                 }
             }}
-            tip={"Cadastre até 5 imagens para o produto. Formatos aceitos: JPG, PNG ou WEBP"}
+            tip={PRODUCT_IMAGES_TIP}
             />
 
-        {allImages.length > 0 && (
+        {images.items.length > 0 && (
          <Carousel opts={{ loop: true, }} className="w-full max-w-50 m-auto animateLeft">
             <CarouselContent>
-                {allImages.map(image => (
+                {images.items.map(image => (
                     <CarouselItem key={image.key} className="basis-1/1">
                         <Card className="relative overflow-hidden group">
                             <img
@@ -107,8 +65,8 @@ const ProductForm = ({form, images}: ProductFormProps ) => {
                     </CarouselItem>
                 ))}
                 </CarouselContent>
-            {allImages.length > 1 && <CarouselPrevious className="animateLeft" />}
-            {allImages.length > 1 && <CarouselNext className="animateRight" />}
+            {images.items.length > 1 && <CarouselPrevious className="animateLeft" />}
+            {images.items.length > 1 && <CarouselNext className="animateRight" />}
         </Carousel>
         )}
     </Field>

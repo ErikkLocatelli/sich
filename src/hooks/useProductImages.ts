@@ -1,8 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Image, NewImage } from '../models/image'
+import { MAX_PRODUCT_IMAGES as MAX_IMAGES } from '../services/product/productForm'
 
-
-const MAX_IMAGES = 3
+export type ProductImageItem = {
+  key: string
+  url: string
+  onRemove: () => void
+}
 
 const fileToDataUrl = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -80,7 +84,21 @@ const useProductImages = (initialImages: Image[] = []) => {
     )
   }
 
+  const items: ProductImageItem[] = [
+    ...existingImages.map(image => ({
+      key: `existing-${image.id}`,
+      url: image.url,
+      onRemove: () => removeExistingImage(image.id),
+    })),
+    ...newImages.map(image => ({
+      key: image.url,
+      url: image.url,
+      onRemove: () => removeNewImage(image.url),
+    })),
+  ]
+
   return {
+    items,
     existingImages,
     newImages,
     removedImages,
