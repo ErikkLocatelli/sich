@@ -1,27 +1,55 @@
-import { Star } from 'lucide-react';
-import LabelLink from './LabelLink'
-import Avatar from './Avatar'
+import { Link } from "react-router-dom"
 
-const ProfessionalInfoCard = ({className, name, url}: {className?: string, url?: string, name: string}) => {    
-  return (
-    <div className={`bg-white shadow-sich-small-card rounded-[16px] px-3 py-4 flex gap-3 ${className || ''}`}>
-      <Avatar name={name} url={url} />
-      <div className="flex flex-1 flex-col justify-between">
-        <div className="flex flex-row gap-1.5 items-center">
-            <span className="font-semibold text-[14px]">{name}</span>
-            <span className="font-semibold text-[9px] text-sich-magenta bg-[#FFD1E1]/80 py-0.5 px-1 rounded-full uppercase">Premium</span>
-        </div>
-        <span className="text-[11px] text-(--label-text)">Pé de cu ré</span>
-        <div className="flex items-center justify-between gap-3">
-            <div className="flex flex-row items-center gap-1 *:text-[11px]">
-                <Star className="text-[#F59E0B] size-3 fill-[#F59E0B]"></Star> 
-                <span className="text-[#F59E0B]">4.8</span>
-                <span className="text-(--label-text)"> · Jardins</span>
-            </div>
-            <LabelLink label="R$95+" />
-        </div>
-      </div>
+import { cn } from "@/lib/utils"
+import { formatCurrencyShort } from "@/services/schedule/formatters"
+
+import Avatar from "./Avatar"
+
+type ProfessionalInfoCardProps = {
+  name: string
+  url?: string
+  subtitle?: string
+  neighborhood?: string | null
+  minPrice?: number | null
+  href?: string
+  className?: string
+}
+
+const ProfessionalInfoCardContent = ({ name, url, subtitle, neighborhood, minPrice }: ProfessionalInfoCardProps) => (
+  <>
+    <Avatar name={name} url={url} className="bg-sich-gradient" />
+
+    <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
+      <span className="truncate text-[14px] font-semibold text-sich-heading">{name}</span>
+      {subtitle && <span className="truncate text-[11px] text-sich-label">{subtitle}</span>}
+      {/* TODO(backend): rating and review count ("★ 4.9 (312)") are not in ProviderSummaryResponse yet */}
+      {neighborhood && <span className="truncate text-[11px] text-sich-label">{neighborhood}</span>}
     </div>
+
+    {minPrice != null && (
+      <div className="flex shrink-0 flex-col items-end">
+        <span className="text-[9px] text-sich-label">a partir</span>
+        <span className="text-[14px] font-bold text-sich-magenta">{formatCurrencyShort(minPrice)}</span>
+      </div>
+    )}
+  </>
+)
+
+const ProfessionalInfoCard = ({ className, href, ...props }: ProfessionalInfoCardProps) => {
+  const classes = cn("flex items-center gap-3 rounded-[16px] border border-sich-border bg-white p-3 shadow-sich-small-card", className)
+
+  if (!href) {
+    return (
+      <div className={classes}>
+        <ProfessionalInfoCardContent {...props} />
+      </div>
+    )
+  }
+
+  return (
+    <Link to={href} className={cn(classes, "transition-colors hover:border-primary/40")}>
+      <ProfessionalInfoCardContent {...props} />
+    </Link>
   )
 }
 

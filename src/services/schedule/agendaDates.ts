@@ -105,3 +105,16 @@ export const shortDateTime = (dateTime: string) => {
 
 /** ISO weekday used by the backend: 1 = Monday ... 7 = Sunday. */
 export const isoWeekday = (date: Date) => date.getDay() === 0 ? 7 : date.getDay()
+
+/** `count` consecutive days starting at `start` (not aligned to the week). */
+export const nextDays = (start: Date, count: number): WeekDay[] =>
+  Array.from({ length: count }, (_, index) => {
+    const day = addDays(start, index)
+    return { value: toIsoDate(day), label: WEEKDAY_LABELS[day.getDay()], day: day.getDate() }
+  })
+
+/** "2026-11-07" -> "Novembro 2026" */
+export const monthYearLabel = (isoDate: string) => {
+  const date = parseIsoDate(isoDate)
+  return `${capitalize(monthName.format(date))} ${date.getFullYear()}`
+}
