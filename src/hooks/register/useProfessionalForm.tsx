@@ -15,11 +15,13 @@ export const useProfessionalForm = () => {
     const city = useForm({ required: true })
     const state = useForm({ required: true })
     const street = useForm({ required: true })
+    const neighborhood = useForm({ required: true })
     const numberAddress = useForm({ required: true })
     const cep = useForm({
         required: true,
         validator: createCepValidator((address) => {
             street.setValue(address.street)
+            neighborhood.setValue(address.neighborhood)
             city.setValue(address.city)
             state.setValue(address.state)
         })
@@ -33,6 +35,7 @@ export const useProfessionalForm = () => {
         !!city.value &&
         !!state.value &&
         !!street.value &&
+        !!neighborhood.value &&
         !!numberAddress.value &&
         !!cep.value &&
         !!cnpjCpf.value &&
@@ -46,6 +49,7 @@ export const useProfessionalForm = () => {
         !city.error &&
         !state.error &&
         !street.error &&
+        !neighborhood.error &&
         !numberAddress.error &&
         !cep.error &&
         !cnpjCpf.error &&
@@ -53,7 +57,7 @@ export const useProfessionalForm = () => {
         !passwordConfirm.error
 
     const validateForm = async () => {
-        return await validateFields({ email, name, phone, city, state, street, numberAddress, cep, cnpjCpf, password, passwordConfirm, terms })
+        return await validateFields({ email, name, phone, city, state, street, neighborhood, numberAddress, cep, cnpjCpf, password, passwordConfirm, terms })
     }
 
     const getPayload = (): ProfessionalRegisterBody => ({
@@ -63,6 +67,7 @@ export const useProfessionalForm = () => {
         city: city.value,
         state: state.value,
         street: street.value,
+        neighborhood: neighborhood.value,
         numberAdress: numberAddress.value,
         cep: cep.value,
         cnpjCpf: cnpjCpf.value,
@@ -82,6 +87,7 @@ export const useProfessionalForm = () => {
             city,
             state,
             street,
+            neighborhood,
             numberAddress,
             terms
         },

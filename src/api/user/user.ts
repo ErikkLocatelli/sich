@@ -21,6 +21,7 @@ export type ProfessionalRegisterBody = BaseRegisterBody & {
   cep: string
   state: string
   street: string
+  neighborhood: string
   numberAdress: string
   cnpjCpf: string
   userType: "PROVIDER"

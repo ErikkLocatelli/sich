@@ -9,7 +9,7 @@ import LabelLink from "../../commons/LabelLink"
 import { Checkbox } from "../../ui/checkbox"
 import { Field, FieldGroup } from "../../ui/field"
 
-import { User, Mail, Phone, Lock, Building2, House, Road, MapPinHouse, Map } from "lucide-react"
+import { User, Mail, Phone, Lock, Building2, House, Road, MapPinHouse, Map, MapPin } from "lucide-react"
 
 const ProfessionalForm = ({form}: {form : ReturnType<typeof useProfessionalForm>}) => {
   const { fields } = form 
@@ -32,7 +32,11 @@ const ProfessionalForm = ({form}: {form : ReturnType<typeof useProfessionalForm>
             <Input label="Estado" placeholder="São Paulo" value={fields.state.value} onChange={fields.state.onChange} onBlur={fields.state.onBlur} error={fields.state.error} icon={Map} />
         </FieldGroup>
 
-        <Input label="Cidade" placeholder="São Paulo" value={fields.city.value} onChange={fields.city.onChange} onBlur={fields.city.onBlur} error={fields.city.error} icon={Building2} />
+        <FieldGroup className="flex flex-row gap-2.5 lg:gap-4">
+            <Input label="Cidade" placeholder="São Paulo" value={fields.city.value} onChange={fields.city.onChange} onBlur={fields.city.onBlur} error={fields.city.error} icon={Building2} />
+
+            <Input label="Bairro" placeholder="Centro" value={fields.neighborhood.value} onChange={fields.neighborhood.onChange} onBlur={fields.neighborhood.onBlur} error={fields.neighborhood.error} icon={MapPin} />
+        </FieldGroup>
 
         <FieldGroup className="flex flex-row gap-2.5 lg:gap-4">
             <Input label="Rua" placeholder="Avenida Paulista" value={fields.street.value} onChange={fields.street.onChange} onBlur={fields.street.onBlur} error={fields.street.error} icon={Road} />

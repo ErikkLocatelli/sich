@@ -3,6 +3,7 @@ import type { Validator } from '../../hooks/useForm'
 interface ViaCepResponse {
   erro?: boolean
   logradouro: string
+  bairro: string
   localidade: string
   uf: string
 }
@@ -19,6 +20,7 @@ const UF_TO_STATE: Record<string, string> = {
 
 export interface CepAddress {
   street: string
+  neighborhood: string
   city: string
   state: string
 }
@@ -37,6 +39,7 @@ export const createCepValidator = (onFound: (address: CepAddress) => void): Vali
 
       onFound({
         street: data.logradouro,
+        neighborhood: data.bairro,
         city: data.localidade,
         state: UF_TO_STATE[data.uf] ?? data.uf
       })
