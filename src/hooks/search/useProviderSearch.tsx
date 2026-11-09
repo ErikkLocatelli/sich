@@ -7,7 +7,6 @@ import useFetch from "../useFetch"
 
 const SEARCH_DEBOUNCE_MS = 300
 
-/** Providers matching the text and categories (server-side), debounced while the user types. */
 export const useProviderSearch = (query: string, categoryIds: number[]) => {
   const { request } = useFetch()
   const [providers, setProviders] = useState<ProviderSummaryResponse[]>([])

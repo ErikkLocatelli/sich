@@ -33,7 +33,7 @@ const SearchMobile = ({ state }: { state: SearchPageState }) => {
       </div>
 
       <div className="px-6 py-4">
-        <SearchProviderList providers={providers} loaded={loaded} countLabel={countLabel} providerHref={providerHref} />
+        <SearchProviderList variant="list" providers={providers} loaded={loaded} countLabel={countLabel} providerHref={providerHref} />
       </div>
     </div>
   )

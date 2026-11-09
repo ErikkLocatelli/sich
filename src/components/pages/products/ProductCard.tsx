@@ -8,12 +8,10 @@ type ProductCardProps = {
   coverUrl?: string
   categoryName?: string
   description?: string
-  /** Renders the name in the muted placeholder color */
   namePlaceholder?: boolean
   className?: string
 }
 
-/** Product as the customer sees it: cover, category, name, price/duration and description. */
 const ProductCard = ({ name, details, coverUrl, categoryName, description, namePlaceholder, className }: ProductCardProps) => {
   return (
     <div className={cn("flex flex-col gap-3 rounded-[14px] border border-sich-border p-3", className)}>

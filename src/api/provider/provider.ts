@@ -1,6 +1,5 @@
 import { API_URL } from "../api"
 
-/** Provider card in the search: `minPrice` is the lowest active product price ("a partir de"). */
 export type ProviderSummaryResponse = {
   id: number
   name: string
@@ -11,7 +10,6 @@ export type ProviderSummaryResponse = {
   categories: string[]
 }
 
-/** Free start times ("HH:mm") of a provider on a date for the chosen products. */
 export type AvailabilityResponse = {
   date: string
   duration: string

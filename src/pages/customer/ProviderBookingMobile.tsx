@@ -56,9 +56,11 @@ const ProviderBookingMobile = ({ state }: { state: ProviderBookingState }) => {
             </section>
 
             <BookingSummary
-              serviceName={selectedProduct.name}
-              providerName={providerName}
-              dateTimeLabel={dateTimeLabel}
+              rows={[
+                { label: "Serviço", value: selectedProduct.name },
+                { label: "Profissional", value: providerName },
+                { label: "Data e hora", value: dateTimeLabel },
+              ]}
               total={selectedProduct.price}
             />
 

@@ -5,7 +5,6 @@ import { toast } from "@/components/ui/toast"
 
 import useFetch from "../useFetch"
 
-/** Card data of a single provider (name, place, min price, categories). */
 export const useProviderSummary = (providerId: number | null) => {
   const { request } = useFetch()
   const [provider, setProvider] = useState<ProviderSummaryResponse | null>(null)

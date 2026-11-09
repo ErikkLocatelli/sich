@@ -5,7 +5,6 @@ import { toast } from "@/components/ui/toast"
 
 import useFetch from "../useFetch"
 
-/** Free start times of the provider on `date` for one product; empty until a product is chosen. */
 export const useAvailability = (providerId: number | null, date: string, productId: number | null) => {
   const { request } = useFetch()
   const [startTimes, setStartTimes] = useState<string[]>([])

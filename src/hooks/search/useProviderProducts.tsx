@@ -6,7 +6,6 @@ import { toast } from "@/components/ui/toast"
 
 import useFetch from "../useFetch"
 
-/** Active products of a provider, as seen by a customer. */
 export const useProviderProducts = (providerId: number | null) => {
   const { request } = useFetch()
   const [products, setProducts] = useState<ProductResponse[]>([])

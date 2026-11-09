@@ -5,17 +5,24 @@ import ProfessionalInfoCard from "@/components/commons/ProfessionalInfoCard"
 import { Skeleton } from "@/components/ui/skeleton"
 import { providerSubtitle } from "@/services/search/searchFilters"
 
+type SearchProviderListVariant = "list" | "grid"
+
 type SearchProviderListProps = {
   providers: ProviderSummaryResponse[]
   loaded: boolean
-  countLabel: string
   providerHref: (providerId: number) => string
+  variant?: SearchProviderListVariant
+  countLabel?: string
 }
 
-const SearchProviderListSkeleton = ({ rows = 4 }: { rows?: number }) => (
-  <div className="flex flex-col gap-3" aria-busy="true" aria-label="Carregando profissionais">
-    <Skeleton className="h-3 w-40" />
-    {Array.from({ length: rows }, (_, index) => (
+const CONTAINER_CLASSES: Record<SearchProviderListVariant, string> = {
+  list: "flex flex-col gap-3",
+  grid: "grid grid-cols-2 items-start gap-4.5",
+}
+
+const SearchProviderListSkeleton = ({ variant }: { variant: SearchProviderListVariant }) => (
+  <div className={CONTAINER_CLASSES[variant]} aria-busy="true" aria-label="Carregando profissionais">
+    {Array.from({ length: 4 }, (_, index) => (
       <div key={index} className="flex items-center gap-3 rounded-[16px] border border-sich-border bg-white p-3">
         <Skeleton className="size-14 shrink-0 rounded-[16px]" />
         <div className="flex flex-1 flex-col gap-2">
@@ -37,23 +44,26 @@ const SearchProviderEmpty = () => (
   </div>
 )
 
-const SearchProviderList = ({ providers, loaded, countLabel, providerHref }: SearchProviderListProps) => {
-  if (!loaded) return <SearchProviderListSkeleton />
+const SearchProviderList = ({ providers, loaded, providerHref, variant = "list", countLabel }: SearchProviderListProps) => {
+  if (!loaded) return <SearchProviderListSkeleton variant={variant} />
   if (providers.length === 0) return <SearchProviderEmpty />
 
   return (
     <div className="flex flex-col gap-3">
-      <span className="text-[11px] text-sich-label">{countLabel}</span>
-      {providers.map((provider) => (
-        <ProfessionalInfoCard
-          key={provider.id}
-          name={provider.name}
-          subtitle={providerSubtitle(provider)}
-          neighborhood={provider.neighborhood}
-          minPrice={provider.minPrice}
-          href={providerHref(provider.id)}
-        />
-      ))}
+      {countLabel && <span className="text-[11px] text-sich-label">{countLabel}</span>}
+      <div className={CONTAINER_CLASSES[variant]}>
+        {providers.map((provider) => (
+          <ProfessionalInfoCard
+            key={provider.id}
+            layout={variant === "grid" ? "stacked" : "row"}
+            name={provider.name}
+            subtitle={providerSubtitle(provider)}
+            neighborhood={provider.neighborhood}
+            minPrice={provider.minPrice}
+            href={providerHref(provider.id)}
+          />
+        ))}
+      </div>
     </div>
   )
 }

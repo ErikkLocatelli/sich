@@ -1,29 +1,31 @@
 import { Separator } from "@/components/ui/separator"
+import { cn } from "@/lib/utils"
 import { formatCurrency } from "@/services/schedule/formatters"
 
-type BookingSummaryProps = {
-  serviceName: string
-  providerName: string
-  dateTimeLabel: string
-  total: number
+export type BookingSummaryRow = {
+  label: string
+  value: string
 }
 
-const SummaryRow = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex justify-between gap-3 text-[12px]">
+type BookingSummaryProps = {
+  rows: BookingSummaryRow[]
+  total: number
+  className?: string
+}
+
+const SummaryRow = ({ label, value }: BookingSummaryRow) => (
+  <div className="flex justify-between gap-3 text-[12px] lg:text-[13px]">
     <span className="text-sich-label">{label}</span>
-    <span className="text-right font-medium text-sich-heading">{value}</span>
+    <span className="text-right font-medium text-sich-heading lg:font-semibold">{value}</span>
   </div>
 )
 
-/** Booking recap; cashback is hidden until the backend supports it, so the total is the service price. */
-const BookingSummary = ({ serviceName, providerName, dateTimeLabel, total }: BookingSummaryProps) => (
-  <section className="flex flex-col gap-2 rounded-[16px] bg-primary/10 p-4">
-    <h2 className="mb-1 text-[14px] font-semibold text-sich-heading">Resumo</h2>
-    <SummaryRow label="Serviço" value={serviceName} />
-    <SummaryRow label="Profissional" value={providerName} />
-    <SummaryRow label="Data e hora" value={dateTimeLabel} />
+const BookingSummary = ({ rows, total, className }: BookingSummaryProps) => (
+  <section className={cn("flex flex-col gap-2 rounded-[16px] bg-primary/10 p-4", className)}>
+    <h2 className="mb-1 text-[14px] font-semibold text-sich-heading lg:text-[16px]">Resumo</h2>
+    {rows.map((row) => <SummaryRow key={row.label} {...row} />)}
     <Separator className="my-1 bg-sich-border" />
-    <div className="flex justify-between text-[15px] font-bold text-sich-magenta">
+    <div className="flex justify-between text-[15px] font-bold text-sich-magenta lg:text-[18px]">
       <span>Total</span>
       <span>{formatCurrency(total)}</span>
     </div>

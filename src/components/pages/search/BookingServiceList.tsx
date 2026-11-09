@@ -9,25 +9,25 @@ type BookingServiceListProps = {
   loaded: boolean
   selectedId: number | null
   onSelect: (id: number) => void
+  className?: string
 }
 
-const BookingServiceListSkeleton = () => (
-  <div className="flex flex-col gap-3" aria-busy="true" aria-label="Carregando serviços">
+const BookingServiceListSkeleton = ({ className }: { className?: string }) => (
+  <div className={cn("flex flex-col gap-3", className)} aria-busy="true" aria-label="Carregando serviços">
     {Array.from({ length: 2 }, (_, index) => (
       <Skeleton key={index} className="aspect-[16/12] w-full rounded-[14px]" />
     ))}
   </div>
 )
 
-/** Single-choice list of the provider's services, shown with the same card as the product preview. */
-const BookingServiceList = ({ products, loaded, selectedId, onSelect }: BookingServiceListProps) => {
-  if (!loaded) return <BookingServiceListSkeleton />
+const BookingServiceList = ({ products, loaded, selectedId, onSelect, className }: BookingServiceListProps) => {
+  if (!loaded) return <BookingServiceListSkeleton className={className} />
   if (products.length === 0) {
     return <p className="py-6 text-center text-[12px] text-sich-label">Este profissional ainda não tem serviços disponíveis.</p>
   }
 
   return (
-    <div role="radiogroup" aria-label="Escolha o serviço" className="flex flex-col gap-3">
+    <div role="radiogroup" aria-label="Escolha o serviço" className={cn("flex flex-col gap-3", className)}>
       {products.map((product) => {
         const selected = product.id === selectedId
         return (

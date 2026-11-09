@@ -7,7 +7,6 @@ type SearchCategoryChipsProps = {
   onValueChange: (value: string[]) => void
 }
 
-/** Category chips wrapping onto as many lines as needed. */
 const SearchCategoryChips = ({ categories, value, onValueChange }: SearchCategoryChipsProps) => {
   if (categories.length === 0) return null
 

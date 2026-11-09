@@ -12,14 +12,15 @@ type BookingDatePickerProps = {
   onWeekChange: (offset: number) => void
   selectedDate: string
   onSelectedDateChange: (date: string) => void
+  title?: string
 }
 
-/** Next 7 days starting today, paginated by week, reusing the agenda day picker. */
-const BookingDatePicker = ({ monthLabel, days, weekOffset, canGoBack, onWeekChange, selectedDate, onSelectedDateChange }: BookingDatePickerProps) => (
+const BookingDatePicker = ({ monthLabel, days, weekOffset, canGoBack, onWeekChange, selectedDate, onSelectedDateChange, title }: BookingDatePickerProps) => (
   <section className="flex flex-col gap-3">
     <div className="flex items-center justify-between">
-      <h2 className="text-[14px] font-semibold text-sich-heading">Data — {monthLabel}</h2>
-      <div className="flex gap-1">
+      <h2 className="text-[14px] font-semibold text-sich-heading lg:text-[16px]">{title ?? `Data — ${monthLabel}`}</h2>
+      <div className="flex items-center gap-1">
+        {title && <span className="mr-2 text-[12px] font-semibold text-sich-magenta">{monthLabel}</span>}
         <Button variant="ghost" size="icon" disabled={!canGoBack} onClick={() => onWeekChange(weekOffset - 1)} aria-label="Semana anterior">
           <ChevronLeft />
         </Button>

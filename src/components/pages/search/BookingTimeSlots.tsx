@@ -1,18 +1,19 @@
 import { Skeleton } from "@/components/ui/skeleton"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { cn } from "@/lib/utils"
 
 type BookingTimeSlotsProps = {
   times: string[]
   loaded: boolean
   selectedTime: string | null
   onSelect: (time: string | null) => void
+  className?: string
 }
 
-/** Free start times only (the API doesn't return the taken ones). */
-const BookingTimeSlots = ({ times, loaded, selectedTime, onSelect }: BookingTimeSlotsProps) => {
+const BookingTimeSlots = ({ times, loaded, selectedTime, onSelect, className }: BookingTimeSlotsProps) => {
   if (!loaded) {
     return (
-      <div className="grid grid-cols-3 gap-2" aria-busy="true" aria-label="Carregando horários">
+      <div className={cn("grid grid-cols-3 gap-2", className)} aria-busy="true" aria-label="Carregando horários">
         {Array.from({ length: 6 }, (_, index) => <Skeleton key={index} className="h-10 rounded-[12px]" />)}
       </div>
     )
@@ -28,7 +29,7 @@ const BookingTimeSlots = ({ times, loaded, selectedTime, onSelect }: BookingTime
       value={selectedTime ? [selectedTime] : []}
       onValueChange={(value) => onSelect(value[0] ?? null)}
       aria-label="Escolha o horário"
-      className="grid w-full grid-cols-3 gap-2"
+      className={cn("grid w-full grid-cols-3 gap-2", className)}
     >
       {times.map((time) => (
         <ToggleGroupItem

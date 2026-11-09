@@ -97,11 +97,14 @@ export const dayTitle = (date: Date) => `${capitalize(weekdayName.format(date))}
 
 const MONTH_LABELS = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
 
-/** "2026-05-13T11:00:00" -> "Qua, 13 Mai · 11:00" */
-export const shortDateTime = (dateTime: string) => {
-  const date = parseIsoDate(dateTime.slice(0, 10))
-  return `${WEEKDAY_LABELS[date.getDay()]}, ${date.getDate()} ${MONTH_LABELS[date.getMonth()]} · ${dateTime.slice(11, 16)}`
+/** "2026-05-13" -> "Qua, 13 Mai" */
+export const shortDateLabel = (isoDate: string) => {
+  const date = parseIsoDate(isoDate)
+  return `${WEEKDAY_LABELS[date.getDay()]}, ${date.getDate()} ${MONTH_LABELS[date.getMonth()]}`
 }
+
+/** "2026-05-13T11:00:00" -> "Qua, 13 Mai · 11:00" */
+export const shortDateTime = (dateTime: string) => `${shortDateLabel(dateTime.slice(0, 10))} · ${dateTime.slice(11, 16)}`
 
 /** ISO weekday used by the backend: 1 = Monday ... 7 = Sunday. */
 export const isoWeekday = (date: Date) => date.getDay() === 0 ? 7 : date.getDay()

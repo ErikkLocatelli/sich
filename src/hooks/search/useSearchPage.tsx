@@ -22,7 +22,6 @@ const clampRange = (range: PriceRange, bounds: PriceRange): PriceRange => [
   Math.min(range[1], bounds[1]),
 ]
 
-/** State, data and actions of the customer search (chips apply at once; the filter popover edits a draft). */
 export const useSearchPage = () => {
   const previousRoute = usePreviousRoute()
   const [query, setQuery] = useState("")

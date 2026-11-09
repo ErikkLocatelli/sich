@@ -4,8 +4,8 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { CUSTOMER_APPOINTMENT_POST } from "@/api/schedule/customerAppointments"
 import { toast } from "@/components/ui/toast"
 import { BOOKING_DAYS, bookingDateTimeLabel, bookingStartAt, bookingStripStart } from "@/services/search/booking"
-import { filterProducts, filtersFromSearch } from "@/services/search/searchFilters"
-import { monthYearLabel, nextDays, toIsoDate } from "@/services/schedule/agendaDates"
+import { filterProducts, filtersFromSearch, providerSubtitle } from "@/services/search/searchFilters"
+import { monthYearLabel, nextDays, shortDateLabel, toIsoDate } from "@/services/schedule/agendaDates"
 
 import useFetch from "../useFetch"
 import usePreviousRoute from "../usePreviousRoute"
@@ -18,7 +18,6 @@ const parseProviderId = (value: string | undefined) => {
   return Number.isInteger(id) && id > 0 ? id : null
 }
 
-/** State, data and actions of the booking flow opened from a search result. */
 export const useProviderBookingPage = () => {
   const previousRoute = usePreviousRoute()
   const navigate = useNavigate()
@@ -92,6 +91,7 @@ export const useProviderBookingPage = () => {
     animationClass: previousRoute?.startsWith("/search") ? "animateLeft" : "animateRight",
     validProvider: providerId !== null,
     providerName: provider?.name ?? "",
+    providerSubtitle: provider ? providerSubtitle(provider) : "",
     products: visibleProducts,
     productsLoaded,
     selectedProduct,
@@ -108,6 +108,8 @@ export const useProviderBookingPage = () => {
     selectedTime,
     selectTime: setPickedTime,
     dateTimeLabel: selectedTime ? bookingDateTimeLabel(selectedDate, selectedTime) : "—",
+    dateLabel: shortDateLabel(selectedDate),
+    timeLabel: selectedTime ?? "—",
     submitting,
     canConfirm: !!selectedProduct && !!selectedTime && !submitting,
     confirm,
