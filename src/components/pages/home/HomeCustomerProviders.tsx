@@ -5,14 +5,22 @@ import { cn } from "@/lib/utils"
 import { HOME_PROVIDER_LIMIT, providerHref } from "@/services/home/customerHome"
 import { providerSubtitle } from "@/services/search/searchFilters"
 
+type HomeCustomerProvidersVariant = "list" | "grid"
+
 type HomeCustomerProvidersProps = {
   providers: ProviderSummaryResponse[]
   loaded: boolean
+  variant?: HomeCustomerProvidersVariant
   className?: string
 }
 
-const HomeCustomerProvidersSkeleton = ({ className }: { className?: string }) => (
-  <div className={cn("flex flex-col gap-3", className)} aria-busy="true" aria-label="Carregando profissionais">
+const CONTAINER_CLASSES: Record<HomeCustomerProvidersVariant, string> = {
+  list: "flex flex-col gap-3",
+  grid: "grid grid-cols-2 items-start gap-4.5",
+}
+
+const HomeCustomerProvidersSkeleton = ({ variant, className }: { variant: HomeCustomerProvidersVariant; className?: string }) => (
+  <div className={cn(CONTAINER_CLASSES[variant], className)} aria-busy="true" aria-label="Carregando profissionais">
     {Array.from({ length: HOME_PROVIDER_LIMIT }, (_, index) => (
       <div key={index} className="flex items-center gap-3 rounded-[16px] border border-sich-border bg-white p-3">
         <Skeleton className="size-14 shrink-0 rounded-[16px]" />
@@ -27,15 +35,15 @@ const HomeCustomerProvidersSkeleton = ({ className }: { className?: string }) =>
 )
 
 // TODO(backend): rating and badge ("Top SICH", "Premium") are not in ProviderSummaryResponse yet
-const HomeCustomerProviders = ({ providers, loaded, className }: HomeCustomerProvidersProps) => {
-  if (!loaded) return <HomeCustomerProvidersSkeleton className={className} />
+const HomeCustomerProviders = ({ providers, loaded, variant = "list", className }: HomeCustomerProvidersProps) => {
+  if (!loaded) return <HomeCustomerProvidersSkeleton variant={variant} className={className} />
 
   return (
-    <div className={cn("flex flex-col gap-3", className)}>
+    <div className={cn(CONTAINER_CLASSES[variant], className)}>
       {providers.map((provider) => (
         <ProfessionalInfoCard
           key={provider.id}
-          layout="compact"
+          layout={variant === "grid" ? "stacked" : "compact"}
           name={provider.name}
           subtitle={providerSubtitle(provider)}
           neighborhood={provider.neighborhood}

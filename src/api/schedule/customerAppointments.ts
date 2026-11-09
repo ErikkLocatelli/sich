@@ -39,3 +39,15 @@ export const CUSTOMER_APPOINTMENTS_SUMMARY_GET = (token: string) => {
     }
   }
 }
+
+export const CUSTOMER_APPOINTMENTS_GET = (token: string, from: string, to: string) => {
+  return {
+    url: API_URL + `/customers/me/appointments?from=${from}&to=${to}`,
+    options: {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  }
+}
