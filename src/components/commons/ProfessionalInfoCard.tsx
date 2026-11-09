@@ -5,7 +5,7 @@ import { formatCurrencyShort } from "@/services/schedule/formatters"
 
 import Avatar from "./Avatar"
 
-type ProfessionalInfoCardLayout = "row" | "stacked"
+type ProfessionalInfoCardLayout = "row" | "stacked" | "compact"
 
 type ProfessionalInfoCardProps = {
   name: string
@@ -13,6 +13,8 @@ type ProfessionalInfoCardProps = {
   subtitle?: string
   neighborhood?: string | null
   minPrice?: number | null
+  /** Short tag next to the name, e.g. "Top SICH" (compact layout only) */
+  badge?: string
   href?: string
   layout?: ProfessionalInfoCardLayout
   className?: string
@@ -62,14 +64,46 @@ const StackedContent = ({ name, url, subtitle, neighborhood, minPrice }: Content
   </>
 )
 
+const CompactContent = ({ name, url, subtitle, neighborhood, minPrice, badge }: ContentProps) => (
+  <>
+    <Avatar name={name} url={url} className="shrink-0 bg-sich-gradient" />
+
+    <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+      <div className="flex min-w-0 items-center gap-1.5">
+        <span className="truncate text-[14px] font-semibold text-sich-heading">{name}</span>
+        {badge && (
+          <span className="shrink-0 rounded-full bg-[#FDE7F0] px-1.5 py-0.5 text-[9px] font-semibold uppercase text-(--sich-primary)">
+            {badge}
+          </span>
+        )}
+      </div>
+      {subtitle && <span className="truncate text-[11px] text-sich-label">{subtitle}</span>}
+      <div className="flex items-center justify-between gap-2">
+        <span className="truncate text-[11px] text-sich-label">{neighborhood ?? ""}</span>
+        {minPrice != null && (
+          <span className="shrink-0 text-[11px] font-semibold text-sich-magenta">{formatCurrencyShort(minPrice)}+</span>
+        )}
+      </div>
+    </div>
+  </>
+)
+
+const CONTENT: Record<ProfessionalInfoCardLayout, (props: ContentProps) => React.ReactNode> = {
+  row: RowContent,
+  stacked: StackedContent,
+  compact: CompactContent,
+}
+
 const LAYOUT_CLASSES: Record<ProfessionalInfoCardLayout, string> = {
   row: "flex items-center gap-3 rounded-[16px] p-3",
   stacked: "flex flex-col gap-3.5 rounded-[20px] p-4.5",
+  compact: "flex items-center gap-3 rounded-[16px] p-3",
 }
 
 const ProfessionalInfoCard = ({ className, href, layout = "row", ...props }: ProfessionalInfoCardProps) => {
   const classes = cn("border border-sich-border bg-white shadow-sich-small-card", LAYOUT_CLASSES[layout], className)
-  const content = layout === "stacked" ? <StackedContent {...props} /> : <RowContent {...props} />
+  const Content = CONTENT[layout]
+  const content = <Content {...props} />
 
   if (!href) return <div className={classes}>{content}</div>
 

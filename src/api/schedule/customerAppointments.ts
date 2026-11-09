@@ -21,3 +21,21 @@ export const CUSTOMER_APPOINTMENT_POST = (token: string, body: CustomerAppointme
     }
   }
 }
+
+export type CustomerAppointmentSummaryResponse = {
+  completedCount: number
+  upcomingCount: number
+  canceledCount: number
+}
+
+export const CUSTOMER_APPOINTMENTS_SUMMARY_GET = (token: string) => {
+  return {
+    url: API_URL + "/customers/me/appointments/summary",
+    options: {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+  }
+}

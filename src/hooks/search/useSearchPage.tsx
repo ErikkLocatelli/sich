@@ -1,9 +1,11 @@
 import { useState } from "react"
+import { useSearchParams } from "react-router-dom"
 
 import type { PriceRange, SearchFilters } from "@/models/searchFilters"
 import {
   EMPTY_FILTERS,
   filterProviders,
+  filtersFromSearch,
   filtersToSearch,
   hasActiveFilters,
   neighborhoodOptions,
@@ -25,7 +27,9 @@ const clampRange = (range: PriceRange, bounds: PriceRange): PriceRange => [
 export const useSearchPage = () => {
   const previousRoute = usePreviousRoute()
   const [query, setQuery] = useState("")
-  const [filters, setFilters] = useState<SearchFilters>(EMPTY_FILTERS)
+  const [searchParams] = useSearchParams()
+  // Entry filters from the URL (e.g. a category card on the home); later changes stay local
+  const [filters, setFilters] = useState<SearchFilters>(() => filtersFromSearch(searchParams))
   const [draft, setDraft] = useState<SearchFilters>(EMPTY_FILTERS)
   const [filtersOpen, setFiltersOpen] = useState(false)
 

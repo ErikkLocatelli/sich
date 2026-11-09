@@ -1,3 +1,5 @@
+import { BanknoteArrowUp, BriefcaseBusiness } from 'lucide-react'
+
 import type { UserDataProvider } from '@/models/userData'
 
 import HomeHeader from '@/components/pages/home/HomeHeader'
@@ -19,8 +21,10 @@ const HomeProviderMobile = ({ data, state }: { data: UserDataProvider; state: Pr
         data={data}
         title={`${greeting}, ${data.name}`}
         subtitle={remainingCount}
-        value1={String(todaySummary?.scheduledCount ?? 0)}
-        value2={formatCurrency(todaySummary?.expectedRevenue ?? 0)} />
+        stats={[
+          { label: "Atendimentos de hoje", value: String(todaySummary?.scheduledCount ?? 0), icon: BriefcaseBusiness },
+          { label: "Receita prevista hoje", value: formatCurrency(todaySummary?.expectedRevenue ?? 0), icon: BanknoteArrowUp },
+        ]} />
 
       <MobileLink title={`Agenda de hoje · ${todayLabel}`} link="Ver tudo >" href="/schedule" className="px-6 mt-10"/>
 
