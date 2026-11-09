@@ -1,4 +1,4 @@
-import { HandCoins, Handshake, BriefcaseBusiness, BanknoteArrowUp } from "lucide-react"
+import type { LucideIcon } from "lucide-react"
 
 import type { UserData, UserDataProvider } from "@/models/userData"
 
@@ -7,15 +7,20 @@ import SichBadge from "@/components/commons/SichBadge"
 import Title from "@/components/commons/Title"
 import UserInfoCard from "@/components/commons/UserInfoCard"
 
+export type HomeHeaderStat = {
+  label: string
+  value: string
+  icon: LucideIcon
+}
+
 type HomeHeaderProps = {
   data: UserData | UserDataProvider
-  value1: string
-  value2: string
+  stats: HomeHeaderStat[]
   title?: string
   subtitle?: string | null
 }
 
-const HomeHeader = ({ data, value1, value2, title, subtitle }: HomeHeaderProps) => {
+const HomeHeader = ({ data, stats, title, subtitle }: HomeHeaderProps) => {
   return (
     <SichBadge className="px-6 flex flex-col gap-6 py-10">
       <div className="flex items-center justify-between gap-2">
@@ -26,10 +31,11 @@ const HomeHeader = ({ data, value1, value2, title, subtitle }: HomeHeaderProps) 
         </div>
         <NotificationBell />
       </div>
-      
+
       <div className="flex flex-row items-center gap-3">
-        <UserInfoCard label={data.userType === "CUSTOMER" ? "Saldo cashback" : "Atendimentos de hoje"} value={value1} icon={data.userType === "CUSTOMER" ? HandCoins : BriefcaseBusiness} />
-        <UserInfoCard label={data.userType === "CUSTOMER" ? "Fidelidade" : "Receita prevista hoje"} value={value2} icon={data.userType === "CUSTOMER" ? Handshake : BanknoteArrowUp} />
+        {stats.map((stat) => (
+          <UserInfoCard key={stat.label} label={stat.label} value={stat.value} icon={stat.icon} />
+        ))}
       </div>
     </SichBadge>
   )

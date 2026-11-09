@@ -97,11 +97,27 @@ export const dayTitle = (date: Date) => `${capitalize(weekdayName.format(date))}
 
 const MONTH_LABELS = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
 
-/** "2026-05-13T11:00:00" -> "Qua, 13 Mai · 11:00" */
-export const shortDateTime = (dateTime: string) => {
-  const date = parseIsoDate(dateTime.slice(0, 10))
-  return `${WEEKDAY_LABELS[date.getDay()]}, ${date.getDate()} ${MONTH_LABELS[date.getMonth()]} · ${dateTime.slice(11, 16)}`
+/** "2026-05-13" -> "Qua, 13 Mai" */
+export const shortDateLabel = (isoDate: string) => {
+  const date = parseIsoDate(isoDate)
+  return `${WEEKDAY_LABELS[date.getDay()]}, ${date.getDate()} ${MONTH_LABELS[date.getMonth()]}`
 }
+
+/** "2026-05-13T11:00:00" -> "Qua, 13 Mai · 11:00" */
+export const shortDateTime = (dateTime: string) => `${shortDateLabel(dateTime.slice(0, 10))} · ${dateTime.slice(11, 16)}`
 
 /** ISO weekday used by the backend: 1 = Monday ... 7 = Sunday. */
 export const isoWeekday = (date: Date) => date.getDay() === 0 ? 7 : date.getDay()
+
+/** `count` consecutive days starting at `start` (not aligned to the week). */
+export const nextDays = (start: Date, count: number): WeekDay[] =>
+  Array.from({ length: count }, (_, index) => {
+    const day = addDays(start, index)
+    return { value: toIsoDate(day), label: WEEKDAY_LABELS[day.getDay()], day: day.getDate() }
+  })
+
+/** "2026-11-07" -> "Novembro 2026" */
+export const monthYearLabel = (isoDate: string) => {
+  const date = parseIsoDate(isoDate)
+  return `${capitalize(monthName.format(date))} ${date.getFullYear()}`
+}

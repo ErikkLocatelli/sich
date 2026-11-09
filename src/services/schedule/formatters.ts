@@ -11,3 +11,8 @@ export const formatDuration = (minutes: number) => {
   if (rest === 0) return `${hours}h`
   return `${hours}h${rest.toString().padStart(2, "0")}`
 }
+
+const shortCurrencyFormat = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 0, maximumFractionDigits: 2 })
+
+/** 65 -> "R$ 65", 65.5 -> "R$ 65,5" */
+export const formatCurrencyShort = (value: number) => shortCurrencyFormat.format(value)

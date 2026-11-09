@@ -6,6 +6,7 @@ import usePreviousRoute from "../hooks/usePreviousRoute"
 import Home from '../pages/home/Home'
 import Benefits from '../pages/customer/Benefits'
 import Search from '../pages/customer/Search'
+import ProviderBooking from '../pages/customer/ProviderBooking'
 import Schedule from '../pages/schedule/Schedule'
 import ScheduleDisponibilty from '../pages/schedule/ScheduleDisponibilty'
 import AppointmentDetails from '../pages/schedule/AppointmentDetails'
@@ -36,8 +37,18 @@ const Routes = () => {
                 }, 
                 {
                     path: '/search',
-                    element: <Search />
-                }, 
+                    element: <Outlet />,
+                    children: [
+                        {
+                            index: true,
+                            element: <Search />
+                        },
+                        {
+                            path: ':providerId',
+                            element: <ProviderBooking />
+                        }
+                    ]
+                },
                 {
                     path: '/schedule',
                     element: <Outlet />,
