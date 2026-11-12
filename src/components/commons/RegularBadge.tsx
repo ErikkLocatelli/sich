@@ -1,6 +1,13 @@
-const Badge = ({ text }: { text: string }) => {
+import { cn } from "@/lib/utils"
 
-  return <span className="ml-auto rounded-full bg-[#FDE7F0] px-2 py-1 text-[9px] font-semibold uppercase text-[#A01F6B]">{text}</span>
-}
+const Badge = ({ text, className }: { text: string; className?: string }) => (
+  <span
+    className={cn(
+      "inline-flex shrink-0 items-center rounded-full bg-[#FDE7F0] px-2 py-1 text-[9px] leading-none font-semibold uppercase text-[#A01F6B]",
+      className,
+    )}>
+    {text}
+  </span>
+)
 
 export default Badge
