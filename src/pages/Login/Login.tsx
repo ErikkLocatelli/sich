@@ -1,12 +1,16 @@
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useMutation } from '@tanstack/react-query'
 
 import useForm from '../../hooks/useForm'
 import usePreviousRoute from '../../hooks/usePreviousRoute'
 import useHead from '../../hooks/useHead'
-import useFetch from '../../hooks/useFetch'
 import { validateFields } from '../../services/validators/validateFields'
 
-import { LOGIN_POST } from '../../api/user/user'
+import { LOGIN_POST, type LoginBody } from '../../api/user/user'
+import { apiFetch } from '../../api/client'
+import type { LoginResponse } from '../../api/user/userQueries'
+import { userContext } from '../../services/userContext'
 
 import { Button } from '../../components/ui/button'
 
@@ -25,10 +29,19 @@ const Login = () => {
   const email = useForm({ type: 'email', required: true })
   const password = useForm({ type: 'password', required: true })
 
-  const { error, loading, request } = useFetch() 
+  const { userLogin } = useContext(userContext)
+  const navigate = useNavigate();
+  const loginMutation = useMutation({
+    mutationFn: (body: LoginBody) => apiFetch<LoginResponse>(LOGIN_POST(body)),
+    onSuccess: ({ token }) => {
+      userLogin(token)
+      navigate("/")
+    }
+  })
+  const loading = loginMutation.isPending
+  const error = loginMutation.error?.message ?? null
 
   const previousRoute = usePreviousRoute();
-  const navigate = useNavigate();
   useHead("Login", "Entre para acessar seus agendamentos e benefícios na SICH")
 
   const isFormValid =
@@ -42,17 +55,10 @@ const Login = () => {
     
     const isValid = await validateFields({ email, password })
 
-    if(isValid) {
-       const { url, options } = LOGIN_POST({ email: email.value, password: password.value })
-       const { response, json } = await request(url, options)
+    if (!isValid) return
 
-       if(response?.ok) {
-        window.localStorage.setItem("token", json.token)
-        
-        navigate("/")
-    }
+    loginMutation.mutate({ email: email.value, password: password.value })
   }
-}
 
   return (
     <div className={`flex w-full min-h-dvh flex-col lg:justify-center lg:items-center lg:flex-row lg:gap-25 overflow-hidden bg-sich-surface shadow-sich-card

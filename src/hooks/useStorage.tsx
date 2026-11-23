@@ -1,59 +1,48 @@
 import type { ReactNode } from "react"
 import { useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 
-import { GET_USER } from "../api/user/user"
-import type { UserData } from "../models/userData"
-
-import useFetch from "../hooks/useFetch"
+import { getToken } from "../api/client"
+import { meQuery } from "../api/user/userQueries"
 import { userContext } from "../services/userContext"
 
+const PUBLIC_PATHS = ["/login", "/register"]
+
 export const UserStorage = ({ children }: { children: ReactNode }) => {
-    
-    const [login, setLogin] = useState(false)
-    const [authReady, setAuthReady] = useState(() => !window.localStorage.getItem("token"))
-    const [data, setData] = useState<UserData | null>(null)
-    const { request } = useFetch()
+    const [token, setToken] = useState(getToken)
+    const queryClient = useQueryClient()
     const navigate = useNavigate()
+    const { data, isSuccess, isError, isPending } = useQuery(meQuery(token))
+
+    const userLogin = useCallback((newToken: string) => {
+        // Nothing cached for a previous account may leak into the new session
+        queryClient.clear()
+        window.localStorage.setItem("token", newToken)
+        setToken(newToken)
+    }, [queryClient])
 
     const userLogout = useCallback(() => {
-        setData(null)
-        setLogin(false)
         window.localStorage.removeItem("token")
+        setToken(null)
+        queryClient.clear()
         navigate("/login", { replace: true })
-    }, [navigate])
+    }, [navigate, queryClient])
 
     useEffect(() => {
-        const autoLogin = async () => {
-            const token = window.localStorage.getItem("token")
-            if (!token) {
-                return
-            }
+        if (isError) userLogout()
+    }, [isError, userLogout])
 
-            try {
-                const { url, options } = GET_USER(token)
-                const { json, response } = await request(url, options)
-
-                if (response?.ok) {
-                    setData(json)
-                    setLogin(true)
-
-                    if (window.location.pathname === "/login" || window.location.pathname === "/register") {
-                        navigate("/", { replace: true })
-                    }
-                } else {
-                    userLogout()
-                }
-            } finally {
-                setAuthReady(true)
-            }
+    useEffect(() => {
+        if (isSuccess && PUBLIC_PATHS.includes(window.location.pathname)) {
+            navigate("/", { replace: true })
         }
+    }, [isSuccess, navigate])
 
-        autoLogin()
-    }, [login, request, userLogout, navigate])
-    
+    const login = !!token && isSuccess
+
     return (
-        <userContext.Provider value={{login, authReady, data, userLogout}}>
+        <userContext.Provider value={{ login, authReady: !token || !isPending, data: login ? data : null, userLogin, userLogout }}>
             {children}
         </userContext.Provider>
     )

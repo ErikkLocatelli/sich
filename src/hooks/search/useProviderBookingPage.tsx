@@ -1,13 +1,16 @@
 import { useMemo, useState } from "react"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import { CUSTOMER_APPOINTMENT_POST } from "@/api/schedule/customerAppointments"
+import { apiFetch, requireToken } from "@/api/client"
+import { queryKeys } from "@/api/queryKeys"
+import type { AppointmentResponse } from "@/api/schedule/appointments"
+import { CUSTOMER_APPOINTMENT_POST, type CustomerAppointmentRequest } from "@/api/schedule/customerAppointments"
 import { toast } from "@/components/ui/toast"
 import { BOOKING_DAYS, bookingDateTimeLabel, bookingStartAt, bookingStripStart } from "@/services/search/booking"
 import { filterProducts, filtersFromSearch, providerSubtitle } from "@/services/search/searchFilters"
 import { monthYearLabel, nextDays, shortDateLabel, toIsoDate } from "@/services/schedule/agendaDates"
 
-import useFetch from "../useFetch"
 import usePreviousRoute from "../usePreviousRoute"
 import { useAvailability } from "./useAvailability"
 import { useProviderProducts } from "./useProviderProducts"
@@ -21,7 +24,7 @@ const parseProviderId = (value: string | undefined) => {
 export const useProviderBookingPage = () => {
   const previousRoute = usePreviousRoute()
   const navigate = useNavigate()
-  const { request } = useFetch()
+  const queryClient = useQueryClient()
   const params = useParams()
   const [searchParams] = useSearchParams()
 
@@ -33,7 +36,6 @@ export const useProviderBookingPage = () => {
   const [weekOffset, setWeekOffset] = useState(0)
   const [selectedDate, setSelectedDate] = useState(() => toIsoDate(today))
   const [pickedTime, setPickedTime] = useState<string | null>(null)
-  const [submitting, setSubmitting] = useState(false)
 
   const { provider } = useProviderSummary(providerId)
   const { products, loaded: productsLoaded } = useProviderProducts(providerId)
@@ -60,31 +62,30 @@ export const useProviderBookingPage = () => {
     selectDate(toIsoDate(bookingStripStart(today, offset)))
   }
 
-  const confirm = async () => {
+  const booking = useMutation({
+    mutationFn: (body: CustomerAppointmentRequest) =>
+      apiFetch<AppointmentResponse>(CUSTOMER_APPOINTMENT_POST(requireToken(), body)),
+    meta: { errorMessage: "Erro ao confirmar agendamento" },
+    onSuccess: (_appointment, body) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.customer.appointments.all })
+      queryClient.invalidateQueries({ queryKey: queryKeys.providers.availabilityAll(body.providerId) })
+      toast.add({ type: "success", description: "Agendamento confirmado" })
+      navigate("/schedule")
+    },
+    // The slot may have been taken in the meantime
+    onError: () => reloadTimes(),
+  })
+  const submitting = booking.isPending
+
+  const confirm = () => {
     if (!providerId || !selectedProduct || !selectedTime || submitting) return
 
-    const token = window.localStorage.getItem("token")
-    if (!token) return
-
-    setSubmitting(true)
-    const { url, options } = CUSTOMER_APPOINTMENT_POST(token, {
+    booking.mutate({
       providerId,
       startAt: bookingStartAt(selectedDate, selectedTime),
       productIds: [selectedProduct.id],
       notes: null,
     })
-    const { response, json } = await request(url, options)
-    setSubmitting(false)
-
-    if (!response?.ok) {
-      toast.add({ type: "error", description: json?.message || "Erro ao confirmar agendamento" })
-      // The slot may have been taken in the meantime
-      reloadTimes()
-      return
-    }
-
-    toast.add({ type: "success", description: "Agendamento confirmado" })
-    navigate("/schedule")
   }
 
   return {

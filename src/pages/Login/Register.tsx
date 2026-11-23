@@ -1,12 +1,13 @@
 import { useState } from "react"
+import { useMutation } from "@tanstack/react-query"
 
 import usePreviousRoute from "../../hooks/usePreviousRoute"
 import useHead from "../../hooks/useHead"
-import useFetch from "../../hooks/useFetch"
 import { useCustomerForm } from "../../hooks/register/useCustomerForm"
 import { useProfessionalForm } from "../../hooks/register/useProfessionalForm"
 
-import { REGISTER_POST } from "../../api/user/user"
+import { REGISTER_POST, type RegisterBody } from "../../api/user/user"
+import { apiFetch } from "../../api/client"
 
 import CustomerForm from "../../components/pages/register/CustomerForm"
 import ProfessionalForm from "../../components/pages/register/ProfessionalForm"
@@ -32,7 +33,11 @@ const Register = () => {
   const professionalForm = useProfessionalForm()
   const activeForm = userType === "CUSTOMER" ? customerForm : professionalForm
 
-  const { error, loading, request } = useFetch()
+  const registerMutation = useMutation({
+    mutationFn: (body: RegisterBody) => apiFetch<unknown>(REGISTER_POST(body)),
+  })
+  const loading = registerMutation.isPending
+  const error = registerMutation.error?.message ?? null
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,12 +46,7 @@ const Register = () => {
 
     if(!isValid) return
 
-    const payload = activeForm.getPayload()
-
-    const { url, options } = REGISTER_POST(payload)
-    const { response, json } = await request(url, options)
-
-    console.log(response, json)
+    registerMutation.mutate(activeForm.getPayload())
   }
   
   return (

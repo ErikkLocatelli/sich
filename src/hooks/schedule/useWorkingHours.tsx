@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react"
+import { useMemo, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
 
-import useFetch from "../useFetch"
-import { toast } from "../../components/ui/toast"
-import { WORKING_HOURS_GET, type WorkingHoursRequest, type WorkingInterval } from "../../api/schedule/workingHours"
+import type { WorkingHoursRequest, WorkingInterval } from "../../api/schedule/workingHours"
+import { workingHoursQuery } from "../../api/schedule/scheduleQueries"
 
 export type TimeInterval = {
   start: string
@@ -55,6 +55,8 @@ const isAligned = (time: string) => toMinutes(time) % SLOT_MINUTES === 0
 const emptyWeek = (): DaySchedule[] =>
   WEEKDAYS.map((day) => ({ ...day, enabled: false, intervals: [] }))
 
+const EMPTY_WEEK = emptyWeek()
+
 const fromResponse = (intervals: WorkingInterval[]): DaySchedule[] =>
   emptyWeek().map((day) => {
     const dayIntervals = intervals
@@ -98,34 +100,14 @@ const nextInterval = (last: TimeInterval): TimeInterval | null => {
 }
 
 export const useWorkingHours = () => {
-  const { request, loading, error } = useFetch()
-  const [days, setDays] = useState<DaySchedule[]>(emptyWeek)
-
-  useEffect(() => {
-    const loadWorkingHours = async () => {
-      const token = window.localStorage.getItem("token")
-
-      if (!token) return
-
-      const { url, options } = WORKING_HOURS_GET(token)
-      const { json, response } = await request(url, options)
-
-      if (!response?.ok) {
-        toast.add({
-          type: "error",
-          description: json?.message ?? "Não foi possível carregar sua disponibilidade."
-        })
-        return
-      }
-
-      setDays(fromResponse(json as WorkingInterval[]))
-    }
-
-    loadWorkingHours()
-  }, [request])
+  const { data, isPending, isFetching, isSuccess, error } = useQuery(workingHoursQuery())
+  const saved = useMemo(() => (data ? fromResponse(data) : null), [data])
+  // Local edits; until the first one the form mirrors the saved schedule
+  const [edited, setEdited] = useState<DaySchedule[] | null>(null)
+  const days = edited ?? saved ?? EMPTY_WEEK
 
   const updateDay = (weekday: number, update: (day: DaySchedule) => DaySchedule) => {
-    setDays((prevDays) => prevDays.map((day) => (day.weekday === weekday ? update(day) : day)))
+    setEdited((prevDays) => (prevDays ?? days).map((day) => (day.weekday === weekday ? update(day) : day)))
   }
 
   const toggleDay = (weekday: number, enabled: boolean) => {
@@ -174,8 +156,10 @@ export const useWorkingHours = () => {
   return {
     days,
     errors,
-    loading,
-    error,
+    loading: isPending || isFetching,
+    /** False until the saved schedule arrived; saving before that would overwrite it with an empty week */
+    loaded: isSuccess,
+    error: error?.message ?? null,
     isValid,
     toggleDay,
     updateInterval,

@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useMemo } from "react"
+import { useInfiniteQuery } from "@tanstack/react-query"
 
-import useFetch from "../useFetch"
-import { toast } from "../../components/ui/toast"
-import { APPOINTMENTS_HISTORY_GET, type AppointmentResponse, type PageResponse } from "../../api/schedule/appointments"
+import { historyFeedQuery } from "../../api/schedule/scheduleQueries"
 
 /**
  * Paginated history limited to appointments that started on or after `since`
@@ -10,47 +9,24 @@ import { APPOINTMENTS_HISTORY_GET, type AppointmentResponse, type PageResponse }
  * cutoff means there is nothing else to load.
  */
 export const useHistoryFeed = (since: string, pageSize: number) => {
-  const { request, loading } = useFetch()
-  const [appointments, setAppointments] = useState<AppointmentResponse[]>([])
-  const [hasMore, setHasMore] = useState(true)
-  const [loaded, setLoaded] = useState(false)
-  const nextPage = useRef(0)
-  const inFlight = useRef(false)
+  const { data, hasNextPage, isError, isFetching, isFetchingNextPage, isPending, fetchNextPage } =
+    useInfiniteQuery(historyFeedQuery(since, pageSize))
 
-  const loadMore = useCallback(async () => {
-    if (inFlight.current || !hasMore) return
+  const appointments = useMemo(
+    () => (data?.pages ?? [])
+      .flatMap((page) => page.content)
+      .filter((appointment) => appointment.startAt.slice(0, 10) >= since),
+    [data, since]
+  )
 
-    const token = window.localStorage.getItem("token")
-    if (!token) return
+  // A failed page stops the feed, otherwise the scroll sentinel would retry it in a loop
+  const hasMore = hasNextPage && !isError
 
-    inFlight.current = true
-    const { url, options } = APPOINTMENTS_HISTORY_GET(token, nextPage.current, pageSize)
-    const { json, response } = await request(url, options)
-    inFlight.current = false
+  const loadMore = useCallback(() => {
+    if (!hasMore || isFetchingNextPage) return
+    // Two calls before a re-render would otherwise cancel and restart the same page
+    fetchNextPage({ cancelRefetch: false })
+  }, [hasMore, isFetchingNextPage, fetchNextPage])
 
-    if (!response?.ok) {
-      setHasMore(false)
-      toast.add({
-        type: "error",
-        description: json?.message ?? "Não foi possível carregar o histórico."
-      })
-      return
-    }
-
-    const page = json as PageResponse<AppointmentResponse>
-    const recent = page.content.filter((appointment) => appointment.startAt.slice(0, 10) >= since)
-    const reachedCutoff = recent.length < page.content.length
-
-    nextPage.current = page.page + 1
-    setAppointments((previous) => [...previous, ...recent])
-    setHasMore(!reachedCutoff && nextPage.current < page.totalPages)
-    setLoaded(true)
-  }, [hasMore, pageSize, request, since])
-
-  // First page only; the next ones come from the scroll sentinel.
-  useEffect(() => {
-    if (!loaded) loadMore()
-  }, [loaded, loadMore])
-
-  return { appointments, hasMore, loading, loaded, loadMore }
+  return { appointments, hasMore, loading: isFetching, loaded: !isPending, loadMore }
 }
