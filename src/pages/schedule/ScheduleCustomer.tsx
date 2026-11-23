@@ -1,16 +1,20 @@
-import usePreviousRoute from "../../hooks/usePreviousRoute"
-
 import { Toaster } from "@/components/ui/toast"
+import { useScheduleCustomer } from "@/hooks/schedule/useScheduleCustomer"
+import { useIsDesktop } from "@/hooks/useMedia"
+
+import ScheduleCustomerDesktop from "./ScheduleCustomerDesktop"
+import ScheduleCustomerMobile from "./ScheduleCustomerMobile"
 
 const ScheduleCustomer = () => {
-  const previousRoute = usePreviousRoute()
+  const isDesktop = useIsDesktop()
+  const state = useScheduleCustomer()
 
   return (
-    <div className={previousRoute === "/" || previousRoute?.startsWith("/search") ? "animateRight" : "animateLeft"}>
-      agenda do cliente funciona
-      {/* Shows the "Agendamento confirmado" toast queued by the booking screen */}
+    <>
+      {isDesktop ? <ScheduleCustomerDesktop state={state} /> : <ScheduleCustomerMobile state={state} />}
+      {/* Also shows the "Agendamento confirmado" toast queued by the booking screen */}
       <Toaster />
-    </div>
+    </>
   )
 }
 

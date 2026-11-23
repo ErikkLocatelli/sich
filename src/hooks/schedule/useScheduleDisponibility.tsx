@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import useFetch from "../useFetch"
+import { apiFetch, requireToken } from "../../api/client"
+import { queryKeys } from "../../api/queryKeys"
 import { useWorkingHours, type DaySchedule, type IntervalError, type TimeInterval } from "./useWorkingHours"
 import type { DayBlocks } from "./useAgenda"
 import { toast } from "../../components/ui/toast"
-import { WORKING_HOURS_PUT } from "../../api/schedule/workingHours"
+import { WORKING_HOURS_PUT, type WorkingHoursRequest } from "../../api/schedule/workingHours"
 import { isoWeekday, parseIsoDate, weekDays } from "../../services/schedule/agendaDates"
 import { buildDayTimeline } from "../../services/schedule/dayTimeline"
 
@@ -23,31 +25,34 @@ const buildPreview = (days: DaySchedule[], errors: Record<number, IntervalError[
 /** State and actions shared by the mobile and desktop disponibility screens. */
 export const useScheduleDisponibility = () => {
   const navigate = useNavigate()
-  const { request, loading: saving } = useFetch()
+  const queryClient = useQueryClient()
   const workingHours = useWorkingHours()
-  const { days, errors, isValid, loading: loadingWorkingHours, getPayload } = workingHours
+  const { days, errors, isValid, loaded, getPayload } = workingHours
 
-  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
+  const save = useMutation({
+    mutationFn: (body: WorkingHoursRequest) => apiFetch<unknown>(WORKING_HOURS_PUT(requireToken(), body)),
+    meta: { errorMessage: "Não foi possível salvar a disponibilidade." },
+    onSuccess: (_response, body) => {
+      // The saved payload is the new state: no need to fetch it back
+      queryClient.setQueryData(queryKeys.provider.workingHours, body.intervals)
+      // Working, booked and free minutes depend on the schedule
+      queryClient.invalidateQueries({ queryKey: queryKeys.provider.appointments.summaries })
+      toast.add({ type: "success", description: "Sua disponibilidade foi salva." })
+    },
+  })
+  const saving = save.isPending
+
+  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (!isValid || !loaded) return
 
-    const token = window.localStorage.getItem("token")
-    if (!token || !isValid) return
-
-    const { url, options } = WORKING_HOURS_PUT(token, getPayload())
-    const { response, json } = await request(url, options)
-
-    if (!response?.ok) {
-      toast.add({ type: "error", description: json?.message ?? "Não foi possível salvar a disponibilidade." })
-      return
-    }
-
-    toast.add({ type: "success", description: "Sua disponibilidade foi salva." })
+    save.mutate(getPayload())
   }
 
   return {
     ...workingHours,
     saving,
-    canSubmit: isValid && !saving && !loadingWorkingHours,
+    canSubmit: isValid && loaded && !saving,
     handleSubmit,
     cancel: () => navigate("/schedule"),
     preview: buildPreview(days, errors),

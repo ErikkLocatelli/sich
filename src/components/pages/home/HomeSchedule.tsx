@@ -24,14 +24,24 @@ const HomeSchedule = ({ appointment, layout = "stacked", className }: HomeSchedu
   const addressLabel = address?.street ? [address.street, address.numberAdress].filter(Boolean).join(", ") : null
   const isRow = layout === "row"
 
+  const detailsButton = (
+    <Button
+      className={cn("rounded-[12px] p-4 bg-white", isRow ? "shrink-0" : "w-full mt-4")}
+      variant="outline"
+      nativeButton={false}
+      render={<Link to={appointmentPath(appointment.id)} />}>
+      Ver detalhes
+    </Button>
+  )
+
   return (
-    <Card className={cn("p-4", isRow && "flex items-center gap-4 px-5", className)}>
+    <Card className={cn("p-4", isRow && "flex items-center gap-4 px-5 shadow-none border border-sich-border", className)}>
         <div className="flex min-w-0 flex-1 flex-row items-center gap-3">
             <div className="size-14 shrink-0 text-[#A01F6B] bg-[#FDE7F0] flex items-center justify-center rounded-[14px] font-semibold">{timeOf(appointment.startAt)}</div>
             <div className="flex min-w-0 flex-1 flex-col gap-1">
-                <div className="flex w-full items-center gap-1">
+                <div className="flex w-full items-center gap-2">
                     <span className="font-medium text-sm truncate">{services}</span>
-                    <RegularBadge text="Confirmado"/>
+                    {!isRow && <RegularBadge text="Confirmado" className="ml-auto"/>}
                 </div>
                 <div className="flex gap-1 *:text-[11px] *:text-sich-label">
                     <span>{appointment.customerName}</span>
@@ -52,13 +62,12 @@ const HomeSchedule = ({ appointment, layout = "stacked", className }: HomeSchedu
                 </div>
             </div>
         </div>
-        <Button
-          className={cn("rounded-[12px] p-4 bg-white", isRow ? "shrink-0" : "w-full mt-4")}
-          variant="outline"
-          nativeButton={false}
-          render={<Link to={appointmentPath(appointment.id)} />}>
-          Ver detalhes
-        </Button>
+        {isRow ? (
+          <div className="flex shrink-0 items-center gap-4">
+            <RegularBadge text="Confirmado"/>
+            {detailsButton}
+          </div>
+        ) : detailsButton}
     </Card>
   )
 }

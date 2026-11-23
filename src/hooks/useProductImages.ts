@@ -70,8 +70,12 @@ const useProductImages = (initialImages: Image[] = []) => {
     )
   }
 
+  /** Server state replaces everything: pending uploads are dropped so a saved image isn't listed twice. */
   const setInitialImages = useCallback((images: Image[]) => {
+    objectUrls.current.forEach(url => URL.revokeObjectURL(url))
+    objectUrls.current.clear()
     setExistingImages(images)
+    setNewImages([])
     setRemovedImages([])
   }, [])
 
