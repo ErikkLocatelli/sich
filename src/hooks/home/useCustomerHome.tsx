@@ -4,12 +4,12 @@ import { useQuery } from "@tanstack/react-query"
 import { customerAppointmentsQuery, customerSummaryQuery } from "@/api/schedule/scheduleQueries"
 import {
   dayMonthLabel,
-  HOME_UPCOMING_DAYS,
   homeCategories,
   homeProviders,
   upcomingAppointments
 } from "@/services/home/customerHome"
-import { addDays, toIsoDate, toLocalDateTime } from "@/services/schedule/agendaDates"
+import { toLocalDateTime } from "@/services/schedule/agendaDates"
+import { customerAgendaRange } from "@/services/schedule/customerSchedule"
 
 import { useCategories } from "../product/useCategories"
 import { useProviderSearch } from "../search/useProviderSearch"
@@ -20,7 +20,9 @@ const NO_CATEGORY_FILTER: number[] = []
 export const useCustomerHome = () => {
   const [now] = useState(() => new Date())
   const { data: summary } = useQuery(customerSummaryQuery())
-  const { data: appointments, isPending: upcomingPending } = useQuery(customerAppointmentsQuery(toIsoDate(now), toIsoDate(addDays(now, HOME_UPCOMING_DAYS))))
+  const [range] = useState(() => customerAgendaRange(now))
+  // Same listing as the customer agenda, so opening it next is a cache hit
+  const { data: appointments, isPending: upcomingPending } = useQuery(customerAppointmentsQuery(range.from, range.to))
 
   // Categories and the unfiltered provider search are shared with the search screen's cache
   const { categories, loaded: categoriesLoaded } = useCategories()

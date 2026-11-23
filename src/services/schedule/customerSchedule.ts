@@ -1,5 +1,6 @@
 import type { AddressResponse, AppointmentResponse } from "@/api/schedule/appointments"
 import { appointmentState } from "@/services/schedule/appointmentDetails"
+import { addDays, toIsoDate } from "@/services/schedule/agendaDates"
 
 /** How far ahead the "Próximos" tab looks. */
 export const SCHEDULE_UPCOMING_DAYS = 60
@@ -10,13 +11,18 @@ export const SCHEDULE_UPCOMING_DAYS = 60
  */
 export const SCHEDULE_HISTORY_DAYS = 31
 
+/** One range for the customer home and agenda, so both read the same cached listing. */
+export const customerAgendaRange = (now: Date) => ({
+  from: toIsoDate(addDays(now, -SCHEDULE_HISTORY_DAYS)),
+  to: toIsoDate(addDays(now, SCHEDULE_UPCOMING_DAYS)),
+})
+
 export const SCHEDULE_CUSTOMER_COPY = {
   title: "Minha agenda",
   subtitle: "Acompanhe seus atendimentos",
   upcomingEmptyTitle: "Nenhum atendimento agendado",
   upcomingEmptyAction: "Encontrar profissional ›",
   historyEmptyTitle: "Nenhum atendimento realizado",
-  loadError: "Não foi possível carregar seus agendamentos.",
 } as const
 
 export type ScheduleCustomerTab = "upcoming" | "history"

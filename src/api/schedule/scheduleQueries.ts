@@ -110,7 +110,7 @@ export const customerAppointmentsQuery = (from: string, to: string) =>
   queryOptions({
     queryKey: queryKeys.customer.appointments.list(from, to),
     queryFn: () => apiFetch<AppointmentResponse[]>(CUSTOMER_APPOINTMENTS_GET(requireToken(), from, to)),
-    meta: { errorMessage: "Não foi possível carregar seus próximos atendimentos." },
+    meta: { errorMessage: "Não foi possível carregar seus agendamentos." },
   })
 
 export const customerSummaryQuery = () =>

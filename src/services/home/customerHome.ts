@@ -7,9 +7,6 @@ import { filtersToSearch, EMPTY_FILTERS } from "@/services/search/searchFilters"
 export const HOME_CATEGORY_LIMIT = 6
 export const HOME_PROVIDER_LIMIT = 3
 export const HOME_UPCOMING_LIMIT = 3
-/** How far ahead the home looks for the customer's next appointments. */
-export const HOME_UPCOMING_DAYS = 60
-
 export const CUSTOMER_HOME_COPY = {
   subtitle: "Encontre profissionais de beleza perto de você",
   heroTitle: "Beleza onde você estiver",
