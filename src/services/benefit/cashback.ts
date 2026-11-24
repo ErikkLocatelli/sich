@@ -1,4 +1,4 @@
-import type { CashbackMovementResponse, CashbackStatus, LoyaltyResponse } from "@/api/benefit/benefit"
+import type { CashbackMovementResponse, CashbackStatus, CustomerBenefitsResponse, LoyaltyResponse } from "@/api/benefit/benefit"
 import { formatCurrency } from "@/services/schedule/formatters"
 
 const toCents = (value: number) => Math.round(value * 100)
@@ -39,4 +39,29 @@ export const loyaltyHint = ({ remaining, bonusPerCard }: Pick<LoyaltyResponse, "
   return remaining === 1
     ? `Falta 1 atendimento para ganhar ${bonus}`
     : `Faltam ${remaining} atendimentos para ganhar ${bonus}`
+}
+
+/** Line that only spent cashback (a redemption), as opposed to one that earned it. */
+export const isRedemption = ({ cashbackEarned, cashbackUsed }: Pick<CashbackMovementResponse, "cashbackEarned" | "cashbackUsed">) =>
+  cashbackEarned <= 0 && cashbackUsed > 0
+
+/** "Cashback — Studio Ana" / "Resgate — Studio Ana" */
+export const movementTitle = (movement: Pick<CashbackMovementResponse, "providerName" | "cashbackEarned" | "cashbackUsed">) => {
+  if (movement.cashbackEarned > 0) return `Cashback — ${movement.providerName}`
+  if (movement.cashbackUsed > 0) return `Resgate — ${movement.providerName}`
+  return movement.providerName
+}
+
+/** "A cada 5 atendimentos, ganhe R$ 20,00" */
+export const loyaltyRule = ({ goal, bonusPerCard }: Pick<LoyaltyResponse, "goal" | "bonusPerCard">) => {
+  const bonus = formatCurrency(bonusPerCard)
+  return goal === 1 ? `A cada atendimento, ganhe ${bonus}` : `A cada ${goal} atendimentos, ganhe ${bonus}`
+}
+
+/** "How it works" steps built from the program rates; empty when the program gives no cashback. */
+export const cashbackSteps = ({ cashbackRate, maxCashbackUsageRate }: Pick<CustomerBenefitsResponse, "cashbackRate" | "maxCashbackUsageRate">) => {
+  if (cashbackRate <= 0) return []
+  const steps = ["Agende e conclua o atendimento", `Receba ${percentLabel(cashbackRate)} de cashback no saldo`]
+  if (maxCashbackUsageRate > 0) steps.push(`Use até ${percentLabel(maxCashbackUsageRate)} do valor do próximo serviço`)
+  return steps
 }

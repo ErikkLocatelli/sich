@@ -2,7 +2,16 @@ import { describe, expect, it } from "vitest"
 
 import { formatCurrency } from "@/services/schedule/formatters"
 
-import { cashbackDiscount, loyaltyHint, movementAmounts, percentLabel } from "./cashback"
+import {
+  cashbackDiscount,
+  cashbackSteps,
+  isRedemption,
+  loyaltyHint,
+  loyaltyRule,
+  movementAmounts,
+  movementTitle,
+  percentLabel,
+} from "./cashback"
 
 describe("cashbackDiscount", () => {
   it("is capped by the usage rate of the total", () => {
@@ -64,5 +73,61 @@ describe("loyaltyHint", () => {
 
   it("handles a completed card", () => {
     expect(loyaltyHint({ remaining: 0, bonusPerCard: 10 })).toBe(`Bônus de ${bonus} liberado`)
+  })
+})
+
+describe("isRedemption", () => {
+  it("is true only when cashback was used and none earned", () => {
+    expect(isRedemption({ cashbackEarned: 0, cashbackUsed: 12 })).toBe(true)
+    expect(isRedemption({ cashbackEarned: 2, cashbackUsed: 12 })).toBe(false)
+    expect(isRedemption({ cashbackEarned: 2, cashbackUsed: 0 })).toBe(false)
+    expect(isRedemption({ cashbackEarned: 0, cashbackUsed: 0 })).toBe(false)
+  })
+})
+
+describe("movementTitle", () => {
+  const providerName = "Studio Ana"
+
+  it("labels earning lines as cashback, even when cashback was also used", () => {
+    expect(movementTitle({ providerName, cashbackEarned: 5, cashbackUsed: 0 })).toBe("Cashback — Studio Ana")
+    expect(movementTitle({ providerName, cashbackEarned: 5, cashbackUsed: 3 })).toBe("Cashback — Studio Ana")
+  })
+
+  it("labels spend-only lines as a redemption", () => {
+    expect(movementTitle({ providerName, cashbackEarned: 0, cashbackUsed: 12 })).toBe("Resgate — Studio Ana")
+  })
+
+  it("falls back to the provider name without amounts", () => {
+    expect(movementTitle({ providerName, cashbackEarned: 0, cashbackUsed: 0 })).toBe("Studio Ana")
+  })
+})
+
+describe("loyaltyRule", () => {
+  const bonus = formatCurrency(20)
+
+  it("describes the card goal and bonus", () => {
+    expect(loyaltyRule({ goal: 5, bonusPerCard: 20 })).toBe(`A cada 5 atendimentos, ganhe ${bonus}`)
+  })
+
+  it("uses the singular for a one-appointment card", () => {
+    expect(loyaltyRule({ goal: 1, bonusPerCard: 20 })).toBe(`A cada atendimento, ganhe ${bonus}`)
+  })
+})
+
+describe("cashbackSteps", () => {
+  it("builds the three steps from the program rates", () => {
+    expect(cashbackSteps({ cashbackRate: 0.05, maxCashbackUsageRate: 0.2 })).toEqual([
+      "Agende e conclua o atendimento",
+      "Receba 5% de cashback no saldo",
+      "Use até 20% do valor do próximo serviço",
+    ])
+  })
+
+  it("drops the usage step when cashback can't be used", () => {
+    expect(cashbackSteps({ cashbackRate: 0.05, maxCashbackUsageRate: 0 })).toHaveLength(2)
+  })
+
+  it("is empty when the program gives no cashback", () => {
+    expect(cashbackSteps({ cashbackRate: 0, maxCashbackUsageRate: 0.2 })).toEqual([])
   })
 })

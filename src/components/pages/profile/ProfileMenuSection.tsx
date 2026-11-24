@@ -60,7 +60,7 @@ const ProfileMenuSection = ({ title, items, variant = "mobile" }: ProfileMenuSec
           {items.map(({ label, description, icon: Icon, to }) => {
             const content = (
               <>
-                <span aria-hidden="true" className={cn("flex shrink-0 items-center justify-center bg-[#fde7f0] text-sich-magenta", style.iconBox)}>
+                <span aria-hidden="true" className={cn("flex shrink-0 items-center justify-center bg-sich-pink-soft text-sich-magenta", style.iconBox)}>
                   <Icon className="size-4" />
                 </span>
                 <span className="flex min-w-0 flex-1 flex-col">

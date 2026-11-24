@@ -1,33 +1,30 @@
 import Title from '../../components/commons/Title'
-import BenefitsWallet from '../../components/pages/benefit/BenefitsWallet'
+import BenefitsBalanceHero from '../../components/pages/benefit/BenefitsBalanceHero'
 import { BENEFITS_COPY } from '../../components/pages/benefit/benefitsCopy'
+import BenefitsHowItWorks from '../../components/pages/benefit/BenefitsHowItWorks'
 import CashbackStatement from '../../components/pages/benefit/CashbackStatement'
 import LoyaltyCard from '../../components/pages/benefit/LoyaltyCard'
 import type { BenefitsPageState } from '../../hooks/benefit/useBenefitsPage'
+import { cn } from '../../lib/utils'
 
 const BenefitsDesktop = ({ state }: { state: BenefitsPageState }) => {
-  const { animationClass, wallet, loyalty, statement } = state
+  const { animationClass, wallet, loyalty, howItWorks, statement } = state
 
   return (
-    <section className={`flex w-full flex-col gap-6 px-10 py-8 ${animationClass}`}>
+    <section className={cn("flex w-full flex-col gap-6 px-10 py-8", animationClass)}>
       <header className="flex flex-col gap-1">
-        <Title text="Benefícios" className="lg:text-left lg:text-[26px] lg:font-bold lg:tracking-[-0.4px]" />
-        <span className="text-[13px] text-sich-label">Seu cashback e cartão fidelidade</span>
+        <Title text={BENEFITS_COPY.pageTitle} className="lg:text-left lg:text-[26px] lg:font-bold lg:tracking-[-0.4px]" />
+        <span className="text-[13px] text-sich-label">{BENEFITS_COPY.pageSubtitle}</span>
       </header>
 
-      <div className="grid grid-cols-[minmax(0,1fr)_360px] items-start gap-6">
-        <CashbackStatement {...statement} />
-
+      <div className="grid grid-cols-[minmax(0,2fr)_minmax(0,1fr)] items-start gap-6">
         <div className="flex flex-col gap-6">
-          <section className="flex flex-col gap-3 rounded-[24px] bg-sich-gradient p-5.5 shadow-sich-button">
-            <div>
-              <span className="text-[11px] text-white/80">{BENEFITS_COPY.eyebrow}</span>
-              <h2 className="text-[18px] font-semibold text-white">{BENEFITS_COPY.title}</h2>
-            </div>
-            <BenefitsWallet wallet={wallet} stacked />
-          </section>
+          <BenefitsBalanceHero wallet={wallet} />
           <LoyaltyCard loyalty={loyalty} />
+          <CashbackStatement {...statement} />
         </div>
+
+        <BenefitsHowItWorks steps={howItWorks} />
       </div>
     </section>
   )

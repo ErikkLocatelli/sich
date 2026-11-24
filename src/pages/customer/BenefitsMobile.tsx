@@ -1,9 +1,8 @@
 import SichBadge from '../../components/commons/SichBadge'
-import Title from '../../components/commons/Title'
-import BenefitsWallet from '../../components/pages/benefit/BenefitsWallet'
+import BenefitsBalanceCard from '../../components/pages/benefit/BenefitsBalanceCard'
 import { BENEFITS_COPY } from '../../components/pages/benefit/benefitsCopy'
 import CashbackStatement from '../../components/pages/benefit/CashbackStatement'
-import LoyaltyCard from '../../components/pages/benefit/LoyaltyCard'
+import LoyaltyCompactCard from '../../components/pages/benefit/LoyaltyCompactCard'
 import type { BenefitsPageState } from '../../hooks/benefit/useBenefitsPage'
 
 const BenefitsMobile = ({ state }: { state: BenefitsPageState }) => {
@@ -11,17 +10,14 @@ const BenefitsMobile = ({ state }: { state: BenefitsPageState }) => {
 
   return (
     <div className={animationClass}>
-      <SichBadge className="flex flex-col gap-3 px-6 py-6">
-        <div>
-          <span className="text-[11px] text-white/80">{BENEFITS_COPY.eyebrow}</span>
-          <Title text={BENEFITS_COPY.title} color="text-white" />
-        </div>
-        <BenefitsWallet wallet={wallet} />
+      <SichBadge className="flex flex-col gap-5 px-5 pt-10 pb-7">
+        <h1 className="text-[20px] font-bold text-white">{BENEFITS_COPY.title}</h1>
+        <BenefitsBalanceCard wallet={wallet} />
       </SichBadge>
 
-      <div className="flex flex-col gap-5 px-5 py-5">
-        <LoyaltyCard loyalty={loyalty} />
-        <CashbackStatement {...statement} />
+      <div className="flex flex-col gap-6 px-5 py-6">
+        <LoyaltyCompactCard loyalty={loyalty} />
+        <CashbackStatement {...statement} variant="section" />
       </div>
     </div>
   )

@@ -18,6 +18,8 @@
   --color-sich-heading: var(--sich-heading);
   --color-sich-label: var(--sich-label);
   --color-sich-magenta: var(--sich-magenta);
+  --color-sich-pink-soft: var(--sich-pink-soft);
+  --color-sich-red: var(--sich-red);
   --color-sich-gradient-start: var(--sich-gradient-start);
   --color-sich-gradient-end: var(--sich-gradient-end);
   --shadow-sich-card: 0 30px 60px rgba(20, 20, 60, 0.18);
@@ -107,6 +109,8 @@
     --sich-gradient-start: #ff5a8a;
     --sich-gradient-end: #c8307a;
     --sich-green: #22C55E;
+    --sich-pink-soft: #fde7f0;
+    --sich-red: #ef4444;
 }
 
 .dark {

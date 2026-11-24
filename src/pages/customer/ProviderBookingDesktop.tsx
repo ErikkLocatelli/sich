@@ -45,7 +45,7 @@ const ProviderBookingDesktop = ({ state }: { state: ProviderBookingState }) => {
                   providerId={providerId}
                   providerName={providerName}
                   favorite={providerFavorite}
-                  className="bg-[#fde7f0]"
+                  className="bg-sich-pink-soft"
                 />
               )}
             </div>
