@@ -35,3 +35,9 @@ export const sinceYear = (createdAt: string | null | undefined) => {
   const date = new Date(createdAt)
   return Number.isNaN(date.getTime()) ? null : String(date.getFullYear())
 }
+
+/** "email · (11) 98888-1234"; blank parts are left out, empty string when both are missing. */
+export const contactLine = (email: string | null | undefined, phone: string | null | undefined) => {
+  const parts = [email?.trim(), phone?.trim() ? formatPhone(phone.trim()) : null]
+  return parts.filter(Boolean).join(" · ")
+}

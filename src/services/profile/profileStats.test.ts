@@ -4,7 +4,7 @@ import type { CustomerBenefitsResponse } from "@/api/benefit/benefit"
 import type { FinancialSummaryResponse } from "@/api/financial/financial"
 import type { AgendaSummaryResponse } from "@/api/schedule/appointments"
 
-import { formatCurrencyShort } from "@/services/schedule/formatters"
+import { formatCurrencyShort, formatCurrencyWhole } from "@/services/schedule/formatters"
 
 import { sinceYear } from "./profileFormat"
 import { customerProfileStats, occupancyLabel, providerProfileStats } from "./profileStats"
@@ -45,7 +45,7 @@ describe("providerProfileStats", () => {
   it("shows the month's completed appointments, net revenue and the week's occupancy", () => {
     const financial = { completedCount: 8, netRevenue: 640 } as FinancialSummaryResponse
 
-    expect(providerProfileStats(financial, agenda(600, 150)).map((stat) => stat.value)).toEqual(["8", formatCurrencyShort(640), "25%"])
+    expect(providerProfileStats(financial, agenda(600, 150)).map((stat) => stat.value)).toEqual(["8", formatCurrencyWhole(640), "25%"])
   })
 
   it("loads each source independently", () => {
@@ -70,5 +70,20 @@ describe("sinceYear", () => {
 
   it.each([null, undefined, "", "not a date"])("returns null for %s", (value) => {
     expect(sinceYear(value)).toBeNull()
+  })
+})
+
+describe("formatCurrencyWhole", () => {
+  const plain = (value: number) => formatCurrencyWhole(value).replace(/\s/g, " ")
+
+  it("drops the cents and keeps the thousands dot", () => {
+    expect(plain(640)).toBe("R$ 640")
+    expect(plain(1234.4)).toBe("R$ 1.234")
+    expect(plain(1234.5)).toBe("R$ 1.235")
+  })
+
+  it("formats zero and negative values", () => {
+    expect(plain(0)).toBe("R$ 0")
+    expect(plain(-80.2)).toBe("-R$ 80")
   })
 })

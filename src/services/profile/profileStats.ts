@@ -2,7 +2,7 @@ import type { CustomerBenefitsResponse } from "@/api/benefit/benefit"
 import type { FinancialSummaryResponse } from "@/api/financial/financial"
 import type { AgendaSummaryResponse } from "@/api/schedule/appointments"
 import type { CustomerAppointmentSummaryResponse } from "@/api/schedule/customerAppointments"
-import { formatCurrencyShort } from "@/services/schedule/formatters"
+import { formatCurrencyShort, formatCurrencyWhole } from "@/services/schedule/formatters"
 
 /** `value` is null while loading. */
 export type ProfileStat = { label: string; value: string | null }
@@ -28,6 +28,6 @@ export const providerProfileStats = (
   weekSummary: AgendaSummaryResponse | undefined,
 ): ProfileStat[] => [
   { label: "Atendimentos no mês", value: monthFinancial ? String(monthFinancial.completedCount) : null },
-  { label: "Faturamento no mês", value: monthFinancial ? formatCurrencyShort(monthFinancial.netRevenue) : null },
+  { label: "Faturamento no mês", value: monthFinancial ? formatCurrencyWhole(monthFinancial.netRevenue) : null },
   { label: "Ocupação da semana", value: weekSummary ? occupancyLabel(weekSummary) : null },
 ]

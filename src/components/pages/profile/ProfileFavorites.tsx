@@ -9,6 +9,8 @@ import Avatar from "../../commons/Avatar";
 import Card from "../../commons/Card";
 import FavoriteButton from "../../commons/FavoriteButton";
 import { Skeleton } from "../../ui/skeleton";
+import { cn } from "../../../lib/utils";
+import { profileCardTitleClass, type ProfileVariant } from "./profileMenu";
 
 const FavoritesSkeleton = () => (
   <ul aria-busy="true" aria-label="Carregando favoritas" className="divide-y divide-sich-border">
@@ -34,15 +36,24 @@ const FavoritesEmpty = () => (
   </div>
 );
 
-const ProfileFavorites = () => {
+const ProfileFavorites = ({ variant = "mobile" }: { variant?: ProfileVariant }) => {
   const { data: favorites, isPending } = useQuery(favoritesQuery());
+  const isDesktop = variant === "desktop";
+
+  const heading = (
+    <h2
+      id="profile-favorites-heading"
+      className={isDesktop ? profileCardTitleClass : "mb-3 text-[16px] font-medium text-sich-label"}
+    >
+      Favoritas
+    </h2>
+  );
 
   return (
-    <section aria-labelledby="profile-favorites-heading" className="mt-10">
-      <h2 id="profile-favorites-heading" className="mb-3 text-[16px] font-medium text-sich-label">
-        Favoritas
-      </h2>
-      <Card className="border border-sich-border px-5 py-3">
+    <section aria-labelledby="profile-favorites-heading" className={cn(!isDesktop && "mt-10")}>
+      {!isDesktop && heading}
+      <Card className={cn("border border-sich-border", isDesktop ? "px-5.5 pt-5.5 pb-2" : "px-5 py-3")}>
+        {isDesktop && heading}
         {isPending ? (
           <FavoritesSkeleton />
         ) : !favorites?.length ? (

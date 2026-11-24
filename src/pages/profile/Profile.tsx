@@ -1,10 +1,20 @@
 import { useContext } from "react"
 
+import type { AnyUserData } from "../../models/userData"
 import { userContext } from "../../services/userContext"
 import useHead from "../../hooks/useHead"
+import { useIsDesktop } from "../../hooks/useMedia"
+import { useProfile } from "../../hooks/profile/useProfile"
 
-import ProfileCustomer from "./ProfileCustomer"
-import ProfileProvider from "./ProfileProvider"
+import ProfileDesktop from "./ProfileDesktop"
+import ProfileMobile from "./ProfileMobile"
+
+const ProfileScreen = ({ data, userLogout }: { data: AnyUserData; userLogout: () => void }) => {
+    const isDesktop = useIsDesktop()
+    const state = useProfile(data, userLogout)
+
+    return isDesktop ? <ProfileDesktop state={state} /> : <ProfileMobile state={state} />
+}
 
 const Profile = () => {
     useHead("Perfil", 'Gerencie suas informações na SICH')
@@ -12,9 +22,7 @@ const Profile = () => {
 
     if (!data) return null
 
-    if (data.userType === "CUSTOMER") return <ProfileCustomer data={data} userLogout={userLogout} />
-
-    return <ProfileProvider data={data} userLogout={userLogout} />
+    return <ProfileScreen data={data} userLogout={userLogout} />
 }
 
 export default Profile
