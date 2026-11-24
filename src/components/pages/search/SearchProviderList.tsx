@@ -1,6 +1,7 @@
 import { SearchX } from "lucide-react"
 
 import type { ProviderSummaryResponse } from "@/api/provider/provider"
+import FavoriteButton from "@/components/commons/FavoriteButton"
 import ProfessionalInfoCard from "@/components/commons/ProfessionalInfoCard"
 import { Skeleton } from "@/components/ui/skeleton"
 import { providerSubtitle } from "@/services/search/searchFilters"
@@ -57,6 +58,8 @@ const SearchProviderList = ({ providers, loaded, providerHref, variant = "list",
             key={provider.id}
             layout={variant === "grid" ? "stacked" : "row"}
             name={provider.name}
+            photo={provider.photo}
+            action={<FavoriteButton providerId={provider.id} providerName={provider.name} favorite={provider.favorite} />}
             subtitle={providerSubtitle(provider)}
             neighborhood={provider.neighborhood}
             minPrice={provider.minPrice}

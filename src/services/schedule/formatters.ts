@@ -16,3 +16,8 @@ const shortCurrencyFormat = new Intl.NumberFormat("pt-BR", { style: "currency", 
 
 /** 65 -> "R$ 65", 65.5 -> "R$ 65,5" */
 export const formatCurrencyShort = (value: number) => shortCurrencyFormat.format(value)
+
+const wholeCurrencyFormat = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 })
+
+/** Rounded to whole reais, for tight spots: 1234.5 -> "R$ 1.235" */
+export const formatCurrencyWhole = (value: number) => wholeCurrencyFormat.format(value)

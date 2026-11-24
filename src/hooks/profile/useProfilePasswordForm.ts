@@ -13,5 +13,9 @@ export const useProfilePasswordForm = () => {
 
   const fields = { currentPassword, newPassword, confirmation };
 
-  return { fields, validateForm: () => validateFields(fields) };
+  return {
+    fields,
+    validateForm: () => validateFields(fields),
+    toBody: () => ({ currentPassword: currentPassword.value, newPassword: newPassword.value }),
+  };
 };

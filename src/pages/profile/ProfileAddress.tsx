@@ -1,21 +1,28 @@
 import { useContext } from "react";
-import { Navigate } from "react-router-dom";
+
+import type { InitialAddress } from "../../hooks/profile/useProfileAddressForm";
 import { userContext } from "../../services/userContext";
 import useHead from "../../hooks/useHead";
-import ProfilePageLayout from "../../components/pages/profile/ProfilePageLayout";
-import ProfileAddressForm from "../../components/pages/profile/ProfileAddressForm";
+import { useIsDesktop } from "../../hooks/useMedia";
+import { useProfileAddressPage } from "../../hooks/profile/useProfileAddressPage";
+
+import ProfileAddressDesktop from "./ProfileAddressDesktop";
+import ProfileAddressMobile from "./ProfileAddressMobile";
+
+const ProfileAddressScreen = ({ initialAddress }: { initialAddress: InitialAddress }) => {
+  const isDesktop = useIsDesktop();
+  const state = useProfileAddressPage(initialAddress);
+
+  return isDesktop ? <ProfileAddressDesktop state={state} /> : <ProfileAddressMobile state={state} />;
+};
 
 const ProfileAddress = () => {
   useHead("Alterar endereço", "Atualize seu endereço na SICH");
   const { data } = useContext(userContext);
 
-  if (data?.userType !== "CUSTOMER") return <Navigate to="/profile" replace />;
+  if (!data) return null;
 
-  return (
-    <ProfilePageLayout title="Alterar endereço">
-      <ProfileAddressForm initialAddress={data} />
-    </ProfilePageLayout>
-  );
+  return <ProfileAddressScreen initialAddress={data} />;
 };
 
 export default ProfileAddress;

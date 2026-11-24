@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import { Link } from "react-router-dom"
 
 import { cn } from "@/lib/utils"
@@ -9,7 +10,8 @@ type ProfessionalInfoCardLayout = "row" | "stacked" | "compact"
 
 type ProfessionalInfoCardProps = {
   name: string
-  url?: string
+  /** Profile photo (data URL); initials are shown without one */
+  photo?: string | null
   subtitle?: string
   neighborhood?: string | null
   minPrice?: number | null
@@ -17,6 +19,8 @@ type ProfessionalInfoCardProps = {
   badge?: string
   href?: string
   layout?: ProfessionalInfoCardLayout
+  /** Control beside the content, e.g. the favorite heart; stays clickable over the card link */
+  action?: ReactNode
   className?: string
 }
 
@@ -24,9 +28,9 @@ type ContentProps = Omit<ProfessionalInfoCardProps, "href" | "className" | "layo
 
 // TODO(backend): rating and review count ("★ 4.9 (312)") are not in ProviderSummaryResponse yet
 
-const RowContent = ({ name, url, subtitle, neighborhood, minPrice }: ContentProps) => (
+const RowContent = ({ name, photo, subtitle, neighborhood, minPrice, action }: ContentProps) => (
   <>
-    <Avatar name={name} url={url} className="bg-sich-gradient" />
+    <Avatar name={name} url={photo ?? undefined} className="bg-sich-gradient" />
 
     <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
       <span className="truncate text-[14px] font-semibold text-sich-heading">{name}</span>
@@ -40,17 +44,19 @@ const RowContent = ({ name, url, subtitle, neighborhood, minPrice }: ContentProp
         <span className="text-[14px] font-bold text-sich-magenta">{formatCurrencyShort(minPrice)}</span>
       </div>
     )}
+    {action}
   </>
 )
 
-const StackedContent = ({ name, url, subtitle, neighborhood, minPrice }: ContentProps) => (
+const StackedContent = ({ name, photo, subtitle, neighborhood, minPrice, action }: ContentProps) => (
   <>
     <div className="flex items-center gap-3.5">
-      <Avatar name={name} url={url} className="size-16 rounded-[18px] bg-sich-gradient" />
-      <div className="flex min-w-0 flex-col gap-0.5">
+      <Avatar name={name} url={photo ?? undefined} className="size-16 shrink-0 rounded-[18px] bg-sich-gradient" />
+      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
         <span className="truncate text-[15px] font-semibold text-sich-heading">{name}</span>
         {subtitle && <span className="truncate text-[12px] text-sich-label">{subtitle}</span>}
       </div>
+      {action && <div className="self-start">{action}</div>}
     </div>
 
     <div className="flex items-center justify-between gap-3 border-t border-sich-border pt-3.5">
@@ -64,9 +70,9 @@ const StackedContent = ({ name, url, subtitle, neighborhood, minPrice }: Content
   </>
 )
 
-const CompactContent = ({ name, url, subtitle, neighborhood, minPrice, badge }: ContentProps) => (
+const CompactContent = ({ name, photo, subtitle, neighborhood, minPrice, badge, action }: ContentProps) => (
   <>
-    <Avatar name={name} url={url} className="shrink-0 bg-sich-gradient" />
+    <Avatar name={name} url={photo ?? undefined} className="shrink-0 bg-sich-gradient" />
 
     <div className="flex min-w-0 flex-1 flex-col gap-0.5">
       <div className="flex min-w-0 items-center gap-1.5">
@@ -85,6 +91,7 @@ const CompactContent = ({ name, url, subtitle, neighborhood, minPrice, badge }: 
         )}
       </div>
     </div>
+    {action}
   </>
 )
 
@@ -107,10 +114,20 @@ const ProfessionalInfoCard = ({ className, href, layout = "row", ...props }: Pro
 
   if (!href) return <div className={classes}>{content}</div>
 
+  if (!props.action) {
+    return (
+      <Link to={href} className={cn(classes, "transition-colors hover:border-primary/40")}>
+        {content}
+      </Link>
+    )
+  }
+
+  // Stretched link: an action can't be nested inside the <a>, so the link covers the card and the action sits above it
   return (
-    <Link to={href} className={cn(classes, "transition-colors hover:border-primary/40")}>
+    <div className={cn(classes, "relative transition-colors focus-within:border-primary/40 hover:border-primary/40 [&_button]:relative [&_button]:z-10")}>
+      <Link to={href} aria-label={props.name} className="absolute inset-0 rounded-[inherit] focus-visible:outline-2 focus-visible:outline-sich-magenta" />
       {content}
-    </Link>
+    </div>
   )
 }
 

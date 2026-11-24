@@ -8,6 +8,10 @@ export type ProviderSummaryResponse = {
   neighborhood: string | null
   minPrice: number | null
   categories: string[]
+  /** Profile photo as a data URL, null without one */
+  photo: string | null
+  /** Always false for anyone who isn't a customer */
+  favorite: boolean
 }
 
 export type AvailabilityResponse = {

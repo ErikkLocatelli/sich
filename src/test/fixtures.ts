@@ -10,6 +10,9 @@ export const appointment = (overrides: Partial<AppointmentResponse> = {}): Appoi
   duration: "01:00",
   durationMinutes: 60,
   totalPrice: 100,
+  cashbackUsed: 0,
+  amountToPay: 100,
+  cashbackEarned: 5,
   status: "SCHEDULED",
   origin: "CUSTOMER",
   notes: null,
@@ -24,6 +27,8 @@ export const appointment = (overrides: Partial<AppointmentResponse> = {}): Appoi
   items: [],
   canceledAt: null,
   canceledBy: null,
+  providerPhoto: null,
+  customerPhoto: null,
   createdAt: "2026-11-01T10:00",
   ...overrides,
 })

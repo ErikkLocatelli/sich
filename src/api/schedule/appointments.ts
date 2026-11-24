@@ -29,6 +29,11 @@ export type AppointmentResponse = {
   duration: string
   durationMinutes: number
   totalPrice: number
+  /** Discount paid with cashback */
+  cashbackUsed: number
+  /** totalPrice − cashbackUsed */
+  amountToPay: number
+  cashbackEarned: number
   status: AppointmentStatus
   origin: AppointmentOrigin
   notes: string | null
@@ -43,6 +48,8 @@ export type AppointmentResponse = {
   items: AppointmentItemResponse[]
   canceledAt: string | null
   canceledBy: AppointmentOrigin | null
+  providerPhoto: string | null
+  customerPhoto: string | null
   createdAt: string
 }
 

@@ -18,6 +18,7 @@ import Financial from '../pages/financial/Financial'
 import Profile from '../pages/profile/Profile'
 import ProfileAddress from '../pages/profile/ProfileAddress'
 import ProfilePassword from '../pages/profile/ProfilePassword'
+import ProfileData from '../pages/profile/ProfileData'
 
 import Login from '../pages/login/Login'
 import Register from "../pages/login/Register"
@@ -76,6 +77,7 @@ const Routes = () => {
                     element: <Outlet />,
                     children: [
                         { index: true, element: <Profile /> },
+                        { path: 'data', element: <ProfileData /> },
                         { path: 'address', element: <ProfileAddress /> },
                         { path: 'password', element: <ProfilePassword /> }
                     ]

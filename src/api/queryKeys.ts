@@ -17,6 +17,7 @@ export const queryKeys = {
   },
   provider: {
     workingHours: ["provider", "working-hours"] as const,
+    financial: (from: string, to: string) => ["provider", "financial", from, to] as const,
     products: {
       all: ["provider", "products"] as const,
       list: ["provider", "products", "list"] as const,
@@ -41,5 +42,7 @@ export const queryKeys = {
       list: (from: string, to: string) => ["customer", "appointments", "list", from, to] as const,
       summary: ["customer", "appointments", "summary"] as const,
     },
+    favorites: ["customer", "favorites"] as const,
+    benefits: ["customer", "benefits"] as const,
   },
 }

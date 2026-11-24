@@ -91,7 +91,10 @@ export const useProviderBookingPage = () => {
   return {
     animationClass: previousRoute?.startsWith("/search") ? "animateLeft" : "animateRight",
     validProvider: providerId !== null,
+    providerId,
     providerName: provider?.name ?? "",
+    providerPhoto: provider?.photo ?? null,
+    providerFavorite: provider?.favorite ?? false,
     providerSubtitle: provider ? providerSubtitle(provider) : "",
     products: visibleProducts,
     productsLoaded,

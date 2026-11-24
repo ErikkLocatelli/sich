@@ -1,4 +1,5 @@
 import type { ProviderSummaryResponse } from "@/api/provider/provider"
+import FavoriteButton from "@/components/commons/FavoriteButton"
 import ProfessionalInfoCard from "@/components/commons/ProfessionalInfoCard"
 import { Skeleton } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
@@ -45,6 +46,8 @@ const HomeCustomerProviders = ({ providers, loaded, variant = "list", className 
           key={provider.id}
           layout={variant === "grid" ? "stacked" : "compact"}
           name={provider.name}
+          photo={provider.photo}
+          action={<FavoriteButton providerId={provider.id} providerName={provider.name} favorite={provider.favorite} />}
           subtitle={providerSubtitle(provider)}
           neighborhood={provider.neighborhood}
           minPrice={provider.minPrice}
