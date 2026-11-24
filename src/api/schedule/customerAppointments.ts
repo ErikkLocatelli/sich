@@ -6,6 +6,8 @@ export type CustomerAppointmentRequest = {
   startAt: string
   productIds: number[]
   notes: string | null
+  /** Pays part of the price with the cashback balance: min(balance, total × maxCashbackUsageRate) */
+  useCashback: boolean
 }
 
 export const CUSTOMER_APPOINTMENT_POST = (token: string, body: CustomerAppointmentRequest) => {

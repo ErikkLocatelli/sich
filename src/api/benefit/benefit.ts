@@ -1,4 +1,5 @@
 import { API_URL } from "../api"
+import type { PageResponse } from "../schedule/appointments"
 
 export type LoyaltyResponse = {
   goal: number
@@ -23,5 +24,28 @@ export type CustomerBenefitsResponse = {
 
 export const BENEFITS_GET = (token: string) => ({
   url: API_URL + "/customers/me/benefits",
+  options: { method: "GET", headers: { 'Authorization': `Bearer ${token}` } }
+})
+
+/** CREDITED: already in the balance · PENDING: enters after the appointment · CANCELED: never enters, the discount went back */
+export type CashbackStatus = "CREDITED" | "PENDING" | "CANCELED"
+
+/** Statement line: an appointment that earned or used cashback (loyalty bonuses are not listed). */
+export type CashbackMovementResponse = {
+  appointmentId: number
+  startAt: string
+  providerId: number
+  providerName: string
+  totalPrice: number
+  cashbackUsed: number
+  cashbackEarned: number
+  status: CashbackStatus
+}
+
+export type CashbackHistoryPage = PageResponse<CashbackMovementResponse>
+
+/** Newest first; `page` starts at 0. */
+export const BENEFITS_HISTORY_GET = (token: string, page: number, size: number) => ({
+  url: API_URL + `/customers/me/benefits/history?page=${page}&size=${size}`,
   options: { method: "GET", headers: { 'Authorization': `Bearer ${token}` } }
 })

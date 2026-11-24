@@ -26,7 +26,7 @@ const ProviderBookingDesktop = ({ state }: { state: ProviderBookingState }) => {
   const {
     animationClass, providerId, providerName, providerPhoto, providerFavorite, providerSubtitle, products, productsLoaded, selectedProduct, selectProduct, monthLabel, days,
     weekOffset, canGoBackWeek, changeWeek, selectedDate, selectDate, startTimes, timesLoaded, selectedTime, selectTime,
-    dateLabel, timeLabel, submitting, canConfirm, confirm,
+    dateLabel, timeLabel, price, discount, totalToPay, cashback, submitting, canConfirm, confirm,
   } = state
 
   return (
@@ -106,7 +106,10 @@ const ProviderBookingDesktop = ({ state }: { state: ProviderBookingState }) => {
                   { label: "Data", value: dateLabel },
                   { label: "Horário", value: timeLabel },
                 ]}
-                total={selectedProduct.price}
+                price={price}
+              discount={discount}
+              totalToPay={totalToPay}
+              cashback={cashback}
               />
               <Button
                 onClick={confirm}

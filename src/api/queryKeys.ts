@@ -43,6 +43,8 @@ export const queryKeys = {
       summary: ["customer", "appointments", "summary"] as const,
     },
     favorites: ["customer", "favorites"] as const,
+    // Prefix of the history, so invalidating the wallet also refreshes the statement
     benefits: ["customer", "benefits"] as const,
+    benefitsHistory: (pageSize: number) => ["customer", "benefits", "history", pageSize] as const,
   },
 }
