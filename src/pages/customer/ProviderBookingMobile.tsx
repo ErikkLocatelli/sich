@@ -17,7 +17,7 @@ const ProviderBookingMobile = ({ state }: { state: ProviderBookingState }) => {
   const {
     animationClass, providerId, providerName, providerPhoto, providerFavorite, products, productsLoaded, selectedProduct, selectProduct, monthLabel, days, weekOffset,
     canGoBackWeek, changeWeek, selectedDate, selectDate, startTimes, timesLoaded, selectedTime, selectTime, dateTimeLabel,
-    submitting, canConfirm, confirm,
+    price, discount, totalToPay, cashback, submitting, canConfirm, confirm,
   } = state
 
   return (
@@ -74,7 +74,10 @@ const ProviderBookingMobile = ({ state }: { state: ProviderBookingState }) => {
                 { label: "Profissional", value: providerName },
                 { label: "Data e hora", value: dateTimeLabel },
               ]}
-              total={selectedProduct.price}
+              price={price}
+              discount={discount}
+              totalToPay={totalToPay}
+              cashback={cashback}
             />
 
             <Button
