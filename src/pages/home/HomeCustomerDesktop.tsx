@@ -13,7 +13,7 @@ import { CUSTOMER_HOME_COPY } from "@/services/home/customerHome"
 
 const HomeCustomerDesktop = ({ data, state }: { data: UserData; state: CustomerHomeState }) => {
   const {
-    upcoming, upcomingLoaded, nextAppointmentLabel, upcomingCount, completedCount,
+    upcoming, upcomingLoaded, nextAppointmentLabel, cashbackLabel, loyaltyLabel,
     categories, categoriesLoaded, providers, providersLoaded,
   } = state
   const hasServices = !categoriesLoaded || categories.length > 0
@@ -29,8 +29,8 @@ const HomeCustomerDesktop = ({ data, state }: { data: UserData; state: CustomerH
       <div className="grid grid-cols-[minmax(0,1fr)_360px] items-start gap-6">
         <div className="flex flex-col gap-6">
           <HomeCustomerHero
-            upcomingCount={upcomingCount}
-            completedCount={completedCount}
+            cashbackLabel={cashbackLabel}
+            loyaltyLabel={loyaltyLabel}
             nextAppointmentLabel={nextAppointmentLabel} />
 
           {hasServices && (
