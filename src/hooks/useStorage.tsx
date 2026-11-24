@@ -30,6 +30,8 @@ export const UserStorage = ({ children }: { children: ReactNode }) => {
     }, [navigate, queryClient])
 
     useEffect(() => {
+        // Syncs with an external result (the /me query failed): clears storage and navigates, not derived state
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         if (isError) userLogout()
     }, [isError, userLogout])
 
