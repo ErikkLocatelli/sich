@@ -1,12 +1,18 @@
-const ProfileProvider = ({userLogout}: {userLogout: () => void}) => {
-  return (
-    <div className="animateRight">
-        Perfil do provider funciona
-        <button onClick={userLogout} className="bg-red-500 text-white py-2 px-4 rounded">
-          Logout
-        </button>
-    </div>
-  )
-}
+import type { UserDataProvider } from "../../models/userData";
+import { useProviderProfileStats } from "../../hooks/profile/useProfileStats";
+import ProfileView from "../../components/pages/profile/ProfileView";
 
-export default ProfileProvider
+type ProfileProviderProps = {
+  data: UserDataProvider;
+  userLogout: () => void;
+};
+
+const ProfileProvider = ({ data, userLogout }: ProfileProviderProps) => {
+  const stats = useProviderProfileStats();
+
+  return (
+    <ProfileView data={data} stats={stats} sincePrefix="Profissional desde" ariaLabel="Perfil do profissional" userLogout={userLogout} />
+  );
+};
+
+export default ProfileProvider;

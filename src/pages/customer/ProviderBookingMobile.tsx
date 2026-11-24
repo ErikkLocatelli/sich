@@ -3,6 +3,8 @@ import { Check } from "lucide-react"
 import type { ProviderBookingState } from "@/hooks/search/useProviderBookingPage"
 
 import ArrowBack from "@/components/commons/ArrowBack"
+import Avatar from "@/components/commons/Avatar"
+import FavoriteButton from "@/components/commons/FavoriteButton"
 import BookingDatePicker from "@/components/pages/search/BookingDatePicker"
 import BookingServiceList from "@/components/pages/search/BookingServiceList"
 import BookingSummary from "@/components/pages/search/BookingSummary"
@@ -13,7 +15,7 @@ import { Spinner } from "@/components/ui/spinner"
 
 const ProviderBookingMobile = ({ state }: { state: ProviderBookingState }) => {
   const {
-    animationClass, providerName, products, productsLoaded, selectedProduct, selectProduct, monthLabel, days, weekOffset,
+    animationClass, providerId, providerName, providerPhoto, providerFavorite, products, productsLoaded, selectedProduct, selectProduct, monthLabel, days, weekOffset,
     canGoBackWeek, changeWeek, selectedDate, selectDate, startTimes, timesLoaded, selectedTime, selectTime, dateTimeLabel,
     submitting, canConfirm, confirm,
   } = state
@@ -22,7 +24,10 @@ const ProviderBookingMobile = ({ state }: { state: ProviderBookingState }) => {
     <div className={`w-full ${animationClass}`}>
       <header className="flex items-center gap-3 bg-white px-6 py-4">
         <ArrowBack to="/search" label="Voltar para a busca" />
-        <div className="flex min-w-0 flex-col">
+        {providerName && (
+          <Avatar name={providerName} url={providerPhoto} className="size-10 shrink-0 rounded-[14px] bg-sich-gradient [&_span]:text-[13px]" />
+        )}
+        <div className="flex min-w-0 flex-1 flex-col">
           <span className="text-[11px] text-sich-label">Agendamento</span>
           {providerName ? (
             <h1 className="truncate text-[18px] font-semibold text-sich-heading">{providerName}</h1>
@@ -30,6 +35,14 @@ const ProviderBookingMobile = ({ state }: { state: ProviderBookingState }) => {
             <Skeleton className="mt-1 h-4 w-32" />
           )}
         </div>
+        {providerId !== null && providerName && (
+          <FavoriteButton
+            providerId={providerId}
+            providerName={providerName}
+            favorite={providerFavorite}
+            className="bg-[#fde7f0]"
+          />
+        )}
       </header>
 
       <div className="flex flex-col gap-6 px-6 py-5">

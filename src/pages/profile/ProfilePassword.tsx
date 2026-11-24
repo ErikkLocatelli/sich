@@ -1,31 +1,31 @@
 import { useContext, useState, type FormEvent } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { userContext } from "../../services/userContext";
 import useHead from "../../hooks/useHead";
 import { useProfilePasswordForm } from "../../hooks/profile/useProfilePasswordForm";
+import { useChangePassword } from "../../hooks/profile/useProfileMutations";
 import ProfilePageLayout from "../../components/pages/profile/ProfilePageLayout";
 import InputPassword from "../../components/form/InputPassword";
 import { Button } from "../../components/ui/button";
+import { Spinner } from "../../components/ui/spinner";
 import securityIllustration from "../../assets/svgs/ProfileSecurity.svg";
 
 const ProfilePassword = () => {
   useHead("Redefinir senha", "Altere a senha da sua conta SICH");
+  const navigate = useNavigate();
   const { data } = useContext(userContext);
-  const { fields, validateForm } = useProfilePasswordForm();
-  const [message, setMessage] = useState("");
+  const { fields, validateForm, toBody } = useProfilePasswordForm();
+  const { mutate, isPending } = useChangePassword();
   const [validating, setValidating] = useState(false);
 
-  if (data?.userType !== "CUSTOMER") return <Navigate to="/profile" replace />;
+  if (!data) return null;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setMessage("");
     setValidating(true);
     try {
-      if (await validateForm()) {
-        // Não enviar nem persistir senhas até existir o endpoint de alteração.
-        setMessage("A alteração de senha ainda não está disponível.");
-      }
+      if (!(await validateForm())) return;
+      mutate(toBody(), { onSuccess: () => navigate("/profile") });
     } finally {
       setValidating(false);
     }
@@ -41,16 +41,16 @@ const ProfilePassword = () => {
           Informe sua senha atual e crie uma nova senha para sua conta.
         </p>
 
-        <form noValidate onSubmit={handleSubmit} onChange={() => setMessage("")} className="mt-9">
+        <form noValidate onSubmit={handleSubmit} className="mt-9">
           <div className="flex flex-col gap-2.5">
             <InputPassword field={fields.currentPassword} label="Senha atual" placeholder="Senha atual" />
             <InputPassword field={fields.newPassword} label="Nova senha" placeholder="Nova senha" />
             <InputPassword field={fields.confirmation} label="Confirmar nova senha" placeholder="Confirmar nova senha" />
           </div>
-          <Button type="submit" disabled={validating} className="mt-6 h-12 w-full rounded-[16px] bg-sich-gradient text-[13px] font-semibold text-white shadow-sich-button">
+          <Button type="submit" disabled={validating || isPending} className="mt-6 h-12 w-full gap-1.5 rounded-[16px] bg-sich-gradient text-[13px] font-semibold text-white shadow-sich-button">
+            {isPending && <Spinner className="size-3.5" />}
             Confirmar
           </Button>
-          <p role="status" aria-live="polite" className="mt-4 text-[12px] text-sich-label">{message}</p>
         </form>
       </div>
     </ProfilePageLayout>

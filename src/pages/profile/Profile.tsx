@@ -9,15 +9,12 @@ import ProfileProvider from "./ProfileProvider"
 const Profile = () => {
     useHead("Perfil", 'Gerencie suas informações na SICH')
     const { data, userLogout } = useContext(userContext)
-    const { userType } = data || {}
 
-    if(!data) return null
+    if (!data) return null
 
-    if (userType === "CUSTOMER") {
-        return <ProfileCustomer data={data} userLogout={userLogout} />
-    } else {
-        return <ProfileProvider userLogout={userLogout} />
-    }
+    if (data.userType === "CUSTOMER") return <ProfileCustomer data={data} userLogout={userLogout} />
+
+    return <ProfileProvider data={data} userLogout={userLogout} />
 }
 
 export default Profile

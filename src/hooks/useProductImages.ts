@@ -1,34 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Image, NewImage } from '../models/image'
 import { MAX_PRODUCT_IMAGES as MAX_IMAGES } from '../services/product/productForm'
+import { fileToDataUrl } from '../services/image/dataUrl'
 
 export type ProductImageItem = {
   key: string
   url: string
   onRemove: () => void
 }
-
-const fileToDataUrl = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-
-    reader.onload = () => {
-      if (typeof reader.result !== "string") {
-        reject(new Error("Não foi possível ler a imagem."))
-        return
-      }
-
-      resolve(reader.result)
-    }
-
-    reader.onerror = () => {
-      reject(new Error("Não foi possível converter a imagem."))
-    }
-
-    reader.readAsDataURL(file)
-  })
-}
-
 
 const useProductImages = (initialImages: Image[] = []) => {
   const [existingImages, setExistingImages] = useState(initialImages)

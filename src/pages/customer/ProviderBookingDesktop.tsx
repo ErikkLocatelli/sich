@@ -3,7 +3,9 @@ import { Check } from "lucide-react"
 
 import type { ProviderBookingState } from "@/hooks/search/useProviderBookingPage"
 
+import Avatar from "@/components/commons/Avatar"
 import Card from "@/components/commons/Card"
+import FavoriteButton from "@/components/commons/FavoriteButton"
 import PageHeader from "@/components/commons/PageHeader"
 import BookingDatePicker from "@/components/pages/search/BookingDatePicker"
 import BookingServiceList from "@/components/pages/search/BookingServiceList"
@@ -22,7 +24,7 @@ const BookingStep = ({ title, children }: { title: string; children: ReactNode }
 
 const ProviderBookingDesktop = ({ state }: { state: ProviderBookingState }) => {
   const {
-    animationClass, providerName, providerSubtitle, products, productsLoaded, selectedProduct, selectProduct, monthLabel, days,
+    animationClass, providerId, providerName, providerPhoto, providerFavorite, providerSubtitle, products, productsLoaded, selectedProduct, selectProduct, monthLabel, days,
     weekOffset, canGoBackWeek, changeWeek, selectedDate, selectDate, startTimes, timesLoaded, selectedTime, selectTime,
     dateLabel, timeLabel, submitting, canConfirm, confirm,
   } = state
@@ -33,9 +35,20 @@ const ProviderBookingDesktop = ({ state }: { state: ProviderBookingState }) => {
         <PageHeader text="Agendar atendimento" backTo="/search" backLabel="Voltar para a busca" className="px-10" />
         <div className="pl-24 pr-10">
           {providerName ? (
-            <span className="text-[13px] text-sich-label">
-              com {providerName}{providerSubtitle && ` · ${providerSubtitle}`}
-            </span>
+            <div className="flex items-center gap-2.5">
+              <Avatar name={providerName} url={providerPhoto} className="size-8 shrink-0 rounded-[10px] bg-sich-gradient [&_span]:text-[11px]" />
+              <span className="text-[13px] text-sich-label">
+                com {providerName}{providerSubtitle && ` · ${providerSubtitle}`}
+              </span>
+              {providerId !== null && (
+                <FavoriteButton
+                  providerId={providerId}
+                  providerName={providerName}
+                  favorite={providerFavorite}
+                  className="bg-[#fde7f0]"
+                />
+              )}
+            </div>
           ) : (
             <Skeleton className="h-3.5 w-56" />
           )}

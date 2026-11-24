@@ -79,6 +79,7 @@ const AppSiderbarFooter = ({data}: {data: UserData | UserDataProvider | null}) =
       <SidebarMenuItem className="flex border-t border-sich-border pt-3 items-center">
         <Avatar
           name={data?.name || 'Usuário'}
+          url={data?.photo}
           className="size-10 shrink-0 group-data-[collapsible=icon]:size-8 group-data-[collapsible=icon]:rounded-lg group-data-[collapsible=icon]:[&_span]:text-[12px]"
         />
         <div className="ml-3 flex min-w-0 flex-col group-data-[collapsible=icon]:hidden">

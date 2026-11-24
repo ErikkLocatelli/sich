@@ -20,8 +20,7 @@ type HomeCustomerUpcomingProps = {
 
 const UpcomingItem = ({ appointment }: { appointment: AppointmentResponse }) => (
   <Link to={appointmentPath(appointment.id)} className="flex items-center gap-3.5 py-3.5 transition-opacity hover:opacity-80">
-    {/* TODO(backend): AppointmentResponse has no provider photo yet, so Avatar falls back to initials */}
-    <Avatar name={appointment.providerName} className="size-10.5 shrink-0 rounded-[14px] bg-sich-gradient [&_span]:text-[13px]" />
+    <Avatar name={appointment.providerName} url={appointment.providerPhoto} className="size-10.5 shrink-0 rounded-[14px] bg-sich-gradient [&_span]:text-[13px]" />
     <div className="flex min-w-0 flex-1 flex-col">
       <span className="truncate text-[14px] font-semibold text-sich-heading">{appointmentServices(appointment)}</span>
       <span className="truncate text-[12px] text-sich-label">{shortDateTime(appointment.startAt)}</span>
