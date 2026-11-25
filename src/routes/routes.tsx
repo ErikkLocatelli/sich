@@ -20,6 +20,7 @@ import ProfileAddress from '../pages/profile/ProfileAddress'
 import ProfilePassword from '../pages/profile/ProfilePassword'
 import ProfileData from '../pages/profile/ProfileData'
 
+import Welcome from '../pages/welcome/Welcome'
 import Login from '../pages/login/Login'
 import Register from "../pages/login/Register"
 
@@ -110,6 +111,10 @@ const Routes = () => {
                 }
             ]
         }, 
+        {
+            path: '/welcome',
+            element: <Welcome />
+        },
         {
             path: '/login',
             element: <Login />
