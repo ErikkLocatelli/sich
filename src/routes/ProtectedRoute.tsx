@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { userContext } from "../services/userContext";
 import { useIsDesktop } from "@/hooks/useMedia";
 
@@ -36,9 +36,11 @@ const MobileLayout = () => (
 const ProtectedRoute = () => {
     const { login, authReady } = useContext(userContext);
     const isDesktop = useIsDesktop();
+    const { pathname } = useLocation();
 
     if (!authReady) return null;
-    if (!login) return <Navigate to="/login" replace />;
+    // Visitors hitting the root see the landing page; deep links go straight to login
+    if (!login) return <Navigate to={pathname === "/" ? "/welcome" : "/login"} replace />;
 
     return isDesktop ? <DesktopLayout /> : <MobileLayout />;
 }
