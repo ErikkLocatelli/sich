@@ -1,5 +1,5 @@
 import { House, Search, Calendar1, Gift, User, ChartColumn, Banknote } from 'lucide-react'
-import Nails from '../../assets/icons/nails.svg?react'
+import Nails from '../../assets/icons/Nails.svg?react'
 
 export type NavIcon = React.ElementType<{ className?: string }>
 

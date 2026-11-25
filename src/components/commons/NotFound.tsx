@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import Door from '../../assets/svgs/door.svg?react'
+import Door from '../../assets/svgs/Door.svg?react'
 
 import {Button} from "@/components/ui/button"
 
