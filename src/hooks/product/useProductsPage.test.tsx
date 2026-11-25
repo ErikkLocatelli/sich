@@ -12,6 +12,13 @@ import { useProductsPage } from "./useProductsPage"
 
 const catalog = [product({ id: 1, name: "Corte" }), product({ id: 2, name: "Escova", active: false })]
 
+/** Keeps a mocked response pending until the test has seen the optimistic state. */
+const holdResponse = () => {
+  let release = () => {}
+  const released = new Promise<void>((resolve) => { release = resolve })
+  return { released, release: () => release() }
+}
+
 const renderCatalog = async () => {
   server.use(http.get(`${API}/providers/me/products`, () => HttpResponse.json(catalog)))
   const hook = renderWithClient(() => useProductsPage())
@@ -35,27 +42,31 @@ describe("useProductsPage", () => {
   })
 
   it("restores the product when deleting fails", async () => {
+    const response = holdResponse()
     server.use(http.delete(`${API}/providers/me/products/1`, async () => {
-      await delay(20)
+      await response.released
       return new HttpResponse(null, { status: 409 })
     }))
     const { result } = await renderCatalog()
 
     act(() => result.current.handleDeleteProduct(1))
     await waitFor(() => expect(result.current.products).toHaveLength(1))
+    response.release()
 
     await waitFor(() => expect(result.current.products.map((item) => item.id)).toEqual([1, 2]))
   })
 
   it("flips the status optimistically and rolls it back on failure", async () => {
+    const response = holdResponse()
     server.use(http.patch(`${API}/providers/me/products/1/status`, async () => {
-      await delay(20)
+      await response.released
       return new HttpResponse(null, { status: 500 })
     }))
     const { result } = await renderCatalog()
 
     act(() => result.current.handleStatus(1, true))
     await waitFor(() => expect(result.current.products[0].active).toBe(false))
+    response.release()
 
     await waitFor(() => expect(result.current.products[0].active).toBe(true))
   })

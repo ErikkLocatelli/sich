@@ -22,7 +22,7 @@ import Title from '../../components/commons/Title'
 import Error from '../../components/commons/Error'
 
 import SvgLogin from '../../assets/svgs/SvgLogin.svg?react'
-import Sich from '../../assets/icons/sich.svg?react'
+import Sich from '../../assets/icons/Sich.svg?react'
 import { Mail } from 'lucide-react'
 
 const Login = () => {
