@@ -7,6 +7,10 @@ updates:
       day: monday
       timezone: America/Sao_Paulo
     open-pull-requests-limit: 10
+    ignore:
+      # Node types track the runtime major in .nvmrc (24); bump both together by hand.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
     groups:
       # Minor/patch bumps land in one PR; majors stay separate for review.
       npm-minor-patch:
